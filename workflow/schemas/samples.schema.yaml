@@ -7,11 +7,14 @@ properties:
   sample:
     type: string
     description: sample name/identifier
-  condition:
+  tumor_bam:
     type: string
-    description: sample condition that will be compared during differential analysis (e.g. a treatment, a tissue time, a disease)
+    description: path to tumoral BAM file
+#  normal_bam:
+#    type: string
+#    description: path to matched normal BAM file
 
 # columns that the config/samples.tsv file must have to pass schema validation
 required:
   - sample
-  - condition
+  - tumor_bam

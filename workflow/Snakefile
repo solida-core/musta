@@ -1,18 +1,45 @@
-# The main entry point of your workflow.
-# After configuring, running snakemake -n in a clone of this repository should successfully execute a dry-run of the workflow.
+from snakemake.utils import min_version
+
+##### set minimum snakemake version #####
+min_version("6.4.1") ## DECIDO COSA METTERE COME VERSIONE MINIMAL
+
+
+##### setup report #####
+configfile: "config/config.yaml"
 
 
 report: "report/workflow.rst"
 
-# Allow users to fix the underlying OS via singularity.
-singularity: "docker://continuumio/miniconda3"
 
+##### setup singularity #####
+
+
+# this container defines the underlying OS for each job when using the workflow
+# with --use-conda --use-singularity
+container: "docker://continuumio/miniconda3"
+
+
+##### load rules #####
+include: "rules/common.smk"
+include: "rules/other.smk"
+
+include: "rules/call_variants.smk"
+include: "rules/call_variants_tumoronly.smk"
+include: "rules/filter_results.smk"
+include: "rules/annotation.smk"
+# include: "rules/qc.smk"
+# include: "rules/align.smk"
+# include: "rules/diffexp.smk"
+
+
+##### target rules #####
 
 rule all:
     input:
-        # The first rule should define the default target files
-        # Subsequent target rules can be specified below. They should start with all_*.
-
-
-include: "rules/common.smk"
-include: "rules/other.smk"
+        # expand("reads/merged/{sample.sample}.bam.bai", sample=samples.reset_index().itertuples()),
+        # expand("results/{sample.sample}_somatic.vcf.gz", sample=samples.reset_index().itertuples()),
+        expand("results/{sample.sample}_somatic_filtered_selected.vcf.gz", sample=samples.reset_index().itertuples()),
+        expand("results/annotation/funcotator/{sample.sample}_funcotated.maf", sample=samples.reset_index().itertuples()),
+        # get_final_output(),
+        # "results/qc/multiqc_report.html",
+        # "results/pca.svg",
