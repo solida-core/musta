@@ -12,8 +12,6 @@ report: "report/workflow.rst"
 
 
 ##### setup singularity #####
-
-
 # this container defines the underlying OS for each job when using the workflow
 # with --use-conda --use-singularity
 container: "docker://continuumio/miniconda3"
@@ -21,25 +19,15 @@ container: "docker://continuumio/miniconda3"
 
 ##### load rules #####
 include: "rules/common.smk"
-include: "rules/other.smk"
-
 include: "rules/call_variants.smk"
 include: "rules/call_variants_tumoronly.smk"
 include: "rules/filter_results.smk"
 include: "rules/annotation.smk"
-# include: "rules/qc.smk"
-# include: "rules/align.smk"
-# include: "rules/diffexp.smk"
 
 
 ##### target rules #####
 
 rule all:
     input:
-        # expand("reads/merged/{sample.sample}.bam.bai", sample=samples.reset_index().itertuples()),
-        # expand("results/{sample.sample}_somatic.vcf.gz", sample=samples.reset_index().itertuples()),
         expand("results/{sample.sample}_somatic_filtered_selected.vcf.gz", sample=samples.reset_index().itertuples()),
         expand("results/annotation/funcotator/{sample.sample}_funcotated.maf", sample=samples.reset_index().itertuples()),
-        # get_final_output(),
-        # "results/qc/multiqc_report.html",
-        # "results/pca.svg",
