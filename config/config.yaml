@@ -1,13 +1,5 @@
 # path or URL to sample sheet (TSV format, columns: sample, condition, ...)
 samples: config/samples.tsv
-# path or URL to sequencing unit sheet (TSV format, columns: sample, unit, fq1, fq2)
-# Units are technical replicates (e.g. lanes, or resequencing of the same biological
-# sample).
-#units: config/units.tsv
-#patients: config/patients.tsv
-#reheader: config/reheader.tsv
-#sets: config/sets.tsv
-
 
 ref:
   # Ensembl species name
@@ -42,4 +34,3 @@ dbsnp_gz: "dbSNP146_chr.vcf.gz"
 pon: "resources/panelofnormals.vcf"
 germline: "resources/af-only-gnomad.vcf.gz"
 exac: "resources/small_exac_common_3.vcf.gz"
-

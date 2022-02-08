@@ -15,18 +15,11 @@ validate(config, schema="../schemas/config.schema.yaml")
 # )
 samples = pd.read_table(config["samples"], index_col=["sample"], sep="\t")
 # validate(samples, schema="../schemas/samples.schema.yaml")
-#units = pd.read_csv(config["units"], index_col=["unit"], dtype=str,sep='\t')
-#units = (
-#    pd.read_csv(config["units"], sep="\t", dtype={"sample": str, "unit": str})
-#    .set_index(["sample", "unit"], drop=False)
-#    .set_index(["unit"],drop=False)
-#    .sort_index()
-#)
-#validate(units, schema="../schemas/units.schema.yaml")
+
+
 #
 # wildcard_constraints:
-#    sample="|".join(samples["samples"]),
-#    unit="|".join(units["unit"]),
+#    sample="|".join(samples["samples"])
 
 def total_physical_mem_size():
     mem = psutil.virtual_memory()
