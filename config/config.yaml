@@ -38,7 +38,7 @@ processing:
   pe: true
 
 
-dbsnp_gz: "/ELS/els9/users/m.massidda/gatk_test/dbSNP146_chr.vcf.gz"
+dbsnp_gz: "dbSNP146_chr.vcf.gz"
 pon: "resources/panelofnormals.vcf"
 germline: "resources/af-only-gnomad.vcf.gz"
 exac: "resources/small_exac_common_3.vcf.gz"
