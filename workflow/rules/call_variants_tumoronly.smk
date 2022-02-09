@@ -1,8 +1,28 @@
 # TUMOR-ONLY CALL WORKFLOW
+rule get_tumoronly_sample_names:
+    input:
+        lambda wildcards: get_bams(wildcards,samples)
+    output:
+        tumor="results/tmp/tumoronly/{sample}_tumor.samplename.txt",
+    params:
+        custom=java_params(tmp_dir=config.get("processing").get("tmp_dir"),multiply_by=5)
+    log:
+        "logs/gatk/getsamplename/{sample}.gsn.log"
+    conda:
+        "../envs/gatk.yaml"
+    threads: conservative_cpu_count(reserve_cores=2,max_cores=99)
+    shell:
+        "gatk "
+        "--java-options {params.custom} "
+        "GetSampleName "
+        "-I {input[0]} " # get tumor sample bam
+        "-O {output.tumor} "
+        ">& {log} "
 
 rule mutect_tumoronly:
     input:
-        lambda wildcards: get_bams(wildcards,samples)
+        lambda wildcards: get_bams(wildcards,samples),
+        tumor_name="results/tmp/tumoronly/{sample}_tumor.samplename.txt"
     output:
         vcf="results/tumoronly/{sample}_somatic.vcf.gz",
         bam="results/tumoronly/{sample}_tumor_normal.bam",

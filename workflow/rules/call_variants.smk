@@ -1,14 +1,16 @@
 
 ### mettere un if con attivazione in caso di matched
-rule get_sample_name:
+rule get_sample_names:
     input:
         lambda wildcards: get_bams(wildcards,samples)
     output:
-        "results/tmp/{sample}_normal.samplename.txt"
+        normal="results/tmp/{sample}_normal.samplename.txt",
+        tumor="results/tmp/{sample}_tumor.samplename.txt",
     params:
         custom=java_params(tmp_dir=config.get("processing").get("tmp_dir"),multiply_by=5)
     log:
-        "logs/gatk/getsamplename/{sample}.gsn.log"
+        normal="logs/gatk/getsamplename/{sample}.gsn.log",
+        tumor="logs/gatk/getsamplename/{sample}.gsn_tumor.log"
     conda:
         "../envs/gatk.yaml"
     threads: conservative_cpu_count(reserve_cores=2,max_cores=99)
@@ -16,14 +18,21 @@ rule get_sample_name:
         "gatk "
         "--java-options {params.custom} "
         "GetSampleName "
-        "-I {input[1]} " # get normal sample bam
-        "-O {output} "
-        ">& {log} "
+        "-I {input[1]} " # get tumor sample bam
+        "-O {output.tumor} "
+        ">& {log.tumor} && "
+        "gatk "
+        "--java-options {params.custom} "
+        "GetSampleName "
+        "-I {input[0]} "  # get normal sample bam
+        "-O {output.normal} "
+        ">& {log.normal} "
 
 rule mutect_matched:
     input:
         lambda wildcards: get_bams(wildcards,samples),
-        normal_name="results/tmp/{sample}_normal.samplename.txt"
+        normal_name="results/tmp/{sample}_normal.samplename.txt",
+        tumor_name="results/tmp/{sample}_tumor.samplename.txt"
     output:
         vcf="results/matched/{sample}_somatic.vcf.gz",
         bam="results/matched/{sample}_tumor_normal.bam",
@@ -45,8 +54,8 @@ rule mutect_matched:
         "--java-options {params.custom} "
         "Mutect2 "
         "-R {params.genome} "
-        "-I {input[0]} "#tumoral bam
-        "-I {input[1]} "#control bam
+        "-I {input[1]} "#tumoral bam
+        "-I {input[0]} "#control bam
         "-normal {params.normal_bam} "#control name
 #        "-pon {params.pon} "
         "--germline-resource {params.germline_resource} "
@@ -97,7 +106,7 @@ rule pileup_summaries_tumoral:
     shell:
         "gatk GetPileupSummaries "
         "--java-options {params.custom} "
-        "-I {input[0]} " # corresponding to tbam
+        "-I {input[1]} " # corresponding to tbam
         "-V {params.exac} "
         "-L {params.intervals} "
         "-O {output} "
@@ -120,7 +129,7 @@ rule pileup_summaries_normal:
     shell:
         "gatk GetPileupSummaries "
         "--java-options {params.custom} "
-        "-I {input[1]} "
+        "-I {input[0]} "
         "-V {params.exac} "
         "-L {params.intervals} "
         "-O {output} "

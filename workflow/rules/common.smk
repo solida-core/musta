@@ -133,13 +133,13 @@ def get_references_label(ref='references'):
 ###############################################################################
 def get_bams(wildcards,samples):
     # print(wildcards.sample)
-    fastqs = samples.loc[(wildcards.sample), ["tumor_bam", "normal_bam"]].dropna()
+    fastqs = samples.loc[(wildcards.sample), ["normal_bam", "tumor_bam"]].dropna()
     if samples.loc[wildcards.sample,["normal_bam"]].isna().all():
         # TUMOR-ONLY
         return fastqs.tumor_bam
     # TUMOR-NORMAL
     else:
-        return fastqs.tumor_bam, fastqs.normal_bam
+        return fastqs.normal_bam, fastqs.tumor_bam
 
 
 def ensure_dir(path, force=False):
