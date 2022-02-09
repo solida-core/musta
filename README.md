@@ -4,6 +4,7 @@
 [![Build Status](https://travis-ci.org/snakemake-workflows/musta.svg?branch=master)](https://travis-ci.org/snakemake-workflows/musta)
 
 This workflow performs variant calling and annotation for tumoral and matched germinal samples.
+Musta is part of the Snakemake-based pipelines collection [solida-core](https://github.com/solida-core) developed and manteined at [CRS4](www.crs4.it). 
 
 ## Authors
 
