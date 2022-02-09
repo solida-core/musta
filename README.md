@@ -25,6 +25,10 @@ and activate it:
 ```commandline
 conda activate snakemake
 ```
+We get some public data to test the pipeline. You can directly clone in this folder from github, just type:
+```commandline
+git clone https://github.com/solida-core/test-data-somatic.git
+```
 You can then perform a dry-run:
 ```commandline
 snakemake -n --use-conda -p --cores all
