@@ -7,12 +7,12 @@ properties:
   sample:
     type: string
     description: sample name/identifier
+  normal_bam:
+    type: string
+    description: path to matched normal BAM file (optional)
   tumor_bam:
     type: string
     description: path to tumoral BAM file
-#  normal_bam:
-#    type: string
-#    description: path to matched normal BAM file
 
 # columns that the config/samples.tsv file must have to pass schema validation
 required:

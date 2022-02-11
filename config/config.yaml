@@ -1,5 +1,5 @@
 # path or URL to sample sheet (TSV format, columns: sample, condition, ...)
-samples: config/samples.tsv
+samples: ../config/samples.tsv
 
 ref:
   # Ensembl species name

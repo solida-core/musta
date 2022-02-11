@@ -5,10 +5,10 @@ min_version("6.4.1") ## DECIDO COSA METTERE COME VERSIONE MINIMAL
 
 
 ##### setup report #####
-configfile: "config/config.yaml"
+configfile: "../config/config.yaml"
 
 
-report: "report/workflow.rst"
+report: "../report/workflow.rst"
 
 
 ##### setup singularity #####

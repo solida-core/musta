@@ -32,7 +32,7 @@ We get some public data to test the pipeline. You can directly clone in this fol
 ```commandline
 git clone https://github.com/solida-core/test-data-somatic.git
 ```
-You can then perform a dry-run:
+You can then perform a dry-run defining a directory for analysis output with the `-d` parameter:
 ```commandline
-snakemake -n --use-conda -p --cores all
+snakemake -n --use-conda -p --cores all -d workdir
 ```
