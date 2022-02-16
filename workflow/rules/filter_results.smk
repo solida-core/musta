@@ -58,8 +58,11 @@ rule filter_mutect_tumoronly:
         "-L {params.intervals} "
         ">& {log} "
 
-def select_filtered(wildcards,samples):
-    if samples.loc[wildcards.sample,["normal_bam"]].isna().all():
+
+def select_filtered(wildcards):
+    with open(config["samples"],'r') as file:
+        samples_master = yaml.load(file,Loader=yaml.FullLoader)
+    if not samples_master[wildcards.sample]["normal_bam"]:
         # print("tumoronly")
         # TUMOR-ONLY
         return rules.filter_mutect_tumoronly.output.vcf
@@ -71,7 +74,7 @@ def select_filtered(wildcards,samples):
 rule gatk_SelectVariants:
     input:
         # vcf="data/results/{sample}_somatic_filtered.vcf.gz"
-        lambda wildcards: select_filtered(wildcards, samples)
+        lambda wildcards: select_filtered(wildcards)
     output:
         vcf="results/{sample}_somatic_filtered_selected.vcf.gz"
     params:

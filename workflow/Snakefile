@@ -1,8 +1,14 @@
 from snakemake.utils import min_version
+import yaml as yaml
 
 ##### set minimum snakemake version #####
 min_version("6.4.1") ## DECIDO COSA METTERE COME VERSIONE MINIMAL
 
+# configfile: "../config/config.yaml"
+# with open(config["samples"],'r') as file:
+#     samples_master = yaml.load(file, Loader=yaml.FullLoader)
+#     samples_master.keys()
+# samples=list(samples_master.keys())
 
 ##### setup report #####
 configfile: "../config/config.yaml"
@@ -29,5 +35,5 @@ include: "rules/annotation.smk"
 
 rule all:
     input:
-        expand("results/{sample.sample}_somatic_filtered_selected.vcf.gz", sample=samples.reset_index().itertuples()),
-        expand("results/annotation/funcotator/{sample.sample}_funcotated.maf", sample=samples.reset_index().itertuples()),
+        expand("results/{sample}_somatic_filtered_selected.vcf.gz",sample=list(samples_master.keys())),
+        expand("results/annotation/funcotator/{sample}_funcotated.maf",sample=list(samples_master.keys())),

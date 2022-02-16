@@ -4,6 +4,7 @@ import errno
 import multiprocessing
 import os.path
 import psutil
+import yaml as yaml
 from snakemake.utils import validate
 
 validate(config, schema="../schemas/config.schema.yaml")
@@ -13,10 +14,12 @@ validate(config, schema="../schemas/config.schema.yaml")
 #     .set_index("sample", drop=False)
 #     .sort_index()
 # )
-samples = pd.read_table(config["samples"], index_col=["sample"], sep="\t")
+#samples = pd.read_table(config["samples"], index_col=["sample"], sep="\t")
 # validate(samples, schema="../schemas/samples.schema.yaml")
-
-
+with open(config["samples"],'r') as file:
+    samples_master = yaml.load(file, Loader=yaml.FullLoader)
+    samples_master.keys()
+samples=list(samples_master.keys())
 #
 # wildcard_constraints:
 #    sample="|".join(samples["samples"])
@@ -131,16 +134,6 @@ def get_references_label(ref='references'):
     return '_'.join([provider, genome])
 
 ###############################################################################
-def get_bams(wildcards,samples):
-    # print(wildcards.sample)
-    fastqs = samples.loc[(wildcards.sample), ["normal_bam", "tumor_bam"]].dropna()
-    if samples.loc[wildcards.sample,["normal_bam"]].isna().all():
-        # TUMOR-ONLY
-        return fastqs.tumor_bam
-    # TUMOR-NORMAL
-    else:
-        return fastqs.normal_bam, fastqs.tumor_bam
-
 
 def ensure_dir(path, force=False):
     try:
@@ -160,3 +153,17 @@ def exist_dir(path, delete=False):
     except OSError:
         if not os.path.isdir(path):
             raise
+
+
+#########################
+def get_bams(wildcards):
+    with open(config["samples"],'r') as file:
+        samples_master = yaml.load(file,Loader=yaml.FullLoader)
+        samples_master.keys()
+    # print(wildcards.sample)
+    if not samples_master[wildcards.sample]["normal_bam"]:
+        # TUMOR-ONLY
+        return samples_master[wildcards.sample]["tumor_bam"]
+    # TUMOR-NORMAL
+    else:
+        return samples_master[wildcards.sample]["normal_bam"][0], samples_master[wildcards.sample]["tumor_bam"][0]

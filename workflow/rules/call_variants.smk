@@ -2,7 +2,7 @@
 ### mettere un if con attivazione in caso di matched
 rule get_sample_names:
     input:
-        lambda wildcards: get_bams(wildcards,samples)
+        lambda wildcards: get_bams(wildcards)
     output:
         normal="results/tmp/{sample}_normal.samplename.txt",
         tumor="results/tmp/{sample}_tumor.samplename.txt",
@@ -30,7 +30,7 @@ rule get_sample_names:
 
 rule mutect_matched:
     input:
-        lambda wildcards: get_bams(wildcards,samples),
+        lambda wildcards: get_bams(wildcards),
         normal_name="results/tmp/{sample}_normal.samplename.txt",
         tumor_name="results/tmp/{sample}_tumor.samplename.txt"
     output:
@@ -91,7 +91,7 @@ rule learn_orientation_model:
 
 rule pileup_summaries_tumoral:
     input:
-        lambda wildcards: get_bams(wildcards,samples)
+        lambda wildcards: get_bams(wildcards)
     output:
         "results/filters/matched/{sample}_getpileupsummaries.table"
     params:
@@ -114,7 +114,7 @@ rule pileup_summaries_tumoral:
 
 rule pileup_summaries_normal:
     input:
-        lambda wildcards: get_bams(wildcards,samples)
+        lambda wildcards: get_bams(wildcards)
     output:
         "results/filters/matched/{sample}_normal_pileups.table"
     params:

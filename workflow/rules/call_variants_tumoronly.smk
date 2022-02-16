@@ -1,7 +1,7 @@
 # TUMOR-ONLY CALL WORKFLOW
 rule get_tumoronly_sample_names:
     input:
-        lambda wildcards: get_bams(wildcards,samples)
+        lambda wildcards: get_bams(wildcards)
     output:
         tumor="results/tmp/tumoronly/{sample}_tumor.samplename.txt",
     params:
@@ -21,7 +21,7 @@ rule get_tumoronly_sample_names:
 
 rule mutect_tumoronly:
     input:
-        lambda wildcards: get_bams(wildcards,samples),
+        lambda wildcards: get_bams(wildcards),
         tumor_name="results/tmp/tumoronly/{sample}_tumor.samplename.txt"
     output:
         vcf="results/tumoronly/{sample}_somatic.vcf.gz",
@@ -80,7 +80,7 @@ rule orientation_model_tumoronly:
 
 rule pileup_summaries_tumoronly:
     input:
-        lambda wildcards: get_bams(wildcards,samples)
+        lambda wildcards: get_bams(wildcards)
     output:
         "results/filters/tumoronly/{sample}_getpileupsummaries.table"
     params:
