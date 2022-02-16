@@ -15,8 +15,8 @@ Musta is part of the Snakemake-based pipelines collection [solida-core](https://
 
 ## Usage
 
-The usage of this workflow is described in the [Snakemake Workflow Catalog](https://snakemake.github.io/snakemake-workflow-catalog/).
-ADD TO CATALOG
+The usage of this workflow is described in the [Snakemake Workflow Catalog](https://snakemake.github.io/snakemake-workflow-catalog?usage=solida-core/musta).
+
 If you use this workflow in a paper, don't forget to give credits to the authors by citing the URL of this (original) repository and its DOI (see above).
 
 ## TEMP INSTRUCITONS
