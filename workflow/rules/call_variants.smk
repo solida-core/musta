@@ -43,7 +43,7 @@ rule mutect_matched:
         intervals=config.get("processing").get("interval_list"),
         param=config.get("params").get("gatk").get("Mutect"),
         germline_resource=config.get("germline"),
-        normal_bam = ""#funzione_apri_e_leggi("results/tmp/{sample}_normal.samplename.txt")
+        normal_bam = lambda wildcards, input: get_name(input.normal_name)
     log:
         "logs/gatk/Mutect2/{sample}.mutect.log"
     conda:

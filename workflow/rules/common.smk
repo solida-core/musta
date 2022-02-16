@@ -167,3 +167,9 @@ def get_bams(wildcards):
     # TUMOR-NORMAL
     else:
         return samples_master[wildcards.sample]["normal_bam"][0], samples_master[wildcards.sample]["tumor_bam"][0]
+
+def get_name(inputfile):
+    with open(inputfile, 'r') as file:
+        data = file.read().rstrip()
+    return data
+
