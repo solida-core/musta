@@ -1,26 +1,14 @@
 from snakemake.utils import min_version
-import yaml as yaml
 
 ##### set minimum snakemake version #####
-min_version("6.4.1") ## DECIDO COSA METTERE COME VERSIONE MINIMAL
+min_version("6.15.0")
 
-# configfile: "../config/config.yaml"
-# with open(config["samples"],'r') as file:
-#     samples_master = yaml.load(file, Loader=yaml.FullLoader)
-#     samples_master.keys()
-# samples=list(samples_master.keys())
 
 ##### setup report #####
 configfile: "../config/config.yaml"
 
 
 report: "../report/workflow.rst"
-
-
-##### setup singularity #####
-# this container defines the underlying OS for each job when using the workflow
-# with --use-conda --use-singularity
-container: "docker://continuumio/miniconda3"
 
 
 ##### load rules #####
