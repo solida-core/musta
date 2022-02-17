@@ -1,8 +1,8 @@
 
-### mettere un if con attivazione in caso di matched
 rule get_sample_names:
     input:
-        lambda wildcards: get_bams(wildcards)
+        normal=lambda wildcards: get_normal_bam(wildcards),
+        tumoral= lambda wildcards: get_tumoral_bam(wildcards),
     output:
         normal="results/tmp/{sample}_normal.samplename.txt",
         tumor="results/tmp/{sample}_tumor.samplename.txt",
@@ -18,19 +18,20 @@ rule get_sample_names:
         "gatk "
         "--java-options {params.custom} "
         "GetSampleName "
-        "-I {input[1]} " # get tumor sample bam
+        "-I {input.tumoral} " # get tumor sample bam
         "-O {output.tumor} "
         ">& {log.tumor} && "
         "gatk "
         "--java-options {params.custom} "
         "GetSampleName "
-        "-I {input[0]} "  # get normal sample bam
+        "-I {input.normal} "  # get normal sample bam
         "-O {output.normal} "
         ">& {log.normal} "
 
 rule mutect_matched:
     input:
-        lambda wildcards: get_bams(wildcards),
+        normal=lambda wildcards: get_normal_bam(wildcards),
+        tumoral= lambda wildcards: get_tumoral_bam(wildcards),
         normal_name="results/tmp/{sample}_normal.samplename.txt",
         tumor_name="results/tmp/{sample}_tumor.samplename.txt"
     output:
@@ -54,9 +55,9 @@ rule mutect_matched:
         "--java-options {params.custom} "
         "Mutect2 "
         "-R {params.genome} "
-        "-I {input[1]} "#tumoral bam
-        "-I {input[0]} "#control bam
-        "-normal {params.normal_bam} "#control name
+        "-I {input.tumoral} "
+        "-I {input.normal} "
+        "-normal {params.normal_bam} "
 #        "-pon {params.pon} "
         "--germline-resource {params.germline_resource} "
         "--af-of-alleles-not-in-resource 0.0000025 "
@@ -91,7 +92,7 @@ rule learn_orientation_model:
 
 rule pileup_summaries_tumoral:
     input:
-        lambda wildcards: get_bams(wildcards)
+        tumoral= lambda wildcards: get_tumoral_bam(wildcards)
     output:
         "results/filters/matched/{sample}_getpileupsummaries.table"
     params:
@@ -106,7 +107,7 @@ rule pileup_summaries_tumoral:
     shell:
         "gatk GetPileupSummaries "
         "--java-options {params.custom} "
-        "-I {input[1]} " # corresponding to tbam
+        "-I {input.tumoral} "
         "-V {params.exac} "
         "-L {params.intervals} "
         "-O {output} "
@@ -114,7 +115,7 @@ rule pileup_summaries_tumoral:
 
 rule pileup_summaries_normal:
     input:
-        lambda wildcards: get_bams(wildcards)
+        normal=lambda wildcards: get_normal_bam(wildcards)
     output:
         "results/filters/matched/{sample}_normal_pileups.table"
     params:
@@ -129,7 +130,7 @@ rule pileup_summaries_normal:
     shell:
         "gatk GetPileupSummaries "
         "--java-options {params.custom} "
-        "-I {input[0]} "
+        "-I {input.normal} "
         "-V {params.exac} "
         "-L {params.intervals} "
         "-O {output} "

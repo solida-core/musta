@@ -1,4 +1,3 @@
-## filter tumor-normal
 rule filter_mutect:
     input:
         vcf=rules.mutect_matched.output.vcf,
@@ -28,7 +27,7 @@ rule filter_mutect:
         "-L {params.intervals} "
         ">& {log} "
 
-# filter tumor-only
+
 rule filter_mutect_tumoronly:
     input:
         vcf = rules.mutect_tumoronly.output.vcf,
@@ -59,21 +58,8 @@ rule filter_mutect_tumoronly:
         ">& {log} "
 
 
-def select_filtered(wildcards):
-    with open(config["samples"],'r') as file:
-        samples_master = yaml.load(file,Loader=yaml.FullLoader)
-    if not samples_master[wildcards.sample]["normal_bam"]:
-        # print("tumoronly")
-        # TUMOR-ONLY
-        return rules.filter_mutect_tumoronly.output.vcf
-    # PE
-    else:
-        return rules.filter_mutect.output.vcf
-
-
 rule gatk_SelectVariants:
     input:
-        # vcf="data/results/{sample}_somatic_filtered.vcf.gz"
         lambda wildcards: select_filtered(wildcards)
     output:
         vcf="results/{sample}_somatic_filtered_selected.vcf.gz"

@@ -1,7 +1,7 @@
 # TUMOR-ONLY CALL WORKFLOW
 rule get_tumoronly_sample_names:
     input:
-        lambda wildcards: get_bams(wildcards)
+        tumoral= lambda wildcards: get_tumoral_bam(wildcards)
     output:
         tumor="results/tmp/tumoronly/{sample}_tumor.samplename.txt",
     params:
@@ -15,13 +15,13 @@ rule get_tumoronly_sample_names:
         "gatk "
         "--java-options {params.custom} "
         "GetSampleName "
-        "-I {input[0]} " # get tumor sample bam
+        "-I {input.tumoral} "
         "-O {output.tumor} "
         ">& {log} "
 
 rule mutect_tumoronly:
     input:
-        lambda wildcards: get_bams(wildcards),
+        tumoral= lambda wildcards: get_tumoral_bam(wildcards),
         tumor_name="results/tmp/tumoronly/{sample}_tumor.samplename.txt"
     output:
         vcf="results/tumoronly/{sample}_somatic.vcf.gz",
@@ -43,7 +43,7 @@ rule mutect_tumoronly:
         "--java-options {params.custom} "
         "Mutect2 "
         "-R {params.genome} "
-        "-I {input[0]} "#tumoral bam
+        "-I {input.tumoral} "
         "--germline-resource {params.germline_resource} "
         "--af-of-alleles-not-in-resource 0.0000025 "
         "{params.param} "
@@ -80,7 +80,7 @@ rule orientation_model_tumoronly:
 
 rule pileup_summaries_tumoronly:
     input:
-        lambda wildcards: get_bams(wildcards)
+        tumoral= lambda wildcards: get_tumoral_bam(wildcards)
     output:
         "results/filters/tumoronly/{sample}_getpileupsummaries.table"
     params:
@@ -95,7 +95,7 @@ rule pileup_summaries_tumoronly:
     shell:
         "gatk GetPileupSummaries "
         "--java-options {params.custom} "
-        "-I {input[0]} " # corresponding to tbam
+        "-I {input.tumoral} "
         "-V {params.exac} "
         "-L {params.intervals} "
         "-O {output} "
