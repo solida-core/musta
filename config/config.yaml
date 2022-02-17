@@ -2,14 +2,14 @@
 
 samples: ../config/samples.yaml
 
+# reference files
 ref:
-  # Ensembl species name
   species: homo_sapiens
-  # path for reference
-  basepath: /path/to/file
+  basepath: /path/to/reference_master_folder
   provider: ucsc
   release: hg19
   fasta: genome.fasta
+
 
 params:
   gatk:
@@ -17,24 +17,11 @@ params:
     SelectVariants: "--exclude-filtered --exclude-non-variants"
     Funcotator: "path to funcotator resources"
   multiqc: "--force --interactive --cl_config 'max_table_rows: 700'"
-  kggseq:
-    software: "java - jar path_to/kggseq.jar"
-    parameters: "--no-resource-check --no-lib-check --no-web --no-gz --no-qc --db-gene refgene,gencode,knowngene,ensembl --cosmic-annot --cancer-mut-predict --db-score dbnsfp --omim-annot --cancer-driver-predict"
+
 
 processing:
-  #remove_duplicates: true
-  # Uncomment and point to a bed file with, e.g., captured regions if necessary,
-  # see https://gatkforums.broadinstitute.org/gatk/discussion/4133/when-should-i-use-l-to-pass-in-a-list-of-intervals.
   interval_list: "/ELS/els9/users/biosciences/projects/niasmic/niasmic.bed"
-  # If regions are restricted, uncomment this to enlarge them by the given value in order to include
-  # flanking areas.
-  # region_padding: 100
   tmp_dir: "path_to_tmp_dir"
-  fastq_numb: 2
-  pe: true
 
-
-dbsnp_gz: "dbSNP146_chr.vcf.gz"
-pon: "resources/panelofnormals.vcf"
 germline: "resources/af-only-gnomad.vcf.gz"
 exac: "resources/small_exac_common_3.vcf.gz"

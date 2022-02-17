@@ -30,19 +30,10 @@ properties:
   processing:
     type: object
     properties:
-      remove_duplicates:
-        type: boolean
-      restrict_regions:
+      interval_list:
         type: string
-      region_padding:
-        type: integer
-      fastq_numb:
-        type: integer
-      pe:
-        type: boolean
     required:
-      - fastq_numb
-      - pe
+      - interval_list
 
   params:
     type: object

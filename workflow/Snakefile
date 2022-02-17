@@ -27,4 +27,4 @@ rule all:
         expand("results/{sample}_somatic_filtered_selected.vcf.gz",sample=list(samples_master.keys())),
 # ANNOTATION
         expand("results/annotation/funcotator/{sample}_funcotated.maf",sample=list(samples_master.keys())),
-        expand("results/annotation/kggseq/{sample}.selected.flt.vcf",sample=list(samples_master.keys())),
+
