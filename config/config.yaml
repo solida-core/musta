@@ -13,10 +13,13 @@ ref:
 
 params:
   gatk:
-    Mutect: "--disable-read-filter MateOnSameContigOrNoMappedMateReadFilter --disable-read-filter NotDuplicateReadFilter --disable-read-filter NotSecondaryAlignmentReadFilter" #strange: "--genotype-germline-sites true"
+    Mutect: "--disable-read-filter MateOnSameContigOrNoMappedMateReadFilter --disable-read-filter NotDuplicateReadFilter --disable-read-filter NotSecondaryAlignmentReadFilter"
     SelectVariants: "--exclude-filtered --exclude-non-variants"
     Funcotator: "path to funcotator resources"
   multiqc: "--force --interactive --cl_config 'max_table_rows: 700'"
+  kggseq:
+    software: "java - jar path_to/kggseq.jar"
+    parameters: "--no-resource-check --no-lib-check --no-web --no-gz --no-qc --db-gene refgene,gencode,knowngene,ensembl --cosmic-annot --cancer-mut-predict --db-score dbnsfp --omim-annot --cancer-driver-predict"
 
 processing:
   #remove_duplicates: true

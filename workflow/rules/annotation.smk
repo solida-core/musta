@@ -12,7 +12,8 @@ rule Funcotator:
         "logs/gatk/Funcotator/{sample}.funcotator.log"
     conda:
        "../envs/gatk.yaml"
-    threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
+    threads:
+        conservative_cpu_count(reserve_cores=2, max_cores=99)
     shell:
         "gatk Funcotator "
         "--java-options {params.custom} "
@@ -24,3 +25,26 @@ rule Funcotator:
         "--output-file-format MAF "
         "--ref-version hg19 "
         ">& {log} "
+
+
+rule kggseq:
+    input:
+        vcf="results/{sample}_somatic_filtered_selected.vcf.gz"
+    output:
+        vcf="results/annotation/kggseq/{sample}.selected.flt.vcf",
+        log="results/annotation/kggseq/{sample}selected.log",
+        txt="results/annotation/kggseq/{sample}selected.flt.txt"
+    params:
+        custom=java_params(tmp_dir=config.get("tmp_dir"), multiply_by=5),
+        software=config.get("params").get("kggseq").get("software"),
+        params=config.get("params").get("kggseq").get("parameters"),
+        out_basename= lambda wildcards,output: output.vcf[:-8]
+    threads:
+        conservative_cpu_count(reserve_cores=2, max_cores=99)
+    shell:
+        "{params.software} "
+        "-nt {threads} "
+        "{params.custom} "
+        "{params.params} "
+        "--no-gty-vcf-file {input.vcf} "
+        "--out {params.out_basename} "
