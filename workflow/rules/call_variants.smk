@@ -18,13 +18,13 @@ rule get_sample_names:
         "gatk "
         "--java-options {params.custom} "
         "GetSampleName "
-        "-I {input.tumoral} " # get tumor sample bam
+        "-I {input.tumoral} "
         "-O {output.tumor} "
         ">& {log.tumor} && "
         "gatk "
         "--java-options {params.custom} "
         "GetSampleName "
-        "-I {input.normal} "  # get normal sample bam
+        "-I {input.normal} "
         "-O {output.normal} "
         ">& {log.normal} "
 
@@ -58,7 +58,6 @@ rule mutect_matched:
         "-I {input.tumoral} "
         "-I {input.normal} "
         "-normal {params.normal_bam} "
-#        "-pon {params.pon} "
         "--germline-resource {params.germline_resource} "
         "--af-of-alleles-not-in-resource 0.0000025 "
         "{params.param} "
