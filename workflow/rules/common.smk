@@ -155,18 +155,18 @@ def exist_dir(path, delete=False):
             raise
 
 
-#########################
-def get_bams(wildcards):
-    with open(config["samples"],'r') as file:
-        samples_master = yaml.load(file,Loader=yaml.FullLoader)
-        samples_master.keys()
-    # print(wildcards.sample)
-    if not samples_master[wildcards.sample]["normal_bam"]:
-        # TUMOR-ONLY
-        return samples_master[wildcards.sample]["tumor_bam"]
-    # TUMOR-NORMAL
-    else:
-        return samples_master[wildcards.sample]["normal_bam"][0], samples_master[wildcards.sample]["tumor_bam"][0]
+# #########################
+# def get_bams(wildcards):
+#     with open(config["samples"],'r') as file:
+#         samples_master = yaml.load(file,Loader=yaml.FullLoader)
+#         samples_master.keys()
+#     # print(wildcards.sample)
+#     if not samples_master[wildcards.sample]["normal_bam"]:
+#         # TUMOR-ONLY
+#         return samples_master[wildcards.sample]["tumor_bam"]
+#     # TUMOR-NORMAL
+#     else:
+#         return samples_master[wildcards.sample]["normal_bam"][0], samples_master[wildcards.sample]["tumor_bam"][0]
 
 def get_name(inputfile):
     with open(inputfile, 'r') as file:

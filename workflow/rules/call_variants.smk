@@ -44,7 +44,8 @@ rule mutect_matched:
         intervals=config.get("processing").get("interval_list"),
         param=config.get("params").get("gatk").get("Mutect"),
         germline_resource=config.get("germline"),
-        normal_bam = lambda wildcards, input: get_name(input.normal_name)
+        normal_bam = lambda wildcards, input: get_name(input.normal_name),
+        tumor_bam= lambda wildcards,input: get_name(input.tumor_name)
     log:
         "logs/gatk/Mutect2/{sample}.mutect.log"
     conda:
@@ -57,6 +58,7 @@ rule mutect_matched:
         "-R {params.genome} "
         "-I {input.tumoral} "
         "-I {input.normal} "
+        "--tumor {params.tumor_bam}"
         "-normal {params.normal_bam} "
         "--germline-resource {params.germline_resource} "
         "--af-of-alleles-not-in-resource 0.0000025 "

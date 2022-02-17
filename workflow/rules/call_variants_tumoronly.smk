@@ -32,7 +32,8 @@ rule mutect_tumoronly:
         genome=resolve_single_filepath(*references_abs_path("ref"), config.get("ref").get("fasta")),
         intervals=config.get("processing").get("interval_list"),
         param=config.get("params").get("gatk").get("Mutect"),
-        germline_resource=config.get("germline")
+        germline_resource=config.get("germline"),
+        tumor_bam= lambda wildcards,input: get_name(input.tumor_name)
     log:
         "logs/gatk/Mutect2/{sample}.mutect.log"
     conda:
@@ -44,6 +45,7 @@ rule mutect_tumoronly:
         "Mutect2 "
         "-R {params.genome} "
         "-I {input.tumoral} "
+        "--tumor {params.tumor_bam}"
         "--germline-resource {params.germline_resource} "
         "--af-of-alleles-not-in-resource 0.0000025 "
         "{params.param} "
@@ -54,7 +56,6 @@ rule mutect_tumoronly:
         "--genotype-germline-sites "
         "--f1r2-tar-gz {output.fir} "
         ">& {log} "
-
 
 
 rule orientation_model_tumoronly:
