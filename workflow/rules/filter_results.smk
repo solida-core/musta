@@ -55,7 +55,7 @@ rule filter_mutect_tumoronly:
         "--tumor-segmentation {input.segments} "
         "--contamination-table {input.cont_tab} "
         "--ob-priors {input.orient} "
-        "-O {output} "
+        "-O {output.vcf} "
         "--stats {output.stats} "
         "-R {params.genome} "
         "-L {params.intervals} "
