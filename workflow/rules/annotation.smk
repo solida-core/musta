@@ -2,7 +2,11 @@ rule Funcotator:
     input:
         vcf="results/{sample}_somatic_filtered_selected.vcf.gz"
     output:
-        vcf="results/annotation/funcotator/{sample}_funcotated.maf"
+        vcf=report(
+            "results/annotation/funcotator/{sample}_funcotated.maf",
+            caption="../report/vcf.rst",
+            category="Annotation",
+        )
     params:
         custom=java_params(tmp_dir=config.get("processing").get("tmp_dir"),multiply_by=5),
         genome=resolve_single_filepath(*references_abs_path("ref"),config.get("ref").get("fasta")),
