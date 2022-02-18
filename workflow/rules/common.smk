@@ -8,7 +8,7 @@ import yaml as yaml
 from snakemake.utils import validate
 
 
-report: "../../report/workflow.rst"
+report: "../workflow/report/workflow.rst"
 
 validate(config, schema="../schemas/config.schema.yaml")
 
