@@ -15,13 +15,13 @@ params:
   gatk:
     Mutect: "--disable-read-filter MateOnSameContigOrNoMappedMateReadFilter --disable-read-filter NotDuplicateReadFilter --disable-read-filter NotSecondaryAlignmentReadFilter"
     SelectVariants: "--exclude-filtered --exclude-non-variants"
-    Funcotator: "path to funcotator resources"
+    Funcotator: "/path/to/funcotator_resources"
   multiqc: "--force --interactive --cl_config 'max_table_rows: 700'"
 
 
 processing:
-  interval_list: "/ELS/els9/users/biosciences/projects/niasmic/niasmic.bed"
-  tmp_dir: "path_to_tmp_dir"
+  interval_list: "/path/to/mybed.bed"
+  tmp_dir: "/path/to/tmp_dir"
 
-germline: "resources/af-only-gnomad.vcf.gz"
-exac: "resources/small_exac_common_3.vcf.gz"
+germline: "/path/to/af-only-gnomad.vcf.gz"
+exac: "/path/to/small_exac_common_3.vcf.gz"
