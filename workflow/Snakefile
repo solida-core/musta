@@ -8,9 +8,6 @@ min_version("6.15.0")
 configfile: "../config/config.yaml"
 
 
-# report: "../report/workflow.rst"
-
-
 ##### load rules #####
 include: "rules/common.smk"
 include: "rules/call_variants.smk"
