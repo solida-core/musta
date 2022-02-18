@@ -2,4 +2,4 @@ channels:
  - bioconda
  - anaconda
 dependencies:
- - gatk=4.2.5.0
+ - gatk4
