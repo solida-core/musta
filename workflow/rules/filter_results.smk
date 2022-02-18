@@ -3,10 +3,10 @@ rule filter_mutect:
         vcf=rules.mutect_matched.output.vcf,
         cont_tab=rules.calculate_contamination.output.table,
         orient=rules.learn_orientation_model.output,
-        segments=rules.calculate_contamination.output.segment
+        segments=rules.calculate_contamination.output.segment,
+        stats=rules.mutect_matched.output.stats
     output:
-        vcf="results/matched/{sample}_somatic_filtered.vcf.gz",
-        stats="results/matched/{sample}.stats"
+        vcf="results/matched/{sample}_somatic_filtered.vcf.gz"
     params:
         custom=java_params(tmp_dir=config.get("processing").get("tmp_dir"), multiply_by=5),
         genome=resolve_single_filepath(*references_abs_path("ref"), (config.get("ref").get("fasta"))),
@@ -24,7 +24,7 @@ rule filter_mutect:
         "--contamination-table {input.cont_tab} "
         "--ob-priors {input.orient} "
         "-O {output.vcf} "
-        "--stats {output.stats} "
+        "--stats {input.stats} "
         "-R {params.genome} "
         "-L {params.intervals} "
         ">& {log} "
@@ -35,10 +35,10 @@ rule filter_mutect_tumoronly:
         vcf = rules.mutect_tumoronly.output.vcf,
         cont_tab = rules.calculate_contamination_tumoronly.output.table,
         orient = rules.orientation_model_tumoronly.output,
-        segments = rules.calculate_contamination_tumoronly.output.segment
+        segments = rules.calculate_contamination_tumoronly.output.segment,
+        stats=rules.mutect_tumoronly.output.stats
     output:
-        vcf="results/tumoronly/{sample}_somatic_filtered.vcf.gz",
-        stats="results/tumoronly/{sample}.stats"
+        vcf="results/tumoronly/{sample}_somatic_filtered.vcf.gz"
     params:
         custom=java_params(tmp_dir=config.get("processing").get("tmp_dir"), multiply_by=5),
         genome=resolve_single_filepath(*references_abs_path("ref"), (config.get("ref").get("fasta"))),
