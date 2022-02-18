@@ -45,7 +45,7 @@ rule mutect_tumoronly:
         "Mutect2 "
         "-R {params.genome} "
         "-I {input.tumoral} "
-        "--tumor {params.tumor_bam}"
+        "--tumor {params.tumor_bam} "
         "--germline-resource {params.germline_resource} "
         "--af-of-alleles-not-in-resource 0.0000025 "
         "{params.param} "
