@@ -56,7 +56,7 @@ rule filter_mutect_tumoronly:
         "--contamination-table {input.cont_tab} "
         "--ob-priors {input.orient} "
         "-O {output.vcf} "
-        "--stats {output.stats} "
+        "--stats {input.stats} "
         "-R {params.genome} "
         "-L {params.intervals} "
         ">& {log} "
