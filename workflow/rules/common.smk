@@ -7,6 +7,9 @@ import psutil
 import yaml as yaml
 from snakemake.utils import validate
 
+
+report: "../../report/workflow.rst"
+
 validate(config, schema="../schemas/config.schema.yaml")
 
 # samples = (
