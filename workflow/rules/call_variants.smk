@@ -55,6 +55,8 @@ rule mutect_matched:
     conda:
         "../envs/gatk.yaml"
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
+    resources:
+        tmpdir = config.get("processing").get("tmp_dir")
     shell:
         "gatk "
         "--java-options {params.custom} "
@@ -88,6 +90,8 @@ rule learn_orientation_model:
     conda:
        "../envs/gatk.yaml"
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
+    resources:
+        tmpdir = config.get("processing").get("tmp_dir")
     shell:
         "gatk LearnReadOrientationModel "
         "--java-options {params.custom} "
@@ -109,6 +113,8 @@ rule pileup_summaries_tumoral:
     conda:
        "../envs/gatk.yaml"
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
+    resources:
+        tmpdir = config.get("processing").get("tmp_dir")
     shell:
         "gatk GetPileupSummaries "
         "--java-options {params.custom} "
@@ -132,6 +138,8 @@ rule pileup_summaries_normal:
     conda:
        "../envs/gatk.yaml"
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
+    resources:
+        tmpdir = config.get("processing").get("tmp_dir")
     shell:
         "gatk GetPileupSummaries "
         "--java-options {params.custom} "
@@ -155,6 +163,8 @@ rule calculate_contamination:
     conda:
        "../envs/gatk.yaml"
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
+    resources:
+        tmpdir = config.get("processing").get("tmp_dir")
     shell:
         "gatk CalculateContamination "
         "--java-options {params.custom} "

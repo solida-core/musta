@@ -16,6 +16,8 @@ rule filter_mutect:
     conda:
        "../envs/gatk.yaml"
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
+    resources:
+        tmpdir = config.get("processing").get("tmp_dir")
     shell:
         "gatk FilterMutectCalls "
         "--java-options {params.custom} "
@@ -48,6 +50,8 @@ rule filter_mutect_tumoronly:
     conda:
        "../envs/gatk.yaml"
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
+    resources:
+        tmpdir = config.get("processing").get("tmp_dir")
     shell:
         "gatk FilterMutectCalls "
         "--java-options {params.custom} "
@@ -80,6 +84,8 @@ rule gatk_SelectVariants:
         "benchmarks/gatk/SelectVariants/{sample}.SelectVariants.txt"
 
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
+    resources:
+        tmpdir = config.get("processing").get("tmp_dir")
     shell:
         "gatk SelectVariants "
         "--java-options {params.custom} "

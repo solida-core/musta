@@ -18,6 +18,8 @@ rule Funcotator:
        "../envs/gatk.yaml"
     threads:
         conservative_cpu_count(reserve_cores=2, max_cores=99)
+    resources:
+        tmpdir = config.get("processing").get("tmp_dir")
     shell:
         "gatk Funcotator "
         "--java-options {params.custom} "
