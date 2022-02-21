@@ -36,7 +36,7 @@ You can then perform the pipeline deploy defining a directory `my_dest_dir` for 
 ```bash
 snakedeploy deploy-workflow https://github.com/solida-core/musta 
                     my_desd_dir 
-                    --tag 362cfae
+                    --tag v1.1
 ```
 To run the pipeline, go inside the deployed pipeline folder and use the command:
 ```bash
