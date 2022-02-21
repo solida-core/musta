@@ -27,13 +27,16 @@ rule mutect_tumoronly:
         vcf="results/tumoronly/{sample}_somatic.vcf.gz",
         bam="results/tumoronly/{sample}_tumor_normal.bam",
         fir="results/tumoronly/{sample}_tumor_normal_f1r2.tar.gz",
-        stats="results/tumoronly/{sample}_somatic.vcf.gz.stats"
+        stats=report("results/tumoronly/{sample}_somatic.vcf.gz.stats",
+        caption="../report/stats.rst",
+        category="Stats",
+        )
     params:
         custom=java_params(tmp_dir=config.get("processing").get("tmp_dir"), multiply_by=5),
         genome=resolve_single_filepath(*references_abs_path("ref"), config.get("ref").get("fasta")),
         intervals=config.get("processing").get("interval_list"),
         param=config.get("params").get("gatk").get("Mutect"),
-        germline_resource=config.get("germline"),
+        germline_resource=config.get("params").get("gatk").get("germline"),
         tumor_bam= lambda wildcards,input: get_name(input.tumor_name)
     log:
         "logs/gatk/Mutect2/{sample}.mutect.log"
@@ -66,7 +69,7 @@ rule orientation_model_tumoronly:
         "results/filters/tumoronly/{sample}_read-orientation-model.tar.gz"
     params:
         custom=java_params(tmp_dir=config.get("processing").get("tmp_dir"), multiply_by=5),
-        exac=config.get("exac")
+        exac=config.get("params").get("gatk").get("exac")
     log:
         "logs/gatk/Mutect2/{sample}_orientation.log"
     conda:
@@ -88,7 +91,7 @@ rule pileup_summaries_tumoronly:
     params:
         custom=java_params(tmp_dir=config.get("processing").get("tmp_dir"), multiply_by=5),
         intervals=config.get("processing").get("interval_list"),
-        exac=config.get("exac")
+        exac=config.get("params").get("gatk").get("exac")
     log:
         "logs/gatk/Mutect2/{sample}_pileupsummaries_T.log"
     conda:

@@ -1,5 +1,4 @@
 #################
-import pandas as pd
 import errno
 import multiprocessing
 import os.path
@@ -12,20 +11,10 @@ report: "../report/workflow.rst"
 
 validate(config, schema="../schemas/config.schema.yaml")
 
-# samples = (
-#     pd.read_csv(config["samples"], sep="\t", dtype={"sample": str})
-#     .set_index("sample", drop=False)
-#     .sort_index()
-# )
-#samples = pd.read_table(config["samples"], index_col=["sample"], sep="\t")
-# validate(samples, schema="../schemas/samples.schema.yaml")
 with open(config["samples"],'r') as file:
     samples_master = yaml.load(file, Loader=yaml.FullLoader)
     samples_master.keys()
 samples=list(samples_master.keys())
-#
-# wildcard_constraints:
-#    sample="|".join(samples["samples"])
 
 def total_physical_mem_size():
     mem = psutil.virtual_memory()
@@ -124,59 +113,11 @@ def references_abs_path(ref='ref'):
 def resolve_single_filepath(basepath, filename):
     return [os.path.join(basepath, filename)]
 
-def resolve_multi_filepath(basepath, dictionary):
-    for k, v in dictionary.items():
-        dictionary[k] = os.path.join(basepath, v)
-    return dictionary
-
-def get_references_label(ref='references'):
-    references = config.get(ref)
-    provider = references['provider']
-    genome = references['release']
-
-    return '_'.join([provider, genome])
-
-###############################################################################
-
-def ensure_dir(path, force=False):
-    try:
-        if force and os.path.exists(path):
-            shutil.rmtree(path)
-        os.makedirs(path)
-    except OSError:
-        if not os.path.isdir(path):
-            raise
-
-
-def exist_dir(path, delete=False):
-    try:
-        if delete and os.path.exists(path):
-            shutil.rmtree(path)
-        # os.makedirs(path)
-    except OSError:
-        if not os.path.isdir(path):
-            raise
-
-
-# #########################
-# def get_bams(wildcards):
-#     with open(config["samples"],'r') as file:
-#         samples_master = yaml.load(file,Loader=yaml.FullLoader)
-#         samples_master.keys()
-#     # print(wildcards.sample)
-#     if not samples_master[wildcards.sample]["normal_bam"]:
-#         # TUMOR-ONLY
-#         return samples_master[wildcards.sample]["tumor_bam"]
-#     # TUMOR-NORMAL
-#     else:
-#         return samples_master[wildcards.sample]["normal_bam"][0], samples_master[wildcards.sample]["tumor_bam"][0]
-
 def get_name(inputfile):
     with open(inputfile, 'r') as file:
         data = file.read().rstrip()
     return data
 
-####
 def get_tumoral_bam(wildcards):
     with open(config["samples"],'r') as file:
         samples_master = yaml.load(file,Loader=yaml.FullLoader)
@@ -190,7 +131,6 @@ def get_normal_bam(wildcards):
         samples_master.keys()
     # print(wildcards.sample)
     return samples_master[wildcards.sample]["normal_bam"][0]
-
 
 def select_filtered(wildcards):
     with open(config["samples"],'r') as file:
