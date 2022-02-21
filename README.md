@@ -19,10 +19,10 @@ The usage of this workflow is described in the [Snakemake Workflow Catalog](http
 
 If you use this workflow in a paper, don't forget to give credits to the authors by citing the URL of this (original) repository and its DOI (see above).
 
-## TEMP INSTRUCITONS
+## INSTRUCITONS
 Create a virtual environment with the command:
 ```commandline
-mamba create -c bioconda -c conda-forge --name snakemake snakemake=6.15
+mamba create -c bioconda -c conda-forge --name snakemake snakemake=6.15 snakedeploy
 ```
 and activate it:
 ```commandline
@@ -32,7 +32,18 @@ We get some public data to test the pipeline. You can directly clone in this fol
 ```commandline
 git clone https://github.com/solida-core/test-data-somatic.git
 ```
-You can then perform a dry-run defining a directory for analysis output with the `-d` parameter:
-```commandline
-snakemake -n --use-conda -p --cores all -d workdir
+You can then perform the pipeline deploy defining a directory `my_dest_dir` for analysis output and a pipeline tag for a specific version:
+```bash
+snakedeploy deploy-workflow https://github.com/solida-core/musta 
+                    my_desd_dir 
+                    --tag 362cfae
 ```
+To run the pipeline, go inside the deployed pipeline folder and use the command:
+```bash
+snakemake --use-conda -p --cores all
+```
+You can generate analysis report with the command:
+```bash
+snakemake --report report.zip --cores all
+```
+
