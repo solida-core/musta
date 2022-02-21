@@ -38,10 +38,7 @@ rule mutect_matched:
         vcf="results/matched/{sample}_somatic.vcf.gz",
         bam="results/matched/{sample}_tumor_normal.bam",
         fir="results/matched/{sample}_tumor_normal_f1r2.tar.gz",
-        stats=report("results/matched/{sample}_somatic.vcf.gz.stats",
-            caption="../report/stats.rst",
-            category="Stats",
-        )
+        stats="results/matched/{sample}_somatic.vcf.gz.stats"
     params:
         custom=java_params(tmp_dir=config.get("processing").get("tmp_dir"), multiply_by=5),
         genome=resolve_single_filepath(*references_abs_path("ref"), config.get("ref").get("fasta")),

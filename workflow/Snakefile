@@ -5,7 +5,7 @@ min_version("6.15.0")
 
 
 ##### setup report #####
-configfile: "../config/config.yaml"
+configfile: "config/config.yaml"
 
 
 ##### load rules #####
