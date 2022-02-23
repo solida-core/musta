@@ -24,3 +24,4 @@ params:
 processing:
   interval_list: "/path/to/mybed.bed"
   tmp_dir: "/path/to/tmp_dir"
+  base_tmp: "/tmp"
