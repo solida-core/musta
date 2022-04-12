@@ -17,11 +17,14 @@ include: "rules/annotation.smk"
 
 
 ##### target rules #####
+if config.get("run").get("all") or config.get("run").get("call"):
+    rule call:
+        input:
+            expand("results/{sample}_somatic_filtered_selected.vcf.gz",sample=list(samples_master.keys()))
 
-rule all:
-    input:
-# CALL VARIANTS
-        expand("results/{sample}_somatic_filtered_selected.vcf.gz",sample=list(samples_master.keys())),
-# ANNOTATION
-        expand("results/annotation/funcotator/{sample}_funcotated.maf",sample=list(samples_master.keys())),
 
+if config.get("run").get("all") or config.get("run").get("annotate"):
+    rule annotate:
+        input:
+    # ANNOTATION
+            expand("results/annotation/funcotator/{sample}_funcotated.maf",sample=list(samples_master.keys())),
