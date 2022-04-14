@@ -139,3 +139,18 @@ def select_filtered(wildcards):
         return rules.filter_mutect_tumoronly.output.vcf
     else:
         return rules.filter_mutect.output.vcf
+
+## functions for pipeline starting from vcf
+
+def get_annotation_input():
+    if config.get("run").get("annotate"):
+        return(lambda wildcards: get_vcf_list(wildcards))
+    else:
+        return "results/{sample}_somatic_filtered_selected.vcf.gz"
+
+def get_vcf_list(wildcards):
+    with open(config["samples"],'r') as file:
+        samples_master = yaml.load(file,Loader=yaml.FullLoader)
+        samples_master.keys()
+    # print(wildcards.sample)
+    return samples_master[wildcards.sample]["vcf"][0]

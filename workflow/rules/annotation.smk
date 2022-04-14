@@ -1,20 +1,3 @@
-## scrivi funzione per decidere l'input
-
-def get_annotation_input():
-    if config.get("run").get("annotate"):
-        return(lambda wildcards: get_vcf_list(wildcards))
-    else:
-        return "results/{sample}_somatic_filtered_selected.vcf.gz"
-
-def get_vcf_list(wildcards):
-    with open(config["samples"],'r') as file:
-        samples_master = yaml.load(file,Loader=yaml.FullLoader)
-        samples_master.keys()
-    # print(wildcards.sample)
-    return samples_master[wildcards.sample]["vcf"][0]
-
-
-
 rule Funcotator:
     input:
         vcf=get_annotation_input()
@@ -48,5 +31,3 @@ rule Funcotator:
         "--output-file-format MAF "
         "--ref-version hg19 "
         ">& {log} "
-
-
