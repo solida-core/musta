@@ -41,7 +41,7 @@ def tmp_path(path=''):
     :param path: path
     :return: path
     """
-    default_path = os.getenv('TMPDIR', config.get("processing").get("base_tmp"))
+    default_path = os.getenv('TMPDIR', config.get("paths").get("tmp_dir"))
     if path:
         try:
             os.makedirs(path)

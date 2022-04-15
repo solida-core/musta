@@ -8,32 +8,27 @@ properties:
   samples:
     type: string
 
-  ref:
+  resources:
     type: object
     properties:
-      species:
+      reference:
         type: string
-      basepath:
-        type: string
-      provider:
-        type: string
-      release:
-        type: string
-      fasta:
+      bed:
         type: string
     required:
-      - basepath
-      - provider
-      - release
-      - fasta
+      - reference
+      - bed
 
-  processing:
+  paths:
     type: object
     properties:
-      interval_list:
+      workdir:
+        type: string
+      tmp_dir:
         type: string
     required:
-      - interval_list
+      - workdir
+      - tmp_dir
 
   params:
     type: object
@@ -59,6 +54,6 @@ properties:
 
 required:
   - samples
-  - ref
-  - processing
+  - resources
+  - paths
   - params

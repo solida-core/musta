@@ -1,20 +1,17 @@
 run:
-  all: False
+  all: True
   call: False
   annotate: True
   profile: False
 
 # path or URL to sample sheet (TSV format, columns: sample, condition, ...)
 
-samples: config/samples_vcf.yaml
+samples: config/samples.yaml
 
 # reference files
-ref:
-  species: homo_sapiens
-  basepath: /path/to/reference_master_folder
-  provider: ucsc
-  release: hg19
-  fasta: genome.fasta
+resources:
+  reference: /path/to/reference/reference_genome.fasta
+  bed: /path/to/bedfile/mybed.bed
 
 
 params:
@@ -27,7 +24,6 @@ params:
   multiqc: "--force --interactive --cl_config 'max_table_rows: 700'"
 
 
-processing:
-  interval_list: "/path/to/mybed.bed"
+paths:
+  workdir: "/path/to/workdir"
   tmp_dir: "/path/to/tmp_dir"
-  base_tmp: "/tmp"
