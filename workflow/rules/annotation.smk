@@ -4,7 +4,7 @@ rule Funcotator:
     output:
         vcf=report(
             resolve_single_filepath(config.get("paths").get("workdir"),"results/annotation/funcotator/{sample}_funcotated.maf"),
-            caption="../report/vcf.rst",
+            caption=resolve_single_filepath(config.get("paths").get("workdir"),"workflow/report/vcf.rst"),
             category="Annotation",
         )
     params:
@@ -15,7 +15,7 @@ rule Funcotator:
     log:
         resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/Funcotator/{sample}.funcotator.log")
     conda:
-       "../envs/gatk.yaml"
+       resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads:
         conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:

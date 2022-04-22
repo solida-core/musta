@@ -111,7 +111,7 @@ def references_abs_path(ref='ref'):
     return [os.path.join(basepath, provider, release)]
 
 def resolve_single_filepath(basepath, filename):
-    return [os.path.join(basepath, filename)]
+    return os.path.join(basepath, filename)
 
 def get_name(inputfile):
     with open(inputfile, 'r') as file:

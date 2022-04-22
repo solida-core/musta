@@ -3,13 +3,13 @@ rule get_tumoronly_sample_names:
     input:
         tumoral= lambda wildcards: get_tumoral_bam(wildcards)
     output:
-        tumor="results/tmp/tumoronly/{sample}_tumor.samplename.txt"
+        tumor=resolve_single_filepath(config.get("paths").get("workdir"),"results/tmp/tumoronly/{sample}_tumor.samplename.txt")
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"),multiply_by=5)
     log:
         resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/getsamplename/{sample}.gsn.log")
     conda:
-        "../envs/gatk.yaml"
+        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2,max_cores=99)
     resources:
         tmpdir = config.get("paths").get("tmp_dir")
@@ -24,7 +24,7 @@ rule get_tumoronly_sample_names:
 rule mutect_tumoronly:
     input:
         tumoral= lambda wildcards: get_tumoral_bam(wildcards),
-        tumor_name="results/tmp/tumoronly/{sample}_tumor.samplename.txt"
+        tumor_name=resolve_single_filepath(config.get("paths").get("workdir"),"results/tmp/tumoronly/{sample}_tumor.samplename.txt")
     output:
         vcf=resolve_single_filepath(config.get("paths").get("workdir"),"results/tumoronly/{sample}_somatic.vcf.gz"),
         bam=resolve_single_filepath(config.get("paths").get("workdir"),"results/tumoronly/{sample}_tumor_normal.bam"),
@@ -40,7 +40,7 @@ rule mutect_tumoronly:
     log:
         resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/Mutect2/{sample}.mutect.log")
     conda:
-        "../envs/gatk.yaml"
+        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
         tmpdir = config.get("paths").get("tmp_dir")
@@ -74,7 +74,7 @@ rule orientation_model_tumoronly:
     log:
         resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/Mutect2/{sample}_orientation.log")
     conda:
-       "../envs/gatk.yaml"
+       resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
         tmpdir = config.get("paths").get("tmp_dir")
@@ -98,7 +98,7 @@ rule pileup_summaries_tumoronly:
     log:
         resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/Mutect2/{sample}_pileupsummaries_T.log")
     conda:
-       "../envs/gatk.yaml"
+       resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
         tmpdir = config.get("paths").get("tmp_dir")
@@ -123,7 +123,7 @@ rule calculate_contamination_tumoronly:
     log:
         resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/Mutect2/{sample}_calculatecontamination.log")
     conda:
-       "../envs/gatk.yaml"
+       resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
         tmpdir = config.get("paths").get("tmp_dir")

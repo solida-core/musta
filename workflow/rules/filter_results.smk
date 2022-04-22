@@ -14,7 +14,7 @@ rule filter_mutect:
     log:
         resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/Mutect2/{sample}.filter_info.log")
     conda:
-       "../envs/gatk.yaml"
+       resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
         tmpdir = config.get("paths").get("tmp_dir")
@@ -48,7 +48,7 @@ rule filter_mutect_tumoronly:
     log:
         resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/Mutect2/{sample}.filter_info.log")
     conda:
-       "../envs/gatk.yaml"
+       resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
         tmpdir = config.get("paths").get("tmp_dir")
@@ -78,7 +78,7 @@ rule gatk_SelectVariants:
     log:
         resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/SelectVariants/{sample}.SelectVariants.log")
     conda:
-        "../envs/gatk.yaml"
+        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
         tmpdir = config.get("paths").get("tmp_dir")

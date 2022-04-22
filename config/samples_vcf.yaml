@@ -1,6 +1,0 @@
-sampleA:
-  vcf:
-    - ../test-data-somatic/data/bam/N1.chr22.bam
-sampleB:
-  vcf:
-    - ../test-data-somatic/data/bam/B33.chr22.bam

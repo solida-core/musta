@@ -4,15 +4,15 @@ rule get_sample_names:
         normal=lambda wildcards: get_normal_bam(wildcards),
         tumoral= lambda wildcards: get_tumoral_bam(wildcards),
     output:
-        normal="results/tmp/{sample}_normal.samplename.txt",
-        tumor="results/tmp/{sample}_tumor.samplename.txt"
+        normal=resolve_single_filepath(config.get("paths").get("workdir"),"results/tmp/{sample}_normal.samplename.txt"),
+        tumor=resolve_single_filepath(config.get("paths").get("workdir"),"results/tmp/{sample}_tumor.samplename.txt")
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"),multiply_by=5)
     log:
         normal=resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/getsamplename/{sample}.gsn.log"),
         tumor=resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/getsamplename/{sample}.gsn_tumor.log")
     conda:
-        "../envs/gatk.yaml"
+        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2,max_cores=99)
     shell:
         "gatk "
@@ -32,8 +32,8 @@ rule mutect_matched:
     input:
         normal=lambda wildcards: get_normal_bam(wildcards),
         tumoral= lambda wildcards: get_tumoral_bam(wildcards),
-        normal_name="results/tmp/{sample}_normal.samplename.txt",
-        tumor_name="results/tmp/{sample}_tumor.samplename.txt"
+        normal_name=resolve_single_filepath(config.get("paths").get("workdir"),"results/tmp/{sample}_normal.samplename.txt"),
+        tumor_name=resolve_single_filepath(config.get("paths").get("workdir"),"results/tmp/{sample}_tumor.samplename.txt")
     output:
         vcf=resolve_single_filepath(config.get("paths").get("workdir"),"results/matched/{sample}_somatic.vcf.gz"),
         bam=resolve_single_filepath(config.get("paths").get("workdir"),"results/matched/{sample}_tumor_normal.bam"),
@@ -50,7 +50,7 @@ rule mutect_matched:
     log:
         resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/Mutect2/{sample}.mutect.log")
     conda:
-        "../envs/gatk.yaml"
+        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
         tmpdir = config.get("paths").get("tmp_dir")
@@ -85,7 +85,7 @@ rule learn_orientation_model:
     log:
         resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/Mutect2/{sample}_pileupsummaries_T.log")
     conda:
-       "../envs/gatk.yaml"
+       resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
         tmpdir = config.get("paths").get("tmp_dir")
@@ -108,7 +108,7 @@ rule pileup_summaries_tumoral:
     log:
         resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/Mutect2/{sample}_pileupsummaries_T.log")
     conda:
-       "../envs/gatk.yaml"
+       resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
         tmpdir = config.get("paths").get("tmp_dir")
@@ -133,7 +133,7 @@ rule pileup_summaries_normal:
     log:
         resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/Mutect2/{sample}_pileupsummaries_C.log")
     conda:
-       "../envs/gatk.yaml"
+       resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
         tmpdir = config.get("paths").get("tmp_dir")
@@ -158,7 +158,7 @@ rule calculate_contamination:
     log:
         resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/Mutect2/{sample}_calculatecontamination.log")
     conda:
-       "../envs/gatk.yaml"
+       resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
         tmpdir = config.get("paths").get("tmp_dir")
