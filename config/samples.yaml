@@ -1,11 +1,18 @@
-sampleA:
+patientA:
+  normal_sample_name:
+    - N1
+  tumor_sample_name:
+    - A25
   normal_bam:
     - ../test-data-somatic/data/bam/N1.chr22.bam
   tumor_bam:
     - ../test-data-somatic/data/bam/A25.chr22.bam
   vcf:
     - ../test-data-somatic/data/bam/N1.chr22.bam
-sampleB:
+patientB:
+  normal_sample_name:
+  tumor_sample_name:
+    - B33
   normal_bam:
   tumor_bam:
     - ../test-data-somatic/data/bam/B33.chr22.bam
