@@ -154,3 +154,17 @@ def get_vcf_list(wildcards):
         samples_master.keys()
     # print(wildcards.sample)
     return samples_master[wildcards.sample]["vcf"][0]
+
+def get_normalname(wildcards):
+    with open(config["samples"],'r') as file:
+        samples_master = yaml.load(file,Loader=yaml.FullLoader)
+        samples_master.keys()
+    # print(wildcards.sample)
+    return samples_master[wildcards.sample]["normal_sample_name"][0]
+
+def get_tumorname(wildcards):
+    with open(config["samples"],'r') as file:
+        samples_master = yaml.load(file,Loader=yaml.FullLoader)
+        samples_master.keys()
+    # print(wildcards.sample)
+    return samples_master[wildcards.sample]["tumor_sample_name"][0]

@@ -11,7 +11,9 @@ rule Funcotator:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"),multiply_by=5),
         genome=config.get("resources").get("reference"),
         intervals=config.get("resources").get("bed"),
-        resources=config.get("params").get("gatk").get("Funcotator")
+        resources=config.get("params").get("gatk").get("Funcotator").get("resources"),
+        genome_version=config.get("params").get("gatk").get("Funcotator").get("reference_version"),
+        tumoral= lambda wildcards: get_tumorname(wildcards)
     log:
         resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/Funcotator/{sample}.funcotator.log")
     conda:
@@ -29,5 +31,7 @@ rule Funcotator:
         "-O {output.vcf} "
         "--data-sources-path {params.resources} "
         "--output-file-format MAF "
-        "--ref-version hg19 "
+        "--annotation-default normal_barcode:{wildcards.sample} "
+        "--annotation-default tumor_barcode:{params.tumoral} "
+        "--ref-version {params.genome_version} "
         ">& {log} "
