@@ -17,11 +17,20 @@ include: "rules/annotation.smk"
 
 
 ##### target rules #####
+if config.get("run").get("all"):
+    rule all:
+        input:
+            expand(resolve_single_filepath(config.get("paths").get("workdir"),"results/{sample}_somatic_filtered_selected.vcf.gz"),sample=list(samples_master.keys())),
+            expand(resolve_single_filepath(config.get("paths").get("workdir"),"results/annotation/funcotator/{sample}_funcotated.maf"),sample=list(samples_master.keys()))
 
-rule all:
-    input:
-# CALL VARIANTS
-        expand("results/{sample}_somatic_filtered_selected.vcf.gz",sample=list(samples_master.keys())),
-# ANNOTATION
-        expand("results/annotation/funcotator/{sample}_funcotated.maf",sample=list(samples_master.keys())),
 
+if config.get("run").get("call"):
+    rule call:
+        input:
+            expand(resolve_single_filepath(config.get("paths").get("workdir"),"results/{sample}_somatic_filtered_selected.vcf.gz"),sample=list(samples_master.keys()))
+
+
+if config.get("run").get("annotate"):
+    rule annotate:
+        input:
+            expand(resolve_single_filepath(config.get("paths").get("workdir"),"results/annotation/funcotator/{sample}_funcotated.maf"),sample=list(samples_master.keys()))

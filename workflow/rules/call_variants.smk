@@ -4,15 +4,15 @@ rule get_sample_names:
         normal=lambda wildcards: get_normal_bam(wildcards),
         tumoral= lambda wildcards: get_tumoral_bam(wildcards),
     output:
-        normal="results/tmp/{sample}_normal.samplename.txt",
-        tumor="results/tmp/{sample}_tumor.samplename.txt",
+        normal=resolve_single_filepath(config.get("paths").get("workdir"),"results/tmp/{sample}_normal.samplename.txt"),
+        tumor=resolve_single_filepath(config.get("paths").get("workdir"),"results/tmp/{sample}_tumor.samplename.txt")
     params:
-        custom=java_params(tmp_dir=config.get("processing").get("tmp_dir"),multiply_by=5)
+        custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"),multiply_by=5)
     log:
-        normal="logs/gatk/getsamplename/{sample}.gsn.log",
-        tumor="logs/gatk/getsamplename/{sample}.gsn_tumor.log"
+        normal=resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/getsamplename/{sample}.gsn.log"),
+        tumor=resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/getsamplename/{sample}.gsn_tumor.log")
     conda:
-        "../envs/gatk.yaml"
+        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2,max_cores=99)
     shell:
         "gatk "
@@ -32,28 +32,28 @@ rule mutect_matched:
     input:
         normal=lambda wildcards: get_normal_bam(wildcards),
         tumoral= lambda wildcards: get_tumoral_bam(wildcards),
-        normal_name="results/tmp/{sample}_normal.samplename.txt",
-        tumor_name="results/tmp/{sample}_tumor.samplename.txt"
+        normal_name=resolve_single_filepath(config.get("paths").get("workdir"),"results/tmp/{sample}_normal.samplename.txt"),
+        tumor_name=resolve_single_filepath(config.get("paths").get("workdir"),"results/tmp/{sample}_tumor.samplename.txt")
     output:
-        vcf="results/matched/{sample}_somatic.vcf.gz",
-        bam="results/matched/{sample}_tumor_normal.bam",
-        fir="results/matched/{sample}_tumor_normal_f1r2.tar.gz",
-        stats="results/matched/{sample}_somatic.vcf.gz.stats"
+        vcf=resolve_single_filepath(config.get("paths").get("workdir"),"results/matched/{sample}_somatic.vcf.gz"),
+        bam=resolve_single_filepath(config.get("paths").get("workdir"),"results/matched/{sample}_tumor_normal.bam"),
+        fir=resolve_single_filepath(config.get("paths").get("workdir"),"results/matched/{sample}_tumor_normal_f1r2.tar.gz"),
+        stats=resolve_single_filepath(config.get("paths").get("workdir"),"results/matched/{sample}_somatic.vcf.gz.stats")
     params:
-        custom=java_params(tmp_dir=config.get("processing").get("tmp_dir"), multiply_by=5),
-        genome=resolve_single_filepath(*references_abs_path("ref"), config.get("ref").get("fasta")),
-        intervals=config.get("processing").get("interval_list"),
+        custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
+        genome=config.get("resources").get("reference"),
+        intervals=config.get("resources").get("bed"),
         param=config.get("params").get("gatk").get("Mutect"),
         germline_resource=config.get("params").get("gatk").get("germline"),
         normal_bam = lambda wildcards, input: get_name(input.normal_name),
         tumor_bam= lambda wildcards,input: get_name(input.tumor_name)
     log:
-        "logs/gatk/Mutect2/{sample}.mutect.log"
+        resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/Mutect2/{sample}.mutect.log")
     conda:
-        "../envs/gatk.yaml"
+        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
-        tmpdir = config.get("processing").get("tmp_dir")
+        tmpdir = config.get("paths").get("tmp_dir")
     shell:
         "gatk "
         "--java-options {params.custom} "
@@ -78,17 +78,17 @@ rule learn_orientation_model:
     input:
         rules.mutect_matched.output.fir
     output:
-        "results/filters/matched/{sample}_read-orientation-model.tar.gz"
+        resolve_single_filepath(config.get("paths").get("workdir"),"results/filters/matched/{sample}_read-orientation-model.tar.gz")
     params:
-        custom=java_params(tmp_dir=config.get("processing").get("tmp_dir"), multiply_by=5),
+        custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
         exac=config.get("params").get("gatk").get("exac")
     log:
-        "logs/gatk/Mutect2/{sample}_pileupsummaries_T.log"
+        resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/Mutect2/{sample}_pileupsummaries_T.log")
     conda:
-       "../envs/gatk.yaml"
+       resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
-        tmpdir = config.get("processing").get("tmp_dir")
+        tmpdir = config.get("paths").get("tmp_dir")
     shell:
         "gatk LearnReadOrientationModel "
         "--java-options {params.custom} "
@@ -100,18 +100,18 @@ rule pileup_summaries_tumoral:
     input:
         tumoral= lambda wildcards: get_tumoral_bam(wildcards)
     output:
-        "results/filters/matched/{sample}_getpileupsummaries.table"
+        resolve_single_filepath(config.get("paths").get("workdir"),"results/filters/matched/{sample}_getpileupsummaries.table")
     params:
-        custom=java_params(tmp_dir=config.get("processing").get("tmp_dir"), multiply_by=5),
-        intervals=config.get("processing").get("interval_list"),
+        custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
+        intervals=config.get("resources").get("bed"),
         exac=config.get("params").get("gatk").get("exac")
     log:
-        "logs/gatk/Mutect2/{sample}_pileupsummaries_T.log"
+        resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/Mutect2/{sample}_pileupsummaries_T.log")
     conda:
-       "../envs/gatk.yaml"
+       resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
-        tmpdir = config.get("processing").get("tmp_dir")
+        tmpdir = config.get("paths").get("tmp_dir")
     shell:
         "gatk GetPileupSummaries "
         "--java-options {params.custom} "
@@ -125,18 +125,18 @@ rule pileup_summaries_normal:
     input:
         normal=lambda wildcards: get_normal_bam(wildcards)
     output:
-        "results/filters/matched/{sample}_normal_pileups.table"
+        resolve_single_filepath(config.get("paths").get("workdir"),"results/filters/matched/{sample}_normal_pileups.table")
     params:
-        custom=java_params(tmp_dir=config.get("processing").get("tmp_dir"), multiply_by=5),
-        intervals=config.get("processing").get("interval_list"),
+        custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
+        intervals=config.get("resources").get("bed"),
         exac=config.get("params").get("gatk").get("exac")
     log:
-        "logs/gatk/Mutect2/{sample}_pileupsummaries_C.log"
+        resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/Mutect2/{sample}_pileupsummaries_C.log")
     conda:
-       "../envs/gatk.yaml"
+       resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
-        tmpdir = config.get("processing").get("tmp_dir")
+        tmpdir = config.get("paths").get("tmp_dir")
     shell:
         "gatk GetPileupSummaries "
         "--java-options {params.custom} "
@@ -151,17 +151,17 @@ rule calculate_contamination:
         tab_t=rules.pileup_summaries_tumoral.output,
         tab_c=rules.pileup_summaries_normal.output
     output:
-        table="results/filters/matched/{sample}_contamination.table",
-        segment="results/filters/matched/{sample}_tumor.segment"
+        table=resolve_single_filepath(config.get("paths").get("workdir"),"results/filters/matched/{sample}_contamination.table"),
+        segment=resolve_single_filepath(config.get("paths").get("workdir"),"results/filters/matched/{sample}_tumor.segment")
     params:
-        custom=java_params(tmp_dir=config.get("processing").get("tmp_dir"),multiply_by=5)
+        custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"),multiply_by=5)
     log:
-        "logs/gatk/Mutect2/{sample}_calculatecontamination.log"
+        resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/Mutect2/{sample}_calculatecontamination.log")
     conda:
-       "../envs/gatk.yaml"
+       resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
-        tmpdir = config.get("processing").get("tmp_dir")
+        tmpdir = config.get("paths").get("tmp_dir")
     shell:
         "gatk CalculateContamination "
         "--java-options {params.custom} "

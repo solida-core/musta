@@ -1,25 +1,27 @@
 rule Funcotator:
     input:
-        vcf="results/{sample}_somatic_filtered_selected.vcf.gz"
+        vcf=get_annotation_input()
     output:
         vcf=report(
-            "results/annotation/funcotator/{sample}_funcotated.maf",
-            caption="../report/vcf.rst",
+            resolve_single_filepath(config.get("paths").get("workdir"),"results/annotation/funcotator/{sample}_funcotated.maf"),
+            caption=resolve_single_filepath(config.get("paths").get("workdir"),"workflow/report/vcf.rst"),
             category="Annotation",
         )
     params:
-        custom=java_params(tmp_dir=config.get("processing").get("tmp_dir"),multiply_by=5),
-        genome=resolve_single_filepath(*references_abs_path("ref"),config.get("ref").get("fasta")),
-        intervals=config.get("processing").get("interval_list"),
-        resources=config.get("params").get("gatk").get("Funcotator")
+        custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"),multiply_by=5),
+        genome=config.get("resources").get("reference"),
+        intervals=config.get("resources").get("bed"),
+        resources=config.get("params").get("gatk").get("Funcotator").get("resources"),
+        genome_version=config.get("params").get("gatk").get("Funcotator").get("reference_version"),
+        tumoral= lambda wildcards: get_tumorname(wildcards)
     log:
-        "logs/gatk/Funcotator/{sample}.funcotator.log"
+        resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/Funcotator/{sample}.funcotator.log")
     conda:
-       "../envs/gatk.yaml"
+       resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads:
         conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
-        tmpdir = config.get("processing").get("tmp_dir")
+        tmpdir = config.get("paths").get("tmp_dir")
     shell:
         "gatk Funcotator "
         "--java-options {params.custom} "
@@ -29,5 +31,7 @@ rule Funcotator:
         "-O {output.vcf} "
         "--data-sources-path {params.resources} "
         "--output-file-format MAF "
-        "--ref-version hg19 "
+        "--annotation-default normal_barcode:{wildcards.sample} "
+        "--annotation-default tumor_barcode:{params.tumoral} "
+        "--ref-version {params.genome_version} "
         ">& {log} "

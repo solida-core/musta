@@ -6,18 +6,18 @@ rule filter_mutect:
         segments=rules.calculate_contamination.output.segment,
         stats=rules.mutect_matched.output.stats
     output:
-        vcf="results/matched/{sample}_somatic_filtered.vcf.gz"
+        vcf=resolve_single_filepath(config.get("paths").get("workdir"),"results/matched/{sample}_somatic_filtered.vcf.gz")
     params:
-        custom=java_params(tmp_dir=config.get("processing").get("tmp_dir"), multiply_by=5),
-        genome=resolve_single_filepath(*references_abs_path("ref"), (config.get("ref").get("fasta"))),
-        intervals=config.get("processing").get("interval_list"),
+        custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
+        genome=config.get("resources").get("reference"),
+        intervals=config.get("resources").get("bed"),
     log:
-        "logs/gatk/Mutect2/{sample}.filter_info.log"
+        resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/Mutect2/{sample}.filter_info.log")
     conda:
-       "../envs/gatk.yaml"
+       resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
-        tmpdir = config.get("processing").get("tmp_dir")
+        tmpdir = config.get("paths").get("tmp_dir")
     shell:
         "gatk FilterMutectCalls "
         "--java-options {params.custom} "
@@ -40,18 +40,18 @@ rule filter_mutect_tumoronly:
         segments = rules.calculate_contamination_tumoronly.output.segment,
         stats=rules.mutect_tumoronly.output.stats
     output:
-        vcf="results/tumoronly/{sample}_somatic_filtered.vcf.gz"
+        vcf=resolve_single_filepath(config.get("paths").get("workdir"),"results/tumoronly/{sample}_somatic_filtered.vcf.gz")
     params:
-        custom=java_params(tmp_dir=config.get("processing").get("tmp_dir"), multiply_by=5),
-        genome=resolve_single_filepath(*references_abs_path("ref"), (config.get("ref").get("fasta"))),
-        intervals=config.get("processing").get("interval_list"),
+        custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
+        genome=config.get("resources").get("reference"),
+        intervals=config.get("resources").get("bed"),
     log:
-        "logs/gatk/Mutect2/{sample}.filter_info.log"
+        resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/Mutect2/{sample}.filter_info.log")
     conda:
-       "../envs/gatk.yaml"
+       resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
-        tmpdir = config.get("processing").get("tmp_dir")
+        tmpdir = config.get("paths").get("tmp_dir")
     shell:
         "gatk FilterMutectCalls "
         "--java-options {params.custom} "
@@ -70,22 +70,18 @@ rule gatk_SelectVariants:
     input:
         lambda wildcards: select_filtered(wildcards)
     output:
-        vcf="results/{sample}_somatic_filtered_selected.vcf.gz"
+        vcf=resolve_single_filepath(config.get("paths").get("workdir"),"results/{sample}_somatic_filtered_selected.vcf.gz")
     params:
-        custom=java_params(tmp_dir=config.get("processing").get("tmp_dir"),multiply_by=5),
-        genome=resolve_single_filepath(*references_abs_path("ref"), (config.get("ref").get("fasta"))),
+        custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"),multiply_by=5),
+        genome=config.get("resources").get("reference"),
         arguments=config.get("params").get("gatk").get("SelectVariants")
     log:
-        "logs/gatk/SelectVariants/{sample}.SelectVariants.log"
+        resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/SelectVariants/{sample}.SelectVariants.log")
     conda:
-       "../envs/gatk.yaml"
-
-    benchmark:
-        "benchmarks/gatk/SelectVariants/{sample}.SelectVariants.txt"
-
+        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
-        tmpdir = config.get("processing").get("tmp_dir")
+        tmpdir = config.get("paths").get("tmp_dir")
     shell:
         "gatk SelectVariants "
         "--java-options {params.custom} "

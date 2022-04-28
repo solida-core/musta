@@ -41,7 +41,7 @@ def tmp_path(path=''):
     :param path: path
     :return: path
     """
-    default_path = os.getenv('TMPDIR', config.get("processing").get("base_tmp"))
+    default_path = os.getenv('TMPDIR', config.get("paths").get("tmp_dir"))
     if path:
         try:
             os.makedirs(path)
@@ -111,7 +111,7 @@ def references_abs_path(ref='ref'):
     return [os.path.join(basepath, provider, release)]
 
 def resolve_single_filepath(basepath, filename):
-    return [os.path.join(basepath, filename)]
+    return os.path.join(basepath, filename)
 
 def get_name(inputfile):
     with open(inputfile, 'r') as file:
@@ -139,3 +139,32 @@ def select_filtered(wildcards):
         return rules.filter_mutect_tumoronly.output.vcf
     else:
         return rules.filter_mutect.output.vcf
+
+## functions for pipeline starting from vcf
+
+def get_annotation_input():
+    if config.get("run").get("annotate"):
+        return(lambda wildcards: get_vcf_list(wildcards))
+    else:
+        return "results/{sample}_somatic_filtered_selected.vcf.gz"
+
+def get_vcf_list(wildcards):
+    with open(config["samples"],'r') as file:
+        samples_master = yaml.load(file,Loader=yaml.FullLoader)
+        samples_master.keys()
+    # print(wildcards.sample)
+    return samples_master[wildcards.sample]["vcf"][0]
+
+def get_normalname(wildcards):
+    with open(config["samples"],'r') as file:
+        samples_master = yaml.load(file,Loader=yaml.FullLoader)
+        samples_master.keys()
+    # print(wildcards.sample)
+    return samples_master[wildcards.sample]["normal_sample_name"][0]
+
+def get_tumorname(wildcards):
+    with open(config["samples"],'r') as file:
+        samples_master = yaml.load(file,Loader=yaml.FullLoader)
+        samples_master.keys()
+    # print(wildcards.sample)
+    return samples_master[wildcards.sample]["tumor_sample_name"][0]
