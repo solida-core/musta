@@ -43,10 +43,10 @@ properties:
           Funcotator:
             type: object
             properties:
-            resources:
-              type: string
-            reference_version:
-              type: string
+              resources:
+                type: string
+              reference_version:
+                type: string
         required:
           - Mutect
           - SelectVariants
