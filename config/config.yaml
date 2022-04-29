@@ -20,7 +20,8 @@ params:
     SelectVariants: "--exclude-filtered --exclude-non-variants"
     Funcotator:
       resources: "/path/to/funcotator_resources"
-      reference_version: "hg19 " # options [hg19/hg38]
+      # options [hg19/hg38]
+      reference_version: "hg19"
     germline: "/path/to/af-only-gnomad.vcf.gz"
     exac: "/path/to/small_exac_common_3.vcf.gz"
   multiqc: "--force --interactive --cl_config 'max_table_rows: 700'"

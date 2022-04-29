@@ -42,6 +42,7 @@ properties:
             type: string
           Funcotator:
             type: object
+            properties:
             resources:
               type: string
             reference_version:
