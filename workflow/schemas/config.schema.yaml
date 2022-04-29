@@ -47,6 +47,9 @@ properties:
                 type: string
               reference_version:
                 type: string
+            required:
+              - resources
+              - reference_version
         required:
           - Mutect
           - SelectVariants
