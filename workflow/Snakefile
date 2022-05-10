@@ -20,17 +20,17 @@ include: "rules/annotation.smk"
 if config.get("run").get("all"):
     rule all:
         input:
-            expand(resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"results/{sample}_somatic_filtered_selected.vcf.gz"),sample=list(samples_master.keys())),
-            expand(resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"results/annotation/funcotator/{sample}_funcotated.maf"),sample=list(samples_master.keys()))
+            expand(resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"results/{sample}_somatic_filtered_selected.vcf.gz"),sample=list(samples_master.keys())),
+            expand(resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"results/annotation/funcotator/{sample}_funcotated.maf"),sample=list(samples_master.keys()))
 
 
 if config.get("run").get("call"):
     rule call:
         input:
-            expand(resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"results/{sample}_somatic_filtered_selected.vcf.gz"),sample=list(samples_master.keys()))
+            expand(resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"results/{sample}_somatic_filtered_selected.vcf.gz"),sample=list(samples_master.keys()))
 
 
 if config.get("run").get("annotate"):
     rule annotate:
         input:
-            expand(resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"results/annotation/funcotator/{sample}_funcotated.maf"),sample=list(samples_master.keys()))
+            expand(resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"results/annotation/funcotator/{sample}_funcotated.maf"),sample=list(samples_master.keys()))

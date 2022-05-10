@@ -4,13 +4,13 @@ rule get_sample_names:
         normal=lambda wildcards: get_normal_bam(wildcards),
         tumoral= lambda wildcards: get_tumoral_bam(wildcards),
     output:
-        normal=resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"results/tmp/{sample}_normal.samplename.txt"),
-        tumor=resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"results/tmp/{sample}_tumor.samplename.txt")
+        normal=resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"results/tmp/{sample}_normal.samplename.txt"),
+        tumor=resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"results/tmp/{sample}_tumor.samplename.txt")
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"),multiply_by=5)
     log:
-        normal=resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"logs/gatk/getsamplename/{sample}.gsn.log"),
-        tumor=resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"logs/gatk/getsamplename/{sample}.gsn_tumor.log")
+        normal=resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"logs/gatk/getsamplename/{sample}.gsn.log"),
+        tumor=resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"logs/gatk/getsamplename/{sample}.gsn_tumor.log")
     conda:
         resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2,max_cores=99)
@@ -32,13 +32,13 @@ rule mutect_matched:
     input:
         normal=lambda wildcards: get_normal_bam(wildcards),
         tumoral= lambda wildcards: get_tumoral_bam(wildcards),
-        normal_name=resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"results/tmp/{sample}_normal.samplename.txt"),
-        tumor_name=resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"results/tmp/{sample}_tumor.samplename.txt")
+        normal_name=resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"results/tmp/{sample}_normal.samplename.txt"),
+        tumor_name=resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"results/tmp/{sample}_tumor.samplename.txt")
     output:
-        vcf=resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"results/matched/{sample}_somatic.vcf.gz"),
-        bam=resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"results/matched/{sample}_tumor_normal.bam"),
-        fir=resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"results/matched/{sample}_tumor_normal_f1r2.tar.gz"),
-        stats=resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"results/matched/{sample}_somatic.vcf.gz.stats")
+        vcf=resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"results/matched/{sample}_somatic.vcf.gz"),
+        bam=resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"results/matched/{sample}_tumor_normal.bam"),
+        fir=resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"results/matched/{sample}_tumor_normal_f1r2.tar.gz"),
+        stats=resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"results/matched/{sample}_somatic.vcf.gz.stats")
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
         genome=config.get("resources").get("reference"),
@@ -48,7 +48,7 @@ rule mutect_matched:
         normal_bam = lambda wildcards, input: get_name(input.normal_name),
         tumor_bam= lambda wildcards,input: get_name(input.tumor_name)
     log:
-        resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"logs/gatk/Mutect2/{sample}.mutect.log")
+        resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"logs/gatk/Mutect2/{sample}.mutect.log")
     conda:
         resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
@@ -78,12 +78,12 @@ rule learn_orientation_model:
     input:
         rules.mutect_matched.output.fir
     output:
-        resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"results/filters/matched/{sample}_read-orientation-model.tar.gz")
+        resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"results/filters/matched/{sample}_read-orientation-model.tar.gz")
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
         exac=config.get("params").get("gatk").get("exac")
     log:
-        resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"logs/gatk/Mutect2/{sample}_pileupsummaries_T.log")
+        resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"logs/gatk/Mutect2/{sample}_pileupsummaries_T.log")
     conda:
        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
@@ -100,13 +100,13 @@ rule pileup_summaries_tumoral:
     input:
         tumoral= lambda wildcards: get_tumoral_bam(wildcards)
     output:
-        resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"results/filters/matched/{sample}_getpileupsummaries.table")
+        resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"results/filters/matched/{sample}_getpileupsummaries.table")
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
         intervals=resolve_single_filepath(config.get("paths").get("workdir"),resolve_single_filepath("resources",config.get("resources").get("bed"))),
         exac=config.get("params").get("gatk").get("exac")
     log:
-        resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"logs/gatk/Mutect2/{sample}_pileupsummaries_T.log")
+        resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"logs/gatk/Mutect2/{sample}_pileupsummaries_T.log")
     conda:
        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
@@ -125,13 +125,13 @@ rule pileup_summaries_normal:
     input:
         normal=lambda wildcards: get_normal_bam(wildcards)
     output:
-        resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"results/filters/matched/{sample}_normal_pileups.table")
+        resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"results/filters/matched/{sample}_normal_pileups.table")
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
         intervals=resolve_single_filepath(config.get("paths").get("workdir"),resolve_single_filepath("resources",config.get("resources").get("bed"))),
         exac=config.get("params").get("gatk").get("exac")
     log:
-        resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"logs/gatk/Mutect2/{sample}_pileupsummaries_C.log")
+        resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"logs/gatk/Mutect2/{sample}_pileupsummaries_C.log")
     conda:
        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
@@ -151,12 +151,12 @@ rule calculate_contamination:
         tab_t=rules.pileup_summaries_tumoral.output,
         tab_c=rules.pileup_summaries_normal.output
     output:
-        table=resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"results/filters/matched/{sample}_contamination.table"),
-        segment=resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"results/filters/matched/{sample}_tumor.segment")
+        table=resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"results/filters/matched/{sample}_contamination.table"),
+        segment=resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"results/filters/matched/{sample}_tumor.segment")
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"),multiply_by=5)
     log:
-        resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"logs/gatk/Mutect2/{sample}_calculatecontamination.log")
+        resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"logs/gatk/Mutect2/{sample}_calculatecontamination.log")
     conda:
        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)

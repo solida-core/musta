@@ -3,7 +3,7 @@ rule Funcotator:
         vcf=get_annotation_input()
     output:
         vcf=report(
-            resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"results/annotation/funcotator/{sample}_funcotated.maf"),
+            resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"results/annotation/funcotator/{sample}_funcotated.maf"),
             caption=resolve_single_filepath(config.get("paths").get("workdir"),"workflow/report/vcf.rst"),
             category="Annotation",
         )
@@ -15,7 +15,7 @@ rule Funcotator:
         genome_version=config.get("params").get("gatk").get("Funcotator").get("reference_version"),
         tumoral= lambda wildcards: get_tumorname(wildcards)
     log:
-        resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"logs/gatk/Funcotator/{sample}.funcotator.log")
+        resolve_results_filepath(config.get("paths").get("results_dir"),config.get("paths").get("project_name"),"logs/gatk/Funcotator/{sample}.funcotator.log")
     conda:
        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads:
