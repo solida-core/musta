@@ -6,13 +6,13 @@ rule filter_mutect:
         segments=rules.calculate_contamination.output.segment,
         stats=rules.mutect_matched.output.stats
     output:
-        vcf=resolve_single_filepath(config.get("paths").get("workdir"),"results/matched/{sample}_somatic_filtered.vcf.gz")
+        vcf=resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"results/matched/{sample}_somatic_filtered.vcf.gz")
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
         genome=config.get("resources").get("reference"),
         intervals=config.get("resources").get("bed"),
     log:
-        resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/Mutect2/{sample}.filter_info.log")
+        resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"logs/gatk/Mutect2/{sample}.filter_info.log")
     conda:
        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
@@ -40,13 +40,13 @@ rule filter_mutect_tumoronly:
         segments = rules.calculate_contamination_tumoronly.output.segment,
         stats=rules.mutect_tumoronly.output.stats
     output:
-        vcf=resolve_single_filepath(config.get("paths").get("workdir"),"results/tumoronly/{sample}_somatic_filtered.vcf.gz")
+        vcf=resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"results/tumoronly/{sample}_somatic_filtered.vcf.gz")
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
         genome=config.get("resources").get("reference"),
         intervals=config.get("resources").get("bed"),
     log:
-        resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/Mutect2/{sample}.filter_info.log")
+        resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"logs/gatk/Mutect2/{sample}.filter_info.log")
     conda:
        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
@@ -70,13 +70,13 @@ rule gatk_SelectVariants:
     input:
         lambda wildcards: select_filtered(wildcards)
     output:
-        vcf=resolve_single_filepath(config.get("paths").get("workdir"),"results/{sample}_somatic_filtered_selected.vcf.gz")
+        vcf=resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"results/{sample}_somatic_filtered_selected.vcf.gz")
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"),multiply_by=5),
         genome=config.get("resources").get("reference"),
         arguments=config.get("params").get("gatk").get("SelectVariants")
     log:
-        resolve_single_filepath(config.get("paths").get("workdir"),"logs/gatk/SelectVariants/{sample}.SelectVariants.log")
+        resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"logs/gatk/SelectVariants/{sample}.SelectVariants.log")
     conda:
         resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/gatk.yaml")
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)

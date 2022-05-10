@@ -168,3 +168,25 @@ def get_tumorname(wildcards):
         samples_master.keys()
     # print(wildcards.sample)
     return samples_master[wildcards.sample]["tumor_sample_name"][0]
+
+
+def ensure_dir(path, force=False):
+    try:
+        if force and os.path.exists(path):
+            shutil.rmtree(path)
+        os.makedirs(path)
+    except OSError:
+        if not os.path.isdir(path):
+            raise
+
+def exist_dir(path, delete=False):
+    try:
+        if delete and os.path.exists(path):
+            shutil.rmtree(path)
+        # os.makedirs(path)
+    except OSError:
+        if not os.path.isdir(path):
+            raise
+
+def resolve_results_filepath(basepath, project_name, outname):
+    return os.path.join(basepath, "results", project_name, outname)

@@ -29,4 +29,5 @@ params:
 
 paths:
   workdir: "/path/to/workdir"
+  project_name: "project_name"
   tmp_dir: "/path/to/tmp_dir"
