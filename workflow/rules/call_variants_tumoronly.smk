@@ -33,7 +33,7 @@ rule mutect_tumoronly:
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
         genome=config.get("resources").get("reference"),
-        intervals=config.get("resources").get("bed"),
+        intervals=resolve_single_filepath(config.get("paths").get("workdir"),resolve_single_filepath("resources",config.get("resources").get("bed"))),
         param=config.get("params").get("gatk").get("Mutect"),
         germline_resource=config.get("params").get("gatk").get("germline"),
         tumor_bam= lambda wildcards,input: get_name(input.tumor_name)
@@ -94,7 +94,7 @@ rule pileup_summaries_tumoronly:
         resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"results/filters/tumoronly/{sample}_getpileupsummaries.table")
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
-        intervals=config.get("resources").get("bed"),
+        intervals=resolve_single_filepath(config.get("paths").get("workdir"),resolve_single_filepath("resources",config.get("resources").get("bed"))),
         exac=config.get("params").get("gatk").get("exac")
     log:
         resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"logs/gatk/Mutect2/{sample}_pileupsummaries_T.log")

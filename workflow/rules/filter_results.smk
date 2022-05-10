@@ -10,7 +10,7 @@ rule filter_mutect:
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
         genome=config.get("resources").get("reference"),
-        intervals=config.get("resources").get("bed"),
+        intervals=resolve_single_filepath(config.get("paths").get("workdir"),resolve_single_filepath("resources",config.get("resources").get("bed")))
     log:
         resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"logs/gatk/Mutect2/{sample}.filter_info.log")
     conda:
@@ -44,7 +44,7 @@ rule filter_mutect_tumoronly:
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
         genome=config.get("resources").get("reference"),
-        intervals=config.get("resources").get("bed"),
+        intervals=resolve_single_filepath(config.get("paths").get("workdir"),resolve_single_filepath("resources",config.get("resources").get("bed")))
     log:
         resolve_results_filepath(config.get("paths").get("workdir"),config.get("paths").get("project_name"),"logs/gatk/Mutect2/{sample}.filter_info.log")
     conda:

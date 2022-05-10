@@ -11,8 +11,7 @@ samples: config/samples.yaml
 # reference files
 resources:
   reference: /path/to/reference/reference_genome.fasta
-  bed: /path/to/bedfile/mybed.bed
-
+  bed: resolve_single_filepath(config.get("paths").get("workdir"),"resources/hg19.RefSeq.bed")
 
 params:
   gatk:
