@@ -28,6 +28,5 @@ params:
 paths:
   workdir: "/path/to/workdir"
   results_dir: "/path/to/results_dir"
-  project_name: "project_name"
   tmp_dir: "/path/to/tmp_dir"
 

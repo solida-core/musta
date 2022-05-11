@@ -30,7 +30,6 @@ properties:
         type: string
     required:
       - workdir
-      - project_name
       - tmp_dir
 
   params:

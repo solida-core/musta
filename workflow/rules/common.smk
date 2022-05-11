@@ -188,5 +188,5 @@ def exist_dir(path, delete=False):
         if not os.path.isdir(path):
             raise
 
-def resolve_results_filepath(basepath, project_name, outname):
-    return os.path.join(basepath, project_name, outname)
+def resolve_results_filepath(basepath, outname):
+    return os.path.join(basepath, outname)
