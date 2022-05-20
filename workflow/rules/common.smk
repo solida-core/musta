@@ -146,7 +146,7 @@ def get_annotation_input():
     if config.get("run").get("annotate"):
         return(lambda wildcards: get_vcf_list(wildcards))
     else:
-        return "results/{sample}_somatic_filtered_selected.vcf.gz"
+        return resolve_results_filepath(config.get("paths").get("results_dir"),"results/{sample}_somatic_filtered_selected.vcf.gz")
 
 def get_vcf_list(wildcards):
     with open(config["samples"],'r') as file:
