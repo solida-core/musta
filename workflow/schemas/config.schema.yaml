@@ -29,6 +29,8 @@ properties:
     properties:
       workdir:
         type: string
+      project_name:
+        type: string
       tmp_dir:
         type: string
     required:

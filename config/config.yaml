@@ -11,8 +11,7 @@ samples: config/samples.yaml
 # reference files
 resources:
   reference: /path/to/reference/reference_genome.fasta
-  bed: /path/to/bedfile/mybed.bed
-
+  bed: hg19.RefSeq.bed # hg38.RefSeq.bed
 
 params:
   gatk:
@@ -20,8 +19,7 @@ params:
     SelectVariants: "--exclude-filtered --exclude-non-variants"
     Funcotator:
       resources: "/path/to/funcotator_resources"
-      # options [hg19/hg38]
-      reference_version: "hg19"
+      reference_version: "hg19" # options [hg19/hg38]
     germline: "/path/to/af-only-gnomad.vcf.gz"
     exac: "/path/to/small_exac_common_3.vcf.gz"
   multiqc: "--force --interactive --cl_config 'max_table_rows: 700'"
@@ -29,4 +27,6 @@ params:
 
 paths:
   workdir: "/path/to/workdir"
+  results_dir: "/path/to/results_dir"
   tmp_dir: "/path/to/tmp_dir"
+

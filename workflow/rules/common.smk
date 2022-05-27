@@ -146,7 +146,7 @@ def get_annotation_input():
     if config.get("run").get("annotate"):
         return(lambda wildcards: get_vcf_list(wildcards))
     else:
-        return "results/{sample}_somatic_filtered_selected.vcf.gz"
+        return resolve_results_filepath(config.get("paths").get("results_dir"),"results/{sample}_somatic_filtered_selected.vcf.gz")
 
 def get_vcf_list(wildcards):
     with open(config["samples"],'r') as file:
@@ -168,3 +168,25 @@ def get_tumorname(wildcards):
         samples_master.keys()
     # print(wildcards.sample)
     return samples_master[wildcards.sample]["tumor_sample_name"][0]
+
+
+def ensure_dir(path, force=False):
+    try:
+        if force and os.path.exists(path):
+            shutil.rmtree(path)
+        os.makedirs(path)
+    except OSError:
+        if not os.path.isdir(path):
+            raise
+
+def exist_dir(path, delete=False):
+    try:
+        if delete and os.path.exists(path):
+            shutil.rmtree(path)
+        # os.makedirs(path)
+    except OSError:
+        if not os.path.isdir(path):
+            raise
+
+def resolve_results_filepath(basepath, outname):
+    return os.path.join(basepath, outname)
