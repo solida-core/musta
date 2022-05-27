@@ -5,6 +5,11 @@ description: snakemake configuration file
 type: object
 
 properties:
+  run:
+    type: object
+    properties:
+
+
   samples:
     type: string
 
