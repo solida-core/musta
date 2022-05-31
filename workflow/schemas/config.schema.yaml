@@ -5,6 +5,7 @@ description: snakemake configuration file
 type: object
 
 properties:
+
   samples:
     type: string
 
@@ -24,12 +25,13 @@ properties:
     properties:
       workdir:
         type: string
-      project_name:
+      results_dir:
         type: string
       tmp_dir:
         type: string
     required:
       - workdir
+      - results_dir
       - tmp_dir
 
   params:
