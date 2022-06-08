@@ -6,26 +6,31 @@ library("BSgenome.Hsapiens.UCSC.hg19", quietly = TRUE)
 library('stringr')
 
 
+sessionInfo()
 ## input
-input_maf=snakemake@input[[1]]
+input_maf=snakemake@input[["mafs"]]
+print(input_maf)
 project_id=snakemake@params[["project_id"]]
 output_path=snakemake@params[["outdir"]]
 ## combine input files
 dirname(input_maf)
 setwd(dirname(input_maf[1]))
+getwd()
 ###reading mutiple .maf files as a large list
-maf.filenames <- list.files(full.names=TRUE, pattern = "_funcotated.maf")
+
+maf.filenames <- list.files(full.names=TRUE, pattern = ".maf")
 list.all.maf.files <- lapply(maf.filenames,function(i){
   read.delim(i, sep = "\t", header = TRUE, fill = TRUE, comment.char = "#")
 })
 
 ###merging the all the .maf files
 my_maf <- maftools::merge_mafs(list.all.maf.files)
-
+#write.table(my_maf, file = file.path(output_path,"merged_maf.tsv"), sep = "\t", row.names = F, col.names = T)
 ## create out dir
 dir.create(file.path(output_path), showWarnings = F)
 dir.exists(output_path)
 setwd(output_path)
+message("Output path is: ",output_path)
 
 ## read maf
 #my_maf = read.maf(maf = input_maf)
@@ -58,18 +63,23 @@ if(str_detect(my_maf@data[1,"Chromosome"], pattern = "chr", negate = T)){
 chr_prefix
 add_prefix
 ## summaty tables
+#head(as.data.frame(my_maf@summary[-c(2),c(1,2)], row.names = F))
+message("Write summary table")
 write.table(as.data.frame(my_maf@summary[-c(2),c(1,2)], row.names = F), file = file.path(output_path,"overview.tsv"), sep = "\t", row.names = F, col.names = T)
 
 list(my_maf@clinical.data)
 
 #Shows sample summry.
-write.table(as.data.frame(getSampleSummary(niasmic), row.names = F), file = file.path(output_path,"sample_summary.tsv"), sep = "\t", row.names = F, col.names = T)
+message("Write Samples Summary table")
+write.table(as.data.frame(getSampleSummary(my_maf), row.names = F), file = file.path(output_path,"sample_summary.tsv"), sep = "\t", row.names = F, col.names = T)
 
 #Shows gene summary.
-write.table(as.data.frame(getGeneSummary(niasmic), row.names = F), file = file.path(output_path,"gene_summary.tsv"), sep = "\t", row.names = F, col.names = T)
+message("Write Gene Summary table")
+write.table(as.data.frame(getGeneSummary(my_maf), row.names = F), file = file.path(output_path,"gene_summary.tsv"), sep = "\t", row.names = F, col.names = T)
 
-plotmafSummary(maf = my_maf, rmOutlier = TRUE, addStat = 'median', dashboard = TRUE, titvRaw = T, top = 10, log_scale = F)
-dev.off()
+#plotmafSummary(maf = my_maf, rmOutlier = TRUE, addStat = 'median', dashboard = TRUE, titvRaw = T, top = 10, log_scale = F)
+#dev.off()
+message("Plot MAF Summary")
 png(filename = file.path(output_path,"summary.png"), width = 500, height = 250, units='mm', res = 500)
 plotmafSummary(maf = my_maf, rmOutlier = TRUE, addStat = 'median', dashboard = TRUE, titvRaw = T, top = 10, log_scale = T)
 dev.off()
@@ -87,7 +97,7 @@ names(vc_cols) = c(
   'Splice_Site',
   'In_Frame_Del'
 )
-
+message("Oncopot generation")
 png(filename = file.path(output_path,"oncoplot.png"), width = 500, height = 250, units='mm', res = 400)
 oncoplot(maf = my_maf, colors = vc_cols, top = 10, altered = T, 
          logColBar = T, drawRowBar = T,draw_titv = F, 
@@ -166,7 +176,6 @@ write.table(as.data.frame(somaticInteractions(maf = my_maf, top = 25, pvalue = c
 
 
 my_maf.sig = oncodrive(maf = my_maf, AACol = aminoacid_cname, minMut = 5, pvalMethod = 'zscore')
-#niasmic.sig = oncodrive(maf = niasmic, AACol = 'Protein_Change', minMut = 5, pvalMethod = 'zscore')
 head(my_maf.sig)
 
 write.table(my_maf.sig, file = file.path(output_path,"oncodrive.tsv"), sep = "\t", row.names = F, col.names = T)

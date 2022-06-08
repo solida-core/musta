@@ -35,5 +35,10 @@ if config.get("run").get("call"):
 if config.get("run").get("annotate"):
     rule annotate:
         input:
-            expand(resolve_results_filepath(config.get("paths").get("results_dir"),"results/annotation/funcotator/{sample}_funcotated.maf"),sample=list(samples_master.keys())),
+            expand(resolve_results_filepath(config.get("paths").get("results_dir"),"results/annotation/funcotator/{sample}_funcotated.maf"),sample=list(samples_master.keys()))
+
+
+if config.get("run").get("profile"):
+    rule annotate:
+        input:
             resolve_single_filepath(config.get("paths").get("workdir"),"results/annotation/maftools/signature_contributions.png")

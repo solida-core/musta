@@ -144,7 +144,7 @@ def select_filtered(wildcards):
 
 def get_annotation_input():
     if config.get("run").get("annotate"):
-        return(lambda wildcards: get_vcf_list(wildcards))
+        return lambda wildcards: get_vcf_list(wildcards)
     else:
         return resolve_results_filepath(config.get("paths").get("results_dir"),"results/{sample}_somatic_filtered_selected.vcf.gz")
 
@@ -154,6 +154,19 @@ def get_vcf_list(wildcards):
         samples_master.keys()
     # print(wildcards.sample)
     return samples_master[wildcards.sample]["vcf"][0]
+
+def get_maf_file_input():
+    if config.get("run").get("profile"):
+        return lambda wildcards: get_maf_list(wildcards)
+    else:
+        return expand(resolve_results_filepath(config.get("paths").get("results_dir"),"results/annotation/funcotator/{sample}_funcotated.maf"), sample=list(samples_master.keys()))
+
+def get_maf_list(wildcards):
+    with open(config["samples"],'r') as file:
+        samples_master = yaml.load(file,Loader=yaml.FullLoader)
+    return (p[1].get("maf")[0] for p in samples_master.items() if "maf" in p[1])
+
+
 
 def get_normalname(wildcards):
     with open(config["samples"],'r') as file:

@@ -1,7 +1,7 @@
 
 rule maftools:
     input:
-        expand(resolve_results_filepath(config.get("paths").get("results_dir"),"results/annotation/funcotator/{sample}_funcotated.maf"),sample=list(samples_master.keys()))
+        mafs=get_maf_file_input()
     output:
         resolve_single_filepath(config.get("paths").get("workdir"),"results/annotation/maftools/signature_contributions.png")
     params:
@@ -14,4 +14,4 @@ rule maftools:
     resources:
         tmpdir = config.get("paths").get("tmp_dir")
     script:
-        "scripts/maftools.R"
+        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/scripts/maftools.R")
