@@ -1,8 +1,8 @@
 run:
-  all: True
+  all: False
   call: False
-  annotate: True
-  profile: False
+  annotate: False
+  analysis: False
 
 # path or URL to sample sheet (TSV format, columns: sample, condition, ...)
 
