@@ -156,7 +156,7 @@ def get_vcf_list(wildcards):
     return samples_master[wildcards.sample]["vcf"][0]
 
 def get_maf_file_input():
-    if config.get("run").get("profile"):
+    if config.get("run").get("analysis"):
         return lambda wildcards: get_maf_list(wildcards)
     else:
         return expand(resolve_results_filepath(config.get("paths").get("results_dir"),"results/annotation/funcotator/{sample}_funcotated.maf"), sample=list(samples_master.keys()))
