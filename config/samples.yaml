@@ -4,21 +4,25 @@ patientA:
   tumor_sample_name:
     - A25
   normal_bam:
-    - ../test-data-somatic/data/bam/N1.chr22.bam
+    - test-data-somatic/data/bam/N1.chr22.bam
   tumor_bam:
-    - ../test-data-somatic/data/bam/A25.chr22.bam
+    - test-data-somatic/data/bam/A25.chr22.bam
   vcf:
-    - ../test-data-somatic/data/vcf/patientA_somatic_filtered_selected.vcf.gz
-  maf:
-    - ../test-data-somatic/data/maf/patientA_funcotated.maf
+    - test-data-somatic/data/vcf/patientA_somatic_filtered_selected.vcf.gz
 patientB:
   normal_sample_name:
   tumor_sample_name:
     - B33
   normal_bam:
   tumor_bam:
-    - ../test-data-somatic/data/bam/B33.chr22.bam
+    - test-data-somatic/data/bam/B33.chr22.bam
   vcf:
-    - ../test-data-somatic/data/vcf/patientB_somatic_filtered_selected.vcf.gz
+    - test-data-somatic/data/vcf/patientB_somatic_filtered_selected.vcf.gz
+patientBRCA:
+  normal_sample_name:
+  tumor_sample_name:
+  normal_bam:
+  tumor_bam:
+  vcf:
   maf:
-    - ../test-data-somatic/data/maf/patientB_funcotated.maf
+    - test-data-somatic/data/maf/BRCA_subset_25_samples.maf
