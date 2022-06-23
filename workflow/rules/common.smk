@@ -16,10 +16,20 @@ with open(config["samples"],'r') as file:
     samples_master.keys()
     samples=[]
     for sample in list(samples_master.keys()):
-        if "vcf" in samples_master[sample]:
-            samples.append(sample)
+        if config.get("run").get("call"):
+            if "tumor_bam" in samples_master[sample]:
+                samples.append(sample)
+            else: pass
+        elif config.get("run").get("annotate"):
+            if "vcf" in samples_master[sample]:
+                samples.append(sample)
+            else: pass
+        elif config.get("run").get("analysis"):
+            if "maf" in samples_master[sample]:
+                samples.append(sample)
+            else: pass
         else:
-            print("no vcf")
+            samples.append(sample)
 d = samples_master
 samples_master = {k: v for k, v in d.items() if k in samples}
 

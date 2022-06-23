@@ -19,10 +19,5 @@ patientB:
   vcf:
     - test-data-somatic/data/vcf/patientB_somatic_filtered_selected.vcf.gz
 patientBRCA:
-  normal_sample_name:
-  tumor_sample_name:
-  normal_bam:
-  tumor_bam:
-  vcf:
   maf:
     - test-data-somatic/data/maf/BRCA_subset_25_samples.maf
