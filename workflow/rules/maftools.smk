@@ -33,3 +33,19 @@ rule maftools_signatures:
         tmpdir = config.get("paths").get("tmp_dir")
     script:
         resolve_single_filepath(config.get("paths").get("workdir"),"workflow/scripts/maftools_signatures.R")
+
+rule maftools_driver:
+    input:
+        mafs=get_maf_file_input()
+    output:
+        resolve_single_filepath(config.get("paths").get("results_dir"),"results/driver/plots/somatic_interactions.png")
+    params:
+        outdir=resolve_single_filepath(config.get("paths").get("results_dir"),"results/driver")
+    conda:
+       resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/maftools.yaml")
+    threads:
+        conservative_cpu_count(reserve_cores=2, max_cores=99)
+    resources:
+        tmpdir = config.get("paths").get("tmp_dir")
+    script:
+        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/scripts/maftools_driver.R")

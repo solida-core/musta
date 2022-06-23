@@ -23,7 +23,8 @@ if config.get("run").get("all"):
         input:
             expand(resolve_results_filepath(config.get("paths").get("results_dir"),"results/{sample}_somatic_filtered_selected.vcf.gz"),sample=list(samples_master.keys())),
             expand(resolve_results_filepath(config.get("paths").get("results_dir"),"results/annotation/funcotator/{sample}_funcotated.maf"),sample=list(samples_master.keys())),
-            resolve_single_filepath(config.get("paths").get("results_dir"),"results/signatures/plots/cosmic_signatures.png")
+            resolve_single_filepath(config.get("paths").get("results_dir"),"results/signatures/plots/cosmic_signatures.png"),
+            resolve_single_filepath(config.get("paths").get("results_dir"), "results/driver/plots/somatic_interactions.png")
 
 
 if config.get("run").get("call"):
@@ -41,4 +42,5 @@ if config.get("run").get("annotate"):
 if config.get("run").get("analysis"):
     rule analysis:
         input:
-            resolve_single_filepath(config.get("paths").get("results_dir"),"results/signatures/plots/cosmic_signatures.png")
+            resolve_single_filepath(config.get("paths").get("results_dir"),"results/signatures/plots/cosmic_signatures.png"),
+            resolve_single_filepath(config.get("paths").get("results_dir"), "results/driver/plots/somatic_interactions.png")
