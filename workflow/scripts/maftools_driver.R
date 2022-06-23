@@ -9,36 +9,23 @@ library('stringr')
 sessionInfo()
 ## input
 input_maf=snakemake@input[["mafs"]]
-
-#project_id="project_id"
-#output_path="/home/matteo/Scrivania/aleale_new_20"
-#input_maf="test-data-somatic/data/maf/BRCA_subset_25_samples.maf"
-
 print(input_maf)
+project_id=snakemake@params[["project_id"]]
 output_path=snakemake@params[["outdir"]]
 ## combine input files
-dirname(input_maf)
-setwd(dirname(input_maf[1]))
 getwd()
-###reading mutiple .maf files as a large list
 
-#maf.filenames <- list.files(full.names=TRUE, pattern = ".maf")
-maf.filenames <- file.path(".",basename(input_maf))
+maf.filenames <- file.path(input_maf)
 list.all.maf.files <- lapply(maf.filenames,function(i){
   read.delim(i, sep = "\t", header = TRUE, fill = TRUE, comment.char = "#")
 })
 
 ###merging the all the .maf files
 my_maf <- maftools::merge_mafs(list.all.maf.files)
-#write.table(my_maf, file = file.path(output_path,"merged_maf.tsv"), sep = "\t", row.names = F, col.names = T)
 ## create out dir
 dir.create(file.path(output_path), showWarnings = F)
 dir.exists(output_path)
-setwd(output_path)
 message("Output path is: ",output_path)
-
-## read maf
-#my_maf = read.maf(maf = input_maf)
 
 ## check from maf
 aminoacid_cname='Protein_Change'
