@@ -14,7 +14,14 @@ validate(config, schema="../schemas/config.schema.yaml")
 with open(config["samples"],'r') as file:
     samples_master = yaml.load(file, Loader=yaml.FullLoader)
     samples_master.keys()
-samples=list(samples_master.keys())
+    samples=[]
+    for sample in list(samples_master.keys()):
+        if "vcf" in samples_master[sample]:
+            samples.append(sample)
+        else:
+            print("no vcf")
+d = samples_master
+samples_master = {k: v for k, v in d.items() if k in samples}
 
 def total_physical_mem_size():
     mem = psutil.virtual_memory()
@@ -122,6 +129,13 @@ def get_tumoral_bam(wildcards):
     with open(config["samples"],'r') as file:
         samples_master = yaml.load(file,Loader=yaml.FullLoader)
         samples_master.keys()
+        # for sample in list(samples_master.keys()):
+        #     if "tumor_bam" in samples_master[sample]:
+        #         samples.append(sample)
+        #     else:
+        #         print("no vcf")
+        # d = samples_master
+        # samples_master2 = {k: v for k, v in d.items() if k in samples}
     # print(wildcards.sample)
     return samples_master[wildcards.sample]["tumor_bam"][0]
 
@@ -152,8 +166,16 @@ def get_vcf_list(wildcards):
     with open(config["samples"],'r') as file:
         samples_master = yaml.load(file,Loader=yaml.FullLoader)
         samples_master.keys()
+        # samples = []
+        # for sample in list(samples_master.keys()):
+        #     if "vcf" in samples_master[sample]:
+        #         samples.append(sample)
+        #     else:
+        #         print("no vcf")
+        # d = samples_master
+        # samples_master2 = {k: v for k, v in d.items() if k in samples}
     # print(wildcards.sample)
-    return samples_master[wildcards.sample]["vcf"][0]
+    return (samples_master[wildcards.sample]["vcf"][0])
 
 def get_maf_file_input():
     if config.get("run").get("analysis"):
