@@ -19,7 +19,7 @@ The usage of this workflow is described in the [Snakemake Workflow Catalog](http
 
 If you use this workflow in a paper, don't forget to give credits to the authors by citing the URL of this (original) repository and its DOI (see above).
 
-## INSTRUCITONS
+## INSTRUCTIONS
 Create a virtual environment with the command:
 ```commandline
 mamba create -c bioconda -c conda-forge --name snakemake snakemake=6.15 snakedeploy
