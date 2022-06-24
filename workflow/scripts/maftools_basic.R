@@ -137,12 +137,15 @@ samples=as.list(samples$Tumor_Sample_Barcode)
 
 dir.create(file.path(output_path,"plots","rainfall"), showWarnings = F)
 dir.exists(file.path(output_path,"plots","rainfall"))
-
+i=0
 for(sample in samples){
   print(sample)
-  png(filename = file.path(output_path,"plots","rainfall",paste(sample,".rainfall.png")), width = 500, height = 250, units='mm', res = 400)
-  rainfallPlot(maf = my_maf, detectChangePoints = TRUE, pointSize = 0.4, ref.build = genome_vers, tsb=sample)
-  dev.off()
+  i=i+1
+  print(paste("samples processed:",i,"/",length(samples)))
+  try(expr = {png(filename = file.path(output_path,"plots","rainfall",paste(sample,".rainfall.png")), width = 500, height = 250, units='mm', res = 400)
+    rainfallPlot(maf = my_maf, detectChangePoints = TRUE, pointSize = 0.4, ref.build = genome_vers, tsb=sample)
+    dev.off()}, silent = TRUE
+  )
 }
 
 
