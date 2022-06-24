@@ -29,7 +29,10 @@ with open(config["samples"],'r') as file:
                 samples.append(sample)
             else: pass
         else:
-            samples.append(sample)
+            if "tumor_bam" in samples_master[sample]:
+                samples.append(sample)
+            else:
+                pass
 d = samples_master
 samples_master = {k: v for k, v in d.items() if k in samples}
 
