@@ -25,7 +25,7 @@ if config.get("run").get("all"):
             expand(resolve_results_filepath(config.get("paths").get("results_dir"),"results/annotation/funcotator/{sample}_funcotated.maf"),sample=list(samples_master.keys())),
             resolve_single_filepath(config.get("paths").get("results_dir"),"results/analysis/signatures/plots/cosmic_signatures.png"),
             resolve_single_filepath(config.get("paths").get("results_dir"), "results/analysis/driver/plots/somatic_interactions.png"),
-            resolve_single_filepath(config.get("paths").get("results_dir"), "results/analysis/general/plots/top10_VAF.png"),
+            resolve_single_filepath(config.get("paths").get("results_dir"), "results/analysis/base/plots/top10_VAF.png"),
             resolve_single_filepath(config.get("paths").get("results_dir"), "results/analysis/pathways/plots/oncogenic_pathways.png"),
             resolve_single_filepath(config.get("paths").get("results_dir"), "results/analysis/heterogeneity/tables/successful.tsv")
 
@@ -47,6 +47,6 @@ if config.get("run").get("analysis"):
         input:
             resolve_single_filepath(config.get("paths").get("results_dir"),"results/analysis/signatures/plots/cosmic_signatures.png"),
             resolve_single_filepath(config.get("paths").get("results_dir"), "results/analysis/driver/plots/somatic_interactions.png"),
-            resolve_single_filepath(config.get("paths").get("results_dir"), "results/analysis/general/plots/top10_VAF.png"),
+            resolve_single_filepath(config.get("paths").get("results_dir"), "results/analysis/base/plots/top10_VAF.png"),
             resolve_single_filepath(config.get("paths").get("results_dir"), "results/analysis/pathways/plots/oncogenic_pathways.png"),
             resolve_single_filepath(config.get("paths").get("results_dir"), "results/analysis/heterogeneity/tables/successful.tsv")

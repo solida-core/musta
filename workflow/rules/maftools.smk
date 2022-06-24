@@ -3,10 +3,10 @@ rule maftools_base:
     input:
         mafs=get_maf_file_input()
     output:
-        resolve_single_filepath(config.get("paths").get("results_dir"),"results/analysis/general/plots/top10_VAF.png")
+        resolve_single_filepath(config.get("paths").get("results_dir"),"results/analysis/base/plots/top10_VAF.png")
     params:
         project_id="prova",
-        outdir=resolve_single_filepath(config.get("paths").get("results_dir"),"results/analysis/general")
+        outdir=resolve_single_filepath(config.get("paths").get("results_dir"),"results/analysis/base")
     conda:
        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/maftools.yaml")
     threads:
