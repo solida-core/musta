@@ -142,98 +142,30 @@ def get_tumoral_bam(wildcards):
     with open(config["samples"],'r') as file:
         samples_master = yaml.load(file,Loader=yaml.FullLoader)
         samples_master.keys()
-        samples = []
-        for sample in list(samples_master.keys()):
-            if config.get("run").get("call"):
-                if "tumor_bam" in samples_master[sample]:
-                    samples.append(sample)
-                else:
-                    pass
-            elif config.get("run").get("annotate"):
-                if "vcf" in samples_master[sample]:
-                    samples.append(sample)
-                else:
-                    pass
-            elif config.get("run").get("analysis"):
-                if "maf" in samples_master[sample]:
-                    samples.append(sample)
-                else:
-                    pass
-            else:
-                if "tumor_bam" in samples_master[sample]:
-                    samples.append(sample)
-                else:
-                    pass
-        d = samples_master
-        samples_master = {k: v for k, v in d.items() if k in samples}
+        # for sample in list(samples_master.keys()):
+        #     if "tumor_bam" in samples_master[sample]:
+        #         samples.append(sample)
+        #     else:
+        #         print("no vcf")
+        # d = samples_master
+        # samples_master2 = {k: v for k, v in d.items() if k in samples}
+    # print(wildcards.sample)
     return samples_master[wildcards.sample]["tumor_bam"][0]
 
 def get_normal_bam(wildcards):
     with open(config["samples"],'r') as file:
         samples_master = yaml.load(file,Loader=yaml.FullLoader)
         samples_master.keys()
-        samples = []
-        for sample in list(samples_master.keys()):
-            if config.get("run").get("call"):
-                if "tumor_bam" in samples_master[sample]:
-                    samples.append(sample)
-                else:
-                    pass
-            elif config.get("run").get("annotate"):
-                if "vcf" in samples_master[sample]:
-                    samples.append(sample)
-                else:
-                    pass
-            elif config.get("run").get("analysis"):
-                if "maf" in samples_master[sample]:
-                    samples.append(sample)
-                else:
-                    pass
-            else:
-                if "tumor_bam" in samples_master[sample]:
-                    samples.append(sample)
-                else:
-                    pass
-        d = samples_master
-        samples_master = {k: v for k, v in d.items() if k in samples}
+    # print(wildcards.sample)
     return samples_master[wildcards.sample]["normal_bam"][0]
 
 def select_filtered(wildcards):
     with open(config["samples"],'r') as file:
         samples_master = yaml.load(file,Loader=yaml.FullLoader)
-        samples_master.keys()
-        samples = []
-        for sample in list(samples_master.keys()):
-            if config.get("run").get("call"):
-                if "tumor_bam" in samples_master[sample]:
-                    samples.append(sample)
-                else:
-                    pass
-            elif config.get("run").get("annotate"):
-                if "vcf" in samples_master[sample]:
-                    samples.append(sample)
-                else:
-                    pass
-            elif config.get("run").get("analysis"):
-                if "maf" in samples_master[sample]:
-                    samples.append(sample)
-                else:
-                    pass
-            else:
-                if "tumor_bam" in samples_master[sample]:
-                    samples.append(sample)
-                else:
-                    pass
-        d = samples_master
-        samples_master = {k: v for k, v in d.items() if k in samples}
-    if not samples_master[wildcards.sample]["normal_bam"] and samples_master[wildcards.sample]["tumor_bam"]:
-        pass
-
+    if not samples_master[wildcards.sample]["normal_bam"]:
+        return rules.filter_mutect_tumoronly.output.vcf
     else:
-        if not samples_master[wildcards.sample]["normal_bam"]:
-            return rules.filter_mutect_tumoronly.output.vcf
-        else:
-            return rules.filter_mutect.output.vcf
+        return rules.filter_mutect.output.vcf
 
 ## functions for pipeline starting from vcf
 
@@ -247,30 +179,15 @@ def get_vcf_list(wildcards):
     with open(config["samples"],'r') as file:
         samples_master = yaml.load(file,Loader=yaml.FullLoader)
         samples_master.keys()
-        samples = []
-        for sample in list(samples_master.keys()):
-            if config.get("run").get("call"):
-                if "tumor_bam" in samples_master[sample]:
-                    samples.append(sample)
-                else:
-                    pass
-            elif config.get("run").get("annotate"):
-                if "vcf" in samples_master[sample]:
-                    samples.append(sample)
-                else:
-                    pass
-            elif config.get("run").get("analysis"):
-                if "maf" in samples_master[sample]:
-                    samples.append(sample)
-                else:
-                    pass
-            else:
-                if "tumor_bam" in samples_master[sample]:
-                    samples.append(sample)
-                else:
-                    pass
-        d = samples_master
-        samples_master = {k: v for k, v in d.items() if k in samples}
+        # samples = []
+        # for sample in list(samples_master.keys()):
+        #     if "vcf" in samples_master[sample]:
+        #         samples.append(sample)
+        #     else:
+        #         print("no vcf")
+        # d = samples_master
+        # samples_master2 = {k: v for k, v in d.items() if k in samples}
+    # print(wildcards.sample)
     return (samples_master[wildcards.sample]["vcf"][0])
 
 def get_maf_file_input():
@@ -290,60 +207,14 @@ def get_normalname(wildcards):
     with open(config["samples"],'r') as file:
         samples_master = yaml.load(file,Loader=yaml.FullLoader)
         samples_master.keys()
-        samples = []
-        for sample in list(samples_master.keys()):
-            if config.get("run").get("call"):
-                if "tumor_bam" in samples_master[sample]:
-                    samples.append(sample)
-                else:
-                    pass
-            elif config.get("run").get("annotate"):
-                if "vcf" in samples_master[sample]:
-                    samples.append(sample)
-                else:
-                    pass
-            elif config.get("run").get("analysis"):
-                if "maf" in samples_master[sample]:
-                    samples.append(sample)
-                else:
-                    pass
-            else:
-                if "tumor_bam" in samples_master[sample]:
-                    samples.append(sample)
-                else:
-                    pass
-        d = samples_master
-        samples_master = {k: v for k, v in d.items() if k in samples}
+    # print(wildcards.sample)
     return samples_master[wildcards.sample]["normal_sample_name"][0]
 
 def get_tumorname(wildcards):
     with open(config["samples"],'r') as file:
         samples_master = yaml.load(file,Loader=yaml.FullLoader)
         samples_master.keys()
-        samples = []
-        for sample in list(samples_master.keys()):
-            if config.get("run").get("call"):
-                if "tumor_bam" in samples_master[sample]:
-                    samples.append(sample)
-                else:
-                    pass
-            elif config.get("run").get("annotate"):
-                if "vcf" in samples_master[sample]:
-                    samples.append(sample)
-                else:
-                    pass
-            elif config.get("run").get("analysis"):
-                if "maf" in samples_master[sample]:
-                    samples.append(sample)
-                else:
-                    pass
-            else:
-                if "tumor_bam" in samples_master[sample]:
-                    samples.append(sample)
-                else:
-                    pass
-        d = samples_master
-        samples_master = {k: v for k, v in d.items() if k in samples}
+    # print(wildcards.sample)
     return samples_master[wildcards.sample]["tumor_sample_name"][0]
 
 
