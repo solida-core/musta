@@ -224,8 +224,8 @@ def select_filtered(wildcards):
                     samples.append(sample)
                 else:
                     pass
-    d = samples_master
-    samples_master = {k: v for k, v in d.items() if k in samples}
+        d = samples_master
+        samples_master = {k: v for k, v in d.items() if k in samples}
     if not samples_master[wildcards.sample]["normal_bam"]:
         return rules.filter_mutect_tumoronly.output.vcf
     else:
@@ -268,8 +268,8 @@ def get_vcf_list(wildcards):
                     samples.append(sample)
                 else:
                     pass
-    d = samples_master
-    samples_master = {k: v for k, v in d.items() if k in samples}
+        d = samples_master
+        samples_master = {k: v for k, v in d.items() if k in samples}
     return (samples_master[wildcards.sample]["vcf"][0])
 
 def get_maf_file_input():
@@ -311,8 +311,8 @@ def get_normalname(wildcards):
                     samples.append(sample)
                 else:
                     pass
-    d = samples_master
-    samples_master = {k: v for k, v in d.items() if k in samples}
+        d = samples_master
+        samples_master = {k: v for k, v in d.items() if k in samples}
     return samples_master[wildcards.sample]["normal_sample_name"][0]
 
 def get_tumorname(wildcards):
@@ -341,8 +341,8 @@ def get_tumorname(wildcards):
                     samples.append(sample)
                 else:
                     pass
-    d = samples_master
-    samples_master = {k: v for k, v in d.items() if k in samples}
+        d = samples_master
+        samples_master = {k: v for k, v in d.items() if k in samples}
     return samples_master[wildcards.sample]["tumor_sample_name"][0]
 
 
