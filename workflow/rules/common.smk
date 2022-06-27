@@ -165,7 +165,10 @@ def select_filtered(wildcards):
     if not samples_master[wildcards.sample]["normal_bam"]:
         return rules.filter_mutect_tumoronly.output.vcf
     else:
-        return rules.filter_mutect.output.vcf
+        if not samples_master[wildcards.sample]["tumor_bam"]:
+            pass
+        else:
+            return rules.filter_mutect.output.vcf
 
 ## functions for pipeline starting from vcf
 
