@@ -226,11 +226,12 @@ def select_filtered(wildcards):
                     pass
         d = samples_master
         samples_master = {k: v for k, v in d.items() if k in samples}
-    if not samples_master[wildcards.sample]["normal_bam"]:
-        return rules.filter_mutect_tumoronly.output.vcf
+    if not samples_master[wildcards.sample]["normal_bam"] and samples_master[wildcards.sample]["tumor_bam"]:
+        pass
+
     else:
-        if not samples_master[wildcards.sample]["tumor_bam"]:
-            pass
+        if not samples_master[wildcards.sample]["normal_bam"]:
+            return rules.filter_mutect_tumoronly.output.vcf
         else:
             return rules.filter_mutect.output.vcf
 
