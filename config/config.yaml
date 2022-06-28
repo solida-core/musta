@@ -23,6 +23,8 @@ params:
     germline: "/path/to/af-only-gnomad.vcf.gz"
     exac: "/path/to/small_exac_common_3.vcf.gz"
   multiqc: "--force --interactive --cl_config 'max_table_rows: 700'"
+  maftools:
+    project_name: "Current_analysis"
 
 
 paths:

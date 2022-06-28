@@ -24,7 +24,7 @@ rule maftools_base:
             category="Maftools"
         )
     params:
-        project_id="prova",
+        project_id=config.get("params").get("maftools").get("project_name"),
         outdir=resolve_single_filepath(config.get("paths").get("results_dir"),"results/analysis/base")
     conda:
        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/maftools.yaml")
