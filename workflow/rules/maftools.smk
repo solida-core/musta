@@ -22,7 +22,11 @@ rule maftools_signatures:
         mafs=get_maf_file_input(),
         requisites=rules.maftools_base.output
     output:
-        resolve_single_filepath(config.get("paths").get("results_dir"),"results/analysis/signatures/plots/cosmic_signatures.png")
+        signatures=report(
+            resolve_single_filepath(config.get("paths").get("results_dir"),"results/analysis/signatures/plots/cosmic_signatures.png"),
+            caption=resolve_single_filepath(config.get("paths").get("workdir"),"workflow/report/signatures.rst"),
+            category="Signatures",
+        )
     params:
         project_id="prova",
         outdir=resolve_single_filepath(config.get("paths").get("results_dir"),"results/analysis/signatures")
