@@ -1,6 +1,6 @@
-******************
+*********************
 MuSTA Analysis Report
-******************
+*********************
 MuSTA: end-to-end pipeline to detect, classify and interpret mutations in cancer
 
 .. |date| date::

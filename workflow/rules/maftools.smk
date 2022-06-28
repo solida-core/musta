@@ -3,7 +3,26 @@ rule maftools_base:
     input:
         mafs=get_maf_file_input()
     output:
-        resolve_single_filepath(config.get("paths").get("results_dir"),"results/analysis/base/plots/top10_VAF.png")
+        summary=report(
+            resolve_single_filepath(config.get("paths").get("results_dir"),"results/analysis/base/plots/summary.png"),
+            caption=resolve_single_filepath(config.get("paths").get("workdir"),"workflow/report/summary.rst"),
+            category="Maftools"
+        ),
+        oncoplot=report(
+            resolve_single_filepath(config.get("paths").get("results_dir"),"results/analysis/base/plots/large_oncoplot.png"),
+            caption=resolve_single_filepath(config.get("paths").get("workdir"),"workflow/report/oncoplot.rst"),
+            category="Maftools"
+        ),
+        tgca=report(
+            resolve_single_filepath(config.get("paths").get("results_dir"), "results/analysis/base/plots/TGCA_compare.png"),
+            caption=resolve_single_filepath(config.get("paths").get("workdir"),"workflow/report/tgca.rst"),
+            category="Maftools"
+        ),
+        vaf=report(
+            resolve_single_filepath(config.get("paths").get("results_dir"), "results/analysis/base/plots/top10_VAF.png"),
+            caption=resolve_single_filepath(config.get("paths").get("workdir"),"workflow/report/vaf.rst"),
+            category="Maftools"
+        )
     params:
         project_id="prova",
         outdir=resolve_single_filepath(config.get("paths").get("results_dir"),"results/analysis/base")
@@ -45,7 +64,11 @@ rule maftools_driver:
         mafs=get_maf_file_input(),
         requisites=rules.maftools_base.output
     output:
-        resolve_single_filepath(config.get("paths").get("results_dir"),"results/analysis/driver/plots/somatic_interactions.png")
+        interactions=report(
+            resolve_single_filepath(config.get("paths").get("results_dir"),"results/analysis/driver/plots/somatic_interactions.png"),
+            caption=resolve_single_filepath(config.get("paths").get("workdir"),"workflow/report/interactions.rst"),
+            category="Somatic Interactions",
+        )
     params:
         outdir=resolve_single_filepath(config.get("paths").get("results_dir"),"results/analysis/driver")
     conda:
