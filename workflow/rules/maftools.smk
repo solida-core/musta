@@ -39,7 +39,7 @@ rule maftools_base:
 rule maftools_signatures:
     input:
         mafs=get_maf_file_input(),
-        requisites=rules.maftools_base.output
+        requisites=rules.maftools_base.output.summary
     output:
         signatures=report(
             resolve_single_filepath(config.get("paths").get("results_dir"),"results/analysis/signatures/plots/cosmic_signatures.png"),
@@ -47,10 +47,10 @@ rule maftools_signatures:
             category="Signatures",
         )
     params:
-        project_id="prova",
+        project_id=config.get("params").get("maftools").get("project_name"),
         outdir=resolve_single_filepath(config.get("paths").get("results_dir"),"results/analysis/signatures")
     conda:
-       resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/maftools.yaml")
+        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/maftools.yaml")
     threads:
         conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
@@ -62,7 +62,7 @@ rule maftools_signatures:
 rule maftools_driver:
     input:
         mafs=get_maf_file_input(),
-        requisites=rules.maftools_base.output
+        requisites=rules.maftools_base.output.summary
     output:
         interactions=report(
             resolve_single_filepath(config.get("paths").get("results_dir"),"results/analysis/driver/plots/somatic_interactions.png"),
@@ -72,7 +72,7 @@ rule maftools_driver:
     params:
         outdir=resolve_single_filepath(config.get("paths").get("results_dir"),"results/analysis/driver")
     conda:
-       resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/maftools.yaml")
+        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/maftools.yaml")
     threads:
         conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
@@ -84,13 +84,13 @@ rule maftools_driver:
 rule maftools_pathways:
     input:
         mafs=get_maf_file_input(),
-        requisites=rules.maftools_base.output
+        requisites=rules.maftools_base.output.summary
     output:
         resolve_single_filepath(config.get("paths").get("results_dir"),"results/analysis/pathways/plots/oncogenic_pathways.png")
     params:
         outdir=resolve_single_filepath(config.get("paths").get("results_dir"),"results/analysis/pathways")
     conda:
-       resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/maftools.yaml")
+        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/maftools.yaml")
     threads:
         conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
@@ -102,13 +102,13 @@ rule maftools_pathways:
 rule maftools_heterogeneity:
     input:
         mafs=get_maf_file_input(),
-        requisites=rules.maftools_base.output
+        requisites=rules.maftools_base.output.summary
     output:
         resolve_single_filepath(config.get("paths").get("results_dir"),"results/analysis/heterogeneity/tables/successful.tsv")
     params:
         outdir=resolve_single_filepath(config.get("paths").get("results_dir"),"results/analysis/heterogeneity")
     conda:
-       resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/maftools.yaml")
+        resolve_single_filepath(config.get("paths").get("workdir"),"workflow/envs/maftools.yaml")
     threads:
         conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
