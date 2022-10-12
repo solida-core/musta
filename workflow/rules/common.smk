@@ -163,7 +163,7 @@ def get_tumoral_bam(wildcards):
     with open(config["samples"], "r") as file:
         samples_master = yaml.load(file, Loader=yaml.FullLoader)
         samples_master.keys()
-    return samples_master[wildcards.sample]["tumor_bam"][0] if samples_master[wildcards.sample]["tumor_bam"] else None
+    return samples_master[wildcards.sample]["tumor_bam"][0]
 
 
 def get_normal_bam(wildcards):
@@ -171,7 +171,7 @@ def get_normal_bam(wildcards):
         samples_master = yaml.load(file, Loader=yaml.FullLoader)
         samples_master.keys()
     # print(wildcards.sample)
-    return samples_master[wildcards.sample]["normal_bam"][0] if samples_master[wildcards.sample]["normal_bam"] else None
+    return samples_master[wildcards.sample]["normal_bam"][0]
 
 
 def select_filtered(wildcards):
@@ -226,14 +226,14 @@ def get_normalname(wildcards):
     with open(config["samples"], "r") as file:
         samples_master = yaml.load(file, Loader=yaml.FullLoader)
         samples_master.keys()
-    return samples_master[wildcards.sample]["normal_sample_name"][0] if samples_master[wildcards.sample]["normal_sample_name"] else None
+    return samples_master[wildcards.sample]["normal_sample_name"][0]
 
 
 def get_tumorname(wildcards):
     with open(config["samples"], "r") as file:
         samples_master = yaml.load(file, Loader=yaml.FullLoader)
         samples_master.keys()
-    return samples_master[wildcards.sample]["tumor_sample_name"][0] if samples_master[wildcards.sample]["tumor_sample_name"] else None
+    return samples_master[wildcards.sample]["tumor_sample_name"][0]
 
 
 def ensure_dir(path, force=False):
