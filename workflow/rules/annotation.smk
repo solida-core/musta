@@ -49,4 +49,5 @@ rule Funcotator:
         "--annotation-default normal_barcode:{wildcards.sample} "
         "--annotation-default tumor_barcode:{params.tumoral} "
         "--ref-version {params.genome_version} "
+        "--tmp-dir {resources.tmpdir} "
         ">& {log} "
