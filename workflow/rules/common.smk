@@ -86,10 +86,10 @@ def tmp_path(path=""):
 
 def java_params(
     tmp_dir="",
-    percentage_to_preserve=20,
+    percentage_to_preserve=15,
     stock_mem=1024**3,
     stock_cpu=2,
-    multiply_by=1,
+    multiply_by=2,
 ):
     """
     Set Java params
