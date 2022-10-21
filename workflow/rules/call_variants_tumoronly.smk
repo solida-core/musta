@@ -27,6 +27,7 @@ rule get_tumoronly_sample_names:
         "GetSampleName "
         "-I {input.tumoral} "
         "-O {output.tumor} "
+        "--tmp-dir {resources.tmpdir} "
         ">& {log} "
 
 

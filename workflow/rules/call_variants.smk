@@ -113,6 +113,7 @@ rule mutect_matched:
         "--native-pair-hmm-threads {threads} "
         "--max-reads-per-alignment-start 0 "
         "--f1r2-tar-gz {output.fir} "
+        "--tmp-dir {resources.tmpdir} "
         ">& {log} "
 
 
