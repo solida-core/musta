@@ -119,7 +119,7 @@ def java_params(
 
     def preserve(resource, percentage, stock):
         preserved = resource - max(resource * percentage // 100, stock)
-        return preserved * 10 if preserved != 0 else stock
+        return preserved if preserved != 0 else stock
 
     # def preserve(resource, percentage, stock):
     #     return resource - max(resource * percentage // 100, stock)
@@ -134,7 +134,7 @@ def java_params(
 
     return params_template.format(
         bytes2human(mem_min).lower(),
-        bytes2human(max(mem_size // cpu_nums * multiply_by, mem_min)).lower(),
+        bytes2human(max(mem_size, mem_min)).lower(),
         min(cpu_nums, multiply_by),
         tmpdir,
     )
