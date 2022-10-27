@@ -89,7 +89,7 @@ def java_params(
     percentage_to_preserve=20,
     stock_mem=1024**3,
     stock_cpu=2,
-    multiply_by=1,
+    multiply_by=22,
 ):
     """
     Set Java params
@@ -134,7 +134,7 @@ def java_params(
 
     return params_template.format(
         bytes2human(mem_min).lower(),
-        bytes2human(max(mem_size, mem_min)).lower(),
+        bytes2human(max((mem_size // cpu_nums) * multiply_by, mem_min)).lower(),
         min(cpu_nums, multiply_by),
         tmpdir,
     )
