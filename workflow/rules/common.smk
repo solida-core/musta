@@ -89,7 +89,7 @@ def java_params(
     percentage_to_preserve=20,
     stock_mem=1024**3,
     stock_cpu=2,
-    multiply_by=22,
+    multiply_by=2,
 ):
     """
     Set Java params

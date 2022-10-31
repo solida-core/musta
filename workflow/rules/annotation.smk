@@ -25,6 +25,7 @@ rule Funcotator:
         .get("Funcotator")
         .get("reference_version"),
         tumoral=lambda wildcards: get_tumorname(wildcards),
+        normal=lambda wildcards: get_normalname(wildcards),
     log:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
@@ -46,7 +47,7 @@ rule Funcotator:
         "-O {output.vcf} "
         "--data-sources-path {params.resources} "
         "--output-file-format MAF "
-        "--annotation-default normal_barcode:{wildcards.sample} "
+        "--annotation-default normal_barcode:{params.normal} "
         "--annotation-default tumor_barcode:{params.tumoral} "
         "--ref-version {params.genome_version} "
         "--tmp-dir {resources.tmpdir} "
