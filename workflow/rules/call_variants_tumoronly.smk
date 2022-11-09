@@ -5,7 +5,7 @@ rule get_tumoronly_sample_names:
     output:
         tumor=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/tmp/tumoronly/{sample}_tumor.samplename.txt",
+            "results/call/tmp/tumoronly/{sample}_tumor.samplename.txt",
         ),
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
@@ -36,24 +36,24 @@ rule mutect_tumoronly:
         tumoral=lambda wildcards: get_tumoral_bam(wildcards),
         tumor_name=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/tmp/tumoronly/{sample}_tumor.samplename.txt",
+            "results/call/tmp/tumoronly/{sample}_tumor.samplename.txt",
         ),
     output:
         vcf=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/tumoronly/{sample}_somatic.vcf.gz",
+            "results/call/tumoronly/{sample}_somatic.vcf.gz",
         ),
         bam=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/tumoronly/{sample}_tumor_normal.bam",
+            "results/call/tumoronly/{sample}_tumor_normal.bam",
         ),
         fir=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/tumoronly/{sample}_tumor_normal_f1r2.tar.gz",
+            "results/call/tumoronly/{sample}_tumor_normal_f1r2.tar.gz",
         ),
         stats=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/tumoronly/{sample}_somatic.vcf.gz.stats",
+            "results/call/tumoronly/{sample}_somatic.vcf.gz.stats",
         ),
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
@@ -102,7 +102,7 @@ rule orientation_model_tumoronly:
     output:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/filters/tumoronly/{sample}_read-orientation-model.tar.gz",
+            "results/call/filters/tumoronly/{sample}_read-orientation-model.tar.gz",
         ),
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
@@ -133,7 +133,7 @@ rule pileup_summaries_tumoronly:
     output:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/filters/tumoronly/{sample}_getpileupsummaries.table",
+            "results/call/filters/tumoronly/{sample}_getpileupsummaries.table",
         ),
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
@@ -170,11 +170,11 @@ rule calculate_contamination_tumoronly:
     output:
         table=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/filters/tumoronly/{sample}_contamination.table",
+            "results/call/filters/tumoronly/{sample}_contamination.table",
         ),
         segment=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/filters/tumoronly/{sample}_tumor.segment",
+            "results/call/filters/tumoronly/{sample}_tumor.segment",
         ),
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
