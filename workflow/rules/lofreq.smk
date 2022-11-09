@@ -33,8 +33,8 @@ rule lofreq:
         "-f {params.genome} "
         "-t {input.tumoral} "
         "-n {input.normal} "
-        "-l {params.intervals} "
-        "-d {params.dbsnp} "
+        #"-l {params.intervals} "
+        #"-d {params.dbsnp} "
         "-o {sample}_ "
         ">& {log} "
 
