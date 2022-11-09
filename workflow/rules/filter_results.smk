@@ -8,7 +8,7 @@ rule filter_mutect:
     output:
         vcf=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/matched/{sample}_somatic_filtered.vcf.gz",
+            "results/call/matched/{sample}_somatic_filtered.vcf.gz",
         ),
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
@@ -53,7 +53,7 @@ rule filter_mutect_tumoronly:
     output:
         vcf=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/tumoronly/{sample}_somatic_filtered.vcf.gz",
+            "results/call/tumoronly/{sample}_somatic_filtered.vcf.gz",
         ),
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
@@ -94,7 +94,7 @@ rule gatk_SelectVariants:
     output:
         vcf=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/{sample}_somatic_filtered_selected.vcf.gz",
+            "results/call/{sample}_somatic_filtered_selected.vcf.gz",
         ),
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
