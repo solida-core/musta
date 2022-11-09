@@ -35,6 +35,6 @@ rule lofreq:
         "-n {input.normal} "
         "-l {params.intervals} "
         "-d {params.dbsnp} "
-        "-o {sample}_"
+        "-o {sample}_ "
         ">& {log} "
 
