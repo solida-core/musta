@@ -32,6 +32,13 @@ if config.get("run").get("all"):
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
+                    "results/call/{sample}_somatic_final_minus-dbsnp.snvs.vcf.gz",
+                ),
+                sample=list(samples_master.keys()),
+            ),
+            expand(
+                resolve_results_filepath(
+                    config.get("paths").get("results_dir"),
                     "results/annotation/funcotator/{sample}_funcotated.maf",
                 ),
                 sample=list(samples_master.keys()),
@@ -60,16 +67,27 @@ if config.get("run").get("all"):
 
 if config.get("run").get("call"):
 
-    rule call:
-        input:
-            expand(
-                resolve_results_filepath(
-                    config.get("paths").get("results_dir"),
-                    "results/call/{sample}_somatic_filtered_selected.vcf.gz",
+    if config.get("call").get("mutect"):
+        rule call_mutect:
+            input:
+                expand(
+                    resolve_results_filepath(
+                        config.get("paths").get("results_dir"),
+                        "results/call/{sample}_somatic_filtered_selected.vcf.gz",
+                    ),
+                    sample=list(samples_master.keys()),
                 ),
-                sample=list(samples_master.keys()),
-            ),
-
+    
+    if config.get("call").get("lofreq"):
+        rule call_lofreq:
+            input:
+                expand(
+                    resolve_results_filepath(
+                        config.get("paths").get("results_dir"),
+                        "results/call/{sample}_somatic_final_minus-dbsnp.snvs.vcf.gz",
+                    ),
+                    sample=list(samples_master.keys()),
+                ),
 
 if config.get("run").get("annotate"):
 

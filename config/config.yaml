@@ -4,8 +4,12 @@ run:
   annotate: False
   analysis: False
 
-# path or URL to sample sheet (TSV format, columns: sample, condition, ...)
+# variant caller
+call:
+  mutect: True
+  lofreq: False
 
+# path or URL to sample sheet (TSV format, columns: sample, condition, ...)
 samples: config/samples.yaml
 
 # reference files
@@ -22,6 +26,8 @@ params:
       reference_version: "hg19" # options [hg19/hg38]
     germline: "/path/to/af-only-gnomad.vcf.gz"
     exac: "/path/to/small_exac_common_3.vcf.gz"
+  lofreq:
+    dbsnp: "/path/to/dbsnp.vcf.gz"
   multiqc: "--force --interactive --cl_config 'max_table_rows: 700'"
   maftools:
     project_name: "Current_analysis"
