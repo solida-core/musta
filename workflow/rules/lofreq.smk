@@ -2,15 +2,6 @@ rule lofreq:
     input:
         normal=lambda wildcards: get_normal_bam(wildcards),
         tumoral=lambda wildcards: get_tumoral_bam(wildcards),
-        normal_name=resolve_results_filepath(
-            config.get("paths").get("results_dir"),
-            "results/call/tmp/{sample}_normal.samplename.txt",
-        ),
-        tumor_name=resolve_results_filepath(
-            config.get("paths").get("results_dir"),
-            "results/call/tmp/{sample}_tumor.samplename.txt",
-        ),
-
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
