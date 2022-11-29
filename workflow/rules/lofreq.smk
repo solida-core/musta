@@ -39,7 +39,7 @@ rule lofreq:
         "-f {params.genome} "
         "-t {input.tumoral} "
         "-n {input.normal} "
-        "--threads {threads}"
+        "--threads {threads} "
         "-l {params.intervals} "
         "-d {params.dbsnp} "
         "-o {params.out} "
