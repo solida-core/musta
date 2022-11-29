@@ -87,6 +87,13 @@ if config.get("run").get("call") and config.get("call").get("lofreq"):
                 ),
                 sample=list(samples_master.keys()),
             ),
+            expand(
+                resolve_results_filepath(
+                    config.get("paths").get("results_dir"),
+                    "results/call/{sample}_somatic_final_minus-dbsnp.indels.vcf.gz",
+                ),
+                sample=list(samples_master.keys()),
+            ),
 
 if config.get("run").get("annotate"):
 

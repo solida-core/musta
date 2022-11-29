@@ -1,5 +1,4 @@
 channels:
  - bioconda
- - anaconda
 dependencies:
  - lofreq
