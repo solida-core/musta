@@ -75,10 +75,7 @@ rule mutect_matched:
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
         genome=config.get("resources").get("reference"),
-        intervals=resolve_single_filepath(
-            config.get("paths").get("workdir"),
-            resolve_single_filepath("resources", config.get("resources").get("bed")),
-        ),
+        intervals=config.get("resources").get("bed"),
         param=config.get("params").get("gatk").get("Mutect"),
         germline_resource=config.get("params").get("gatk").get("germline"),
         normal_bam=lambda wildcards, input: get_name(input.normal_name),
@@ -158,10 +155,7 @@ rule pileup_summaries_tumoral:
         ),
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
-        intervals=resolve_single_filepath(
-            config.get("paths").get("workdir"),
-            resolve_single_filepath("resources", config.get("resources").get("bed")),
-        ),
+        intervals=config.get("resources").get("bed"),
         exac=config.get("params").get("gatk").get("exac"),
     log:
         resolve_results_filepath(
@@ -195,10 +189,7 @@ rule pileup_summaries_normal:
         ),
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
-        intervals=resolve_single_filepath(
-            config.get("paths").get("workdir"),
-            resolve_single_filepath("resources", config.get("resources").get("bed")),
-        ),
+        intervals=config.get("resources").get("bed"),
         exac=config.get("params").get("gatk").get("exac"),
     log:
         resolve_results_filepath(

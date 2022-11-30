@@ -13,10 +13,7 @@ rule lofreq:
         ),
     params:
         genome=config.get("resources").get("reference"),
-        intervals=resolve_single_filepath(
-            config.get("paths").get("workdir"),
-            resolve_single_filepath("resources", config.get("resources").get("bed")),
-        ),
+        intervals=config.get("resources").get("bed"),
         dbsnp=config.get("params").get("lofreq").get("dbsnp"),
         out=resolve_results_filepath(
             config.get("paths").get("results_dir"),

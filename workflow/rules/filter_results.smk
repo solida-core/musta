@@ -13,10 +13,7 @@ rule filter_mutect:
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
         genome=config.get("resources").get("reference"),
-        intervals=resolve_single_filepath(
-            config.get("paths").get("workdir"),
-            resolve_single_filepath("resources", config.get("resources").get("bed")),
-        ),
+        intervals=config.get("resources").get("bed"),
     log:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
@@ -58,10 +55,7 @@ rule filter_mutect_tumoronly:
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
         genome=config.get("resources").get("reference"),
-        intervals=resolve_single_filepath(
-            config.get("paths").get("workdir"),
-            resolve_single_filepath("resources", config.get("resources").get("bed")),
-        ),
+        intervals=config.get("resources").get("bed"),
     log:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
