@@ -5,24 +5,24 @@ rule lofreq:
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/call/{sample}_somatic_final_minus-dbsnp.snvs.vcf.gz",
+            "results/rollcall/lofreq/{sample}_somatic_final_minus-dbsnp.snvs.vcf.gz",
         ),
         indels=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/call/{sample}_somatic_final_minus-dbsnp.indels.vcf.gz",
+            "results/rollcall/lofreq/{sample}_somatic_final_minus-dbsnp.indels.vcf.gz",
         ),
     params:
         genome=config.get("resources").get("reference"),
         intervals=config.get("resources").get("bed"),
-        dbsnp=config.get("params").get("lofreq").get("dbsnp"),
+        dbsnp=config.get("resources").get("dbsnp"),
         out=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/call/{sample}_",
+            "results/rollcall/lofreq/{sample}_",
         ),
     log:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "logs/call/{sample}.lofreq.log",
+            "logs/rollcall/{sample}.lofreq.log",
         ),
     conda:
         resolve_single_filepath(

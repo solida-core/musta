@@ -1,13 +1,18 @@
 run:
   all: False
   call: False
+  rollcall: False
   annotate: False
   analysis: False
 
-# variant caller
-call:
-  mutect: False
+# more variant caller
+other_callers:
   lofreq: False
+  varscan: False
+  muse: False
+  vardict: False
+  strelka: False
+
 
 # path or URL to sample sheet (TSV format, columns: sample, condition, ...)
 samples: config/samples.yaml
@@ -15,7 +20,8 @@ samples: config/samples.yaml
 # reference files
 resources:
   reference: /path/to/reference/reference_genome.fasta
-  bed: hg19.RefSeq.bed # hg38.RefSeq.bed
+  bed: /path/to/hg19.RefSeq.bed # hg38.RefSeq.bed
+  dbsnp: /path/to/dbsnp.vcf.gz
 
 params:
   gatk:
@@ -26,8 +32,6 @@ params:
       reference_version: "hg19" # options [hg19/hg38]
     germline: "/path/to/af-only-gnomad.vcf.gz"
     exac: "/path/to/small_exac_common_3.vcf.gz"
-  lofreq:
-    dbsnp: "/path/to/dbsnp.vcf.gz"
   multiqc: "--force --interactive --cl_config 'max_table_rows: 700'"
   maftools:
     project_name: "Current_analysis"

@@ -66,7 +66,7 @@ if config.get("run").get("all"):
             ),
 
 
-if config.get("run").get("call") and config.get("call").get("mutect"):
+if config.get("run").get("call"):
     rule call_mutect:
         input:
             expand(
@@ -77,23 +77,55 @@ if config.get("run").get("call") and config.get("call").get("mutect"):
                 sample=list(samples_master.keys()),
             ),
 
-if config.get("run").get("call") and config.get("call").get("lofreq"):
+if config.get("run").get("rollcall") and config.get("other_callers").get("lofreq"):
     rule call_lofreq:
         input:
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "results/call/{sample}_somatic_final_minus-dbsnp.snvs.vcf.gz",
+                    "results/rollcall/lofreq/{sample}_somatic_final_minus-dbsnp.snvs.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "results/call/{sample}_somatic_final_minus-dbsnp.indels.vcf.gz",
+                    "results/rollcall/lofreq/{sample}_somatic_final_minus-dbsnp.indels.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
+
+
+if config.get("run").get("rollcall") and config.get("other_callers").get("muse"):
+    rule call_muse:
+        input:
+            expand(
+                resolve_results_filepath(
+                    config.get("paths").get("results_dir"),
+                    "results/rollcall/muse/{sample}.muse.vcf",
+                ),
+                sample=list(samples_master.keys()),
+            ),
+
+
+if config.get("run").get("rollcall") and config.get("other_callers").get("strelka"):
+    rule call_strelka:
+        input:
+            expand(
+                resolve_results_filepath(
+                    config.get("paths").get("results_dir"),
+                    "results/rollcall/strelka/{sample}.somatic.snvs.vcf.gz",
+                ),
+                sample=list(samples_master.keys()),
+            ),
+            expand(
+                resolve_results_filepath(
+                    config.get("paths").get("results_dir"),
+                    "results/rollcall/strelka/{sample}.somatic.indels.vcf.gz",
+                ),
+                sample=list(samples_master.keys()),
+            ),
+
 
 if config.get("run").get("annotate"):
 
