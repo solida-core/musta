@@ -116,6 +116,11 @@ rule varscan2:
         genome=config.get("resources").get("reference"),
         intervals=config.get("resources").get("bed"),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
+    log:
+        resolve_results_filepath(
+            config.get("paths").get("results_dir"),
+            "logs/rollcall/{sample}.varscan.log",
+        ),
     shell:
         "varscan somatic "
         "{input.normal} " # normal samtools pileup
@@ -124,3 +129,4 @@ rule varscan2:
         "--tumor-purity 0.2 "
         "--output-snp {output.snp} "
         "--output-indel {output.indel}"
+        "&> {log}"
