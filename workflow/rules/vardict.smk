@@ -1,4 +1,4 @@
-rule get_sample_names:
+rule get_sample_names_vardict:
     input:
         normal=lambda wildcards: get_normal_bam(wildcards),
         tumoral=lambda wildcards: get_tumoral_bam(wildcards),
