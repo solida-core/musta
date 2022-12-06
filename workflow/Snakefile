@@ -126,6 +126,16 @@ if config.get("run").get("rollcall") and config.get("other_callers").get("strelk
                 sample=list(samples_master.keys()),
             ),
 
+if config.get("run").get("rollcall") and config.get("other_callers").get("vardict"):
+    rule call_vardict:
+        input:
+            expand(
+                resolve_results_filepath(
+                    config.get("paths").get("results_dir"),
+                    "results/rollcall/vardict/{sample}.vardict.vcf",
+                ),
+                sample=list(samples_master.keys()),
+            ),
 
 if config.get("run").get("annotate"):
 
