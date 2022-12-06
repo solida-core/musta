@@ -12,6 +12,10 @@ configfile: "config/config.yaml"
 include: "rules/common.smk"
 include: "rules/call_variants.smk"
 include: "rules/lofreq.smk"
+include: "rules/muse.smk"
+include: "rules/strelka.smk"
+include: "rules/vardict.smk"
+include: "rules/varscan.smk"
 include: "rules/call_variants_tumoronly.smk"
 include: "rules/filter_results.smk"
 include: "rules/annotation.smk"
@@ -133,6 +137,24 @@ if config.get("run").get("rollcall") and config.get("other_callers").get("vardic
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
                     "results/rollcall/vardict/{sample}.vardict.vcf",
+                ),
+                sample=list(samples_master.keys()),
+            ),
+
+if config.get("run").get("rollcall") and config.get("other_callers").get("varscan"):
+    rule call_strelka:
+        input:
+            expand(
+                resolve_results_filepath(
+                    config.get("paths").get("results_dir"),
+                    "results/rollcall/varscan/{sample}.varscan.snv.vcf",
+                ),
+                sample=list(samples_master.keys()),
+            ),
+            expand(
+                resolve_results_filepath(
+                    config.get("paths").get("results_dir"),
+                    "results/rollcall/varscan/{sample}.varscan.indel.vcf",
                 ),
                 sample=list(samples_master.keys()),
             ),

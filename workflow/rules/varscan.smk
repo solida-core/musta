@@ -41,10 +41,8 @@ rule get_sample_names:
         "-O {output.normal} "
         ">& {log.normal} "
 
-
-rule vardict:
+rule pre_varscan2_tumoral:
     input:
-        normal=lambda wildcards: get_normal_bam(wildcards),
         tumoral=lambda wildcards: get_tumoral_bam(wildcards),
         normal_name=resolve_results_filepath(
             config.get("paths").get("results_dir"),
@@ -57,23 +55,72 @@ rule vardict:
     output:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/rollcall/vardict/{sample}.vardict.vcf",
+            "results/rollcall/varscan/{sample}.tumoral.pileup",
         ),
     conda:
-        resolve_single_filepath(
-            config.get("paths").get("workdir"), "workflow/envs/vardict.yaml"
-        ),
+       resolve_single_filepath(
+            config.get("paths").get("workdir"), "workflow/envs/samtools.yaml"
+        )
     params:
         genome=config.get("resources").get("reference"),
         intervals=config.get("resources").get("bed"),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
     shell:
-        "vardict "
-        "-G {params.genome} "
-        "-f 0.01 -N {input.tumor_name} "
-        "-b '{input.tumoral} | {input.normal}' "
-        "-c 1 -S 2 -E 3 "
-        "{params.intervals} "
-        "| testsomatic.R | var2vcf_paired.pl "
-        "-N '{input.tumor_name}|{input.normal_name}' "
-        "-f 0.01 > {output} "
+        "samtools "
+        "mpileup "
+        "-f {params.genome} "
+        "-x -C 50 -q 40 -Q 30 "
+        "-l {params.intervals} "
+        "{input.tumoral} "
+        "-o {output} "
+
+
+rule pre_varscan2_germinal:
+    input:
+        normal=lambda wildcards: get_normal_bam(wildcards),
+    output:
+        resolve_results_filepath(
+            config.get("paths").get("results_dir"),
+            "results/rollcall/varscan/{sample}.normal.pileup",
+        ),
+    conda:
+       resolve_single_filepath(config.get("paths").get("workdir"), "workflow/envs/samtools.yaml")
+
+    params:
+        genome=config.get("resources").get("reference"),
+        intervals=config.get("resources").get("bed"),
+    threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
+    shell:
+        "samtools "
+        "mpileup "
+        "-f {params.genome} "
+        "-x -C 50 -q 40 -Q 30 "
+        "-l {params.intervals} "
+        "{input.normal} "
+        "-o {output} "
+
+
+rule varscan2:
+    input:
+        tumoral=rules.pre_varscan2_tumoral.output,
+        normal=rules.pre_varscan2_germinal.output
+    output:
+        snp=resolve_results_filepath(
+            config.get("paths").get("results_dir"),
+            "results/rollcall/varscan/{sample}.varscan.snp.vcf",)
+        indel=resolve_results_filepath(
+            config.get("paths").get("results_dir"),
+            "results/rollcall/varscan/{sample}.varscan.indel.vcf",)
+    conda: resolve_single_filepath(config.get("paths").get("workdir"), "workflow/envs/samtools.yaml")
+    params:
+        genome=config.get("resources").get("reference"),
+        intervals=config.get("resources").get("bed"),
+    threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
+    shell:
+        "varscan somatic "
+        "{input.normal} " # normal samtools pileup
+        "{input.tumoral} " # tumoral samtools pileup
+        "--output-vcf "
+        "--tumor-purity 0.2 "
+        "--output-snp {output.snp} "
+        "--output-indel {output.indel}"
