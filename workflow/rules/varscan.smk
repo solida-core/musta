@@ -64,7 +64,7 @@ rule varscan2:
     output:
         snp=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/rollcall/varscan/{sample}.varscan.snp.vcf",)
+            "results/rollcall/varscan/{sample}.varscan.snp.vcf",),
         indel=resolve_results_filepath(
             config.get("paths").get("results_dir"),
             "results/rollcall/varscan/{sample}.varscan.indel.vcf",)
