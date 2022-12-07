@@ -86,4 +86,4 @@ rule varscan2:
         "--tumor-purity 0.2 "
         "--output-snp {output.snp} "
         "--output-indel {output.indel}"
-        "&> {log}"
+        ">& {log}"
