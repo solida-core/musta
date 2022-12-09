@@ -142,7 +142,7 @@ if config.get("run").get("rollcall") and config.get("other_callers").get("vardic
             ),
 
 if config.get("run").get("rollcall") and config.get("other_callers").get("varscan"):
-    rule call_strelka:
+    rule call_varscan:
         input:
             expand(
                 resolve_results_filepath(

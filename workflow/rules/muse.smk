@@ -35,7 +35,10 @@ rule MuSE_call:
 
 rule MuSE_sump:
     input:
-        rules.MuSE_call.output
+        resolve_results_filepath(
+            config.get("paths").get("results_dir"),
+            "results/rollcall/muse/{sample}.muse.txt"
+        ),
     output:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
