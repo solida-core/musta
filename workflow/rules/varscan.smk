@@ -68,7 +68,7 @@ rule varscan2:
         indel=resolve_results_filepath(
             config.get("paths").get("results_dir"),
             "results/rollcall/varscan/{sample}.varscan.indel.vcf",)
-    conda: resolve_single_filepath(config.get("paths").get("workdir"), "workflow/envs/samtools.yaml")
+    conda: resolve_single_filepath(config.get("paths").get("workdir"), "workflow/envs/varscan.yaml")
     params:
         genome=config.get("resources").get("reference"),
         intervals=config.get("resources").get("bed"),
