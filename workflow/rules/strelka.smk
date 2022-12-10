@@ -36,6 +36,6 @@ rule strelka:
         "--outputCallableRegions --targeted "
         "--callRegions {params.intervals} "
         "--runDir {params.out} ; "
-        "python {params.out}/runWorkflow.py -m local -g 10 >& ${log} ; "
+        "python {params.out}/runWorkflow.py -m local -g 10 >& {log} ; "
         "cp {params.out}/results/variants/somatic.snvs.vcf.gz {output.snvs} && "
         "cp {params.out}/results/variants/somatic.indels.vcf.gz {output.indels} "
