@@ -6,22 +6,22 @@ rule get_sample_names:
     output:
         normal=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/call/tmp/{sample}_normal.samplename.txt",
+            "variant_calling/mutect/tmp/{sample}.normal.samplename.txt",
         ),
         tumor=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/call/tmp/{sample}_tumor.samplename.txt",
+            "variant_calling/mutect/tmp/{sample}.tumor.samplename.txt",
         ),
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
     log:
         normal=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "logs/gatk/getsamplename/{sample}.gsn.log",
+            "logs/variant_calling/mutect/{sample}.gsn.normal.log",
         ),
         tumor=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "logs/gatk/getsamplename/{sample}.gsn_tumor.log",
+            "logs/variant_calling/mutect/{sample}.gsn.tumor.log",
         ),
     conda:
         resolve_single_filepath(
@@ -49,28 +49,28 @@ rule mutect_matched:
         tumoral=lambda wildcards: get_tumoral_bam(wildcards),
         normal_name=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/call/tmp/{sample}_normal.samplename.txt",
+            "variant_calling/mutect/tmp/{sample}.normal.samplename.txt",
         ),
         tumor_name=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/call/tmp/{sample}_tumor.samplename.txt",
+            "variant_calling/mutect/tmp/{sample}.tumor.samplename.txt",
         ),
     output:
         vcf=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/call/matched/{sample}_somatic.vcf.gz",
+            "variant_calling/mutect/matched/{sample}.somatic.vcf.gz",
         ),
         bam=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/call/matched/{sample}_tumor_normal.bam",
+            "variant_calling/mutect/matched/{sample}.tumor_normal.bam",
         ),
         fir=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/call/matched/{sample}_tumor_normal_f1r2.tar.gz",
+            "variant_calling/mutect/matched/{sample}.tumor_normal.f1r2.tar.gz",
         ),
         stats=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/call/matched/{sample}_somatic.vcf.gz.stats",
+            "variant_calling/mutect/matched/{sample}.somatic.vcf.gz.stats",
         ),
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
@@ -83,7 +83,7 @@ rule mutect_matched:
     log:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "logs/gatk/Mutect2/{sample}.mutect.log",
+            "logs/variant_calling/mutect/{sample}.mutect.log",
         ),
     conda:
         resolve_single_filepath(
@@ -120,7 +120,7 @@ rule learn_orientation_model:
     output:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/call/filters/matched/{sample}_read-orientation-model.tar.gz",
+            "variant_calling/mutect/matched/{sample}.read-orientation-model.tar.gz",
         ),
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
@@ -128,7 +128,7 @@ rule learn_orientation_model:
     log:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "logs/gatk/Mutect2/{sample}_pileupsummaries_T.log",
+            "logs/variant_calling/mutect/{sample}.pileupsummaries_T.log",
         ),
     conda:
         resolve_single_filepath(
@@ -151,7 +151,7 @@ rule pileup_summaries_tumoral:
     output:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/call/filters/matched/{sample}_getpileupsummaries.table",
+            "variant_calling/mutect/matched/{sample}.getpileupsummaries.table",
         ),
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
@@ -160,7 +160,7 @@ rule pileup_summaries_tumoral:
     log:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "logs/gatk/Mutect2/{sample}_pileupsummaries_T.log",
+            "logs/variant_calling/mutect/{sample}.pileupsummaries_T.log",
         ),
     conda:
         resolve_single_filepath(
@@ -185,7 +185,7 @@ rule pileup_summaries_normal:
     output:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/call/filters/matched/{sample}_normal_pileups.table",
+            "variant_calling/mutect/matched/{sample}.normal_pileups.table",
         ),
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
@@ -194,7 +194,7 @@ rule pileup_summaries_normal:
     log:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "logs/gatk/Mutect2/{sample}_pileupsummaries_C.log",
+            "logs/variant_calling/mutect/{sample}.pileupsummaries_C.log",
         ),
     conda:
         resolve_single_filepath(
@@ -220,18 +220,18 @@ rule calculate_contamination:
     output:
         table=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/call/filters/matched/{sample}_contamination.table",
+            "variant_calling/mutect/matched/{sample}.contamination.table",
         ),
         segment=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/call/filters/matched/{sample}_tumor.segment",
+            "variant_calling/mutect/matched/{sample}.tumor.segment",
         ),
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
     log:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "logs/gatk/Mutect2/{sample}_calculatecontamination.log",
+            "logs/variant_calling/mutect/{sample}.calculate_contamination.log",
         ),
     conda:
         resolve_single_filepath(

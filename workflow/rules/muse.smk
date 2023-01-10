@@ -5,7 +5,7 @@ rule MuSE_call:
     output:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/rollcall/muse/{sample}.muse.txt"
+            "variant_calling/muse/{sample}.muse.txt"
         ),
     conda:
         resolve_single_filepath(
@@ -16,7 +16,7 @@ rule MuSE_call:
         intervals=config.get("resources").get("bed"),
         out=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/rollcall/muse/{sample}",
+            "variant_calling/muse/{sample}",
         ),
     log:
         resolve_results_filepath(
@@ -35,14 +35,11 @@ rule MuSE_call:
 
 rule MuSE_sump:
     input:
-        resolve_results_filepath(
-            config.get("paths").get("results_dir"),
-            "results/rollcall/muse/{sample}.muse.txt"
-        ),
+        rules.MuSE_call.output
     output:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-           "results/rollcall/muse/{sample}.muse.vcf"
+           "variant_calling/muse/{sample}.somatic.muse.vcf"
         ),
     conda:
         resolve_single_filepath(
@@ -55,7 +52,7 @@ rule MuSE_sump:
     log:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "logs/rollcall/{sample}.muse_sump.log",
+            "logs/variant_calling/muse/{sample}.muse_sump.log",
         ),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
     shell:

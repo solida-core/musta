@@ -5,11 +5,11 @@ rule lofreq:
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/rollcall/lofreq/{sample}_somatic_final_minus-dbsnp.snvs.vcf.gz",
+            "variant_calling/lofreq/{sample}.somatic.lofreq.snvs.vcf.gz",
         ),
         indels=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/rollcall/lofreq/{sample}_somatic_final_minus-dbsnp.indels.vcf.gz",
+            "variant_calling/lofreq/{sample}.somatic.lofreq.indels.vcf.gz",
         ),
     params:
         genome=config.get("resources").get("reference"),
@@ -17,12 +17,12 @@ rule lofreq:
         dbsnp=config.get("resources").get("dbsnp"),
         out=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/rollcall/lofreq/{sample}_",
+            "variant_calling/lofreq/out/{sample}_",
         ),
     log:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "logs/rollcall/{sample}.lofreq.log",
+            "logs/variant_calling/lofreq/{sample}.lofreq.log",
         ),
     conda:
         resolve_single_filepath(
@@ -40,5 +40,7 @@ rule lofreq:
         "-l {params.intervals} "
         "-d {params.dbsnp} "
         "-o {params.out} "
-        ">& {log} "
+        ">& {log} ; "
+        "cp {params.out}_somatic_final_minus-dbsnp.snvs.vcf.gz {output.snvs} && "
+        "cp {params.out}_somatic_final_minus-dbsnp.indels.vcf.gz {output.indels} "
 

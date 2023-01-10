@@ -5,23 +5,23 @@ rule strelka:
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/rollcall/strelka/{sample}.somatic.snvs.vcf.gz",
+            "variant_calling/strelka/{sample}.somatic.strelka.snvs.vcf.gz",
         ),
         indels=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/rollcall/strelka/{sample}.somatic.indels.vcf.gz",
+            "variant_calling/strelka/{sample}.somatic.strelka.indels.vcf.gz",
         ),
     params:
         genome=config.get("resources").get("reference"),
         intervals=config.get("resources").get("bed"),
         out=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/rollcall/strelka/{sample}",
+            "variant_calling/strelka/{sample}",
         ),
     log:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "logs/rollcall/{sample}.strelka.log",
+            "logs/variant_calling/strelka/{sample}.strelka.log",
         ),
     conda:
         resolve_single_filepath(

@@ -30,43 +30,36 @@ if config.get("run").get("all"):
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "results/call/{sample}_somatic_filtered_selected.vcf.gz",
+                    "variant_calling/mutect/{sample}.somatic.mutect.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "results/call/{sample}_somatic_final_minus-dbsnp.snvs.vcf.gz",
-                ),
-                sample=list(samples_master.keys()),
-            ),
-            expand(
-                resolve_results_filepath(
-                    config.get("paths").get("results_dir"),
-                    "results/annotation/funcotator/{sample}_funcotated.maf",
+                    "annotation/funcotator/{sample}_funcotated.maf",
                 ),
                 sample=list(samples_master.keys()),
             ),
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "results/analysis/signatures/plots/cosmic_signatures.png",
+                "analysis/signatures/plots/cosmic_signatures.png",
             ),
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "results/analysis/driver/plots/somatic_interactions.png",
+                "analysis/driver/plots/somatic_interactions.png",
             ),
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "results/analysis/base/plots/top10_VAF.png",
+                "analysis/base/plots/top10_VAF.png",
             ),
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "results/analysis/pathways/plots/oncogenic_pathways.png",
+                "analysis/pathways/plots/oncogenic_pathways.png",
             ),
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "results/analysis/heterogeneity/tables/successful.tsv",
+                "analysis/heterogeneity/tables/successful.tsv",
             ),
 
 
@@ -76,7 +69,7 @@ if config.get("run").get("call"):
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "results/call/{sample}_somatic_filtered_selected.vcf.gz",
+                    "variant_calling/mutect/{sample}.somatic.mutect.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
@@ -87,14 +80,14 @@ if config.get("run").get("rollcall") and config.get("other_callers").get("lofreq
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "results/rollcall/lofreq/{sample}_somatic_final_minus-dbsnp.snvs.vcf.gz",
+                    "variant_calling/lofreq/{sample}.somatic.lofreq.snvs.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "results/rollcall/lofreq/{sample}_somatic_final_minus-dbsnp.indels.vcf.gz",
+                    "variant_calling/lofreq/{sample}.somatic.lofreq.indels.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
@@ -106,7 +99,7 @@ if config.get("run").get("rollcall") and config.get("other_callers").get("muse")
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "results/rollcall/muse/{sample}.muse.vcf",
+                    "variant_calling/muse/{sample}.somatic.muse.vcf",
                 ),
                 sample=list(samples_master.keys()),
             ),
@@ -118,14 +111,14 @@ if config.get("run").get("rollcall") and config.get("other_callers").get("strelk
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "results/rollcall/strelka/{sample}.somatic.snvs.vcf.gz",
+                    "variant_calling/strelka/{sample}.somatic.strelka.snvs.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "results/rollcall/strelka/{sample}.somatic.indels.vcf.gz",
+                    "variant_calling/strelka/{sample}.somatic.strelka.indels.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
@@ -136,7 +129,7 @@ if config.get("run").get("rollcall") and config.get("other_callers").get("vardic
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "results/rollcall/vardict/{sample}.vardict.vcf",
+                    "variant_calling/vardict/{sample}.somatic.vardict.vcf",
                 ),
                 sample=list(samples_master.keys()),
             ),
@@ -147,14 +140,14 @@ if config.get("run").get("rollcall") and config.get("other_callers").get("varsca
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "results/rollcall/varscan/{sample}.varscan.snv.vcf",
+                    "variant_calling/varscan/{sample}.somatic.varscan.snvs.vcf",
                 ),
                 sample=list(samples_master.keys()),
             ),
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "results/rollcall/varscan/{sample}.varscan.indel.vcf",
+                    "variant_calling/varscan/{sample}.somatic.varscan.indels.vcf",
                 ),
                 sample=list(samples_master.keys()),
             ),
@@ -166,7 +159,7 @@ if config.get("run").get("annotate"):
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "results/annotation/funcotator/{sample}_funcotated.maf",
+                    "annotation/funcotator/{sample}_funcotated.maf",
                 ),
                 sample=list(samples_master.keys()),
             ),
@@ -178,21 +171,21 @@ if config.get("run").get("analysis"):
         input:
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "results/analysis/signatures/plots/cosmic_signatures.png",
+                "analysis/signatures/plots/cosmic_signatures.png",
             ),
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "results/analysis/driver/plots/somatic_interactions.png",
+                "analysis/driver/plots/somatic_interactions.png",
             ),
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "results/analysis/base/plots/top10_VAF.png",
+                "analysis/base/plots/top10_VAF.png",
             ),
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "results/analysis/pathways/plots/oncogenic_pathways.png",
+                "analysis/pathways/plots/oncogenic_pathways.png",
             ),
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "results/analysis/heterogeneity/tables/successful.tsv",
+                "analysis/heterogeneity/tables/successful.tsv",
             ),

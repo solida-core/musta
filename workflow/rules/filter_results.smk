@@ -8,7 +8,7 @@ rule filter_mutect:
     output:
         vcf=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/call/matched/{sample}_somatic_filtered.vcf.gz",
+            "variant_calling/mutect/matched/{sample}.somatic.filtered.vcf.gz",
         ),
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
@@ -17,7 +17,7 @@ rule filter_mutect:
     log:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "logs/gatk/Mutect2/{sample}.filter_info.log",
+            "logs/variant_calling/mutect/{sample}.filter_info.log",
         ),
     conda:
         resolve_single_filepath(
@@ -50,7 +50,7 @@ rule filter_mutect_tumoronly:
     output:
         vcf=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/call/tumoronly/{sample}_somatic_filtered.vcf.gz",
+            "variant_calling/mutect/tumoronly/{sample}.somatic.filtered.vcf.gz",
         ),
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
@@ -59,7 +59,7 @@ rule filter_mutect_tumoronly:
     log:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "logs/gatk/Mutect2/{sample}.filter_info.log",
+            "logs/variant_calling/mutect/{sample}.filter_info.log",
         ),
     conda:
         resolve_single_filepath(
@@ -88,7 +88,7 @@ rule gatk_SelectVariants:
     output:
         vcf=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "results/call/{sample}_somatic_filtered_selected.vcf.gz",
+            "variant_calling/mutect/{sample}.somatic.mutect.vcf.gz",
         ),
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
@@ -97,7 +97,7 @@ rule gatk_SelectVariants:
     log:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "logs/gatk/SelectVariants/{sample}.SelectVariants.log",
+            "logs/variant_calling/mutect/{sample}.SelectVariants.log",
         ),
     conda:
         resolve_single_filepath(
