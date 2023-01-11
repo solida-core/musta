@@ -63,7 +63,7 @@ if config.get("run").get("all"):
             ),
 
 
-if config.get("run").get("call"):
+if config.get("run").get("call") and config.get("callers").get("mutect"):
     rule call_mutect:
         input:
             expand(
@@ -74,7 +74,7 @@ if config.get("run").get("call"):
                 sample=list(samples_master.keys()),
             ),
 
-if config.get("run").get("rollcall") and config.get("other_callers").get("lofreq"):
+if config.get("run").get("call") and config.get("callers").get("lofreq"):
     rule call_lofreq:
         input:
             expand(
@@ -93,7 +93,7 @@ if config.get("run").get("rollcall") and config.get("other_callers").get("lofreq
             ),
 
 
-if config.get("run").get("rollcall") and config.get("other_callers").get("muse"):
+if config.get("run").get("call") and config.get("callers").get("muse"):
     rule call_muse:
         input:
             expand(
@@ -105,7 +105,7 @@ if config.get("run").get("rollcall") and config.get("other_callers").get("muse")
             ),
 
 
-if config.get("run").get("rollcall") and config.get("other_callers").get("strelka"):
+if config.get("run").get("call") and config.get("callers").get("strelka"):
     rule call_strelka:
         input:
             expand(
@@ -123,7 +123,7 @@ if config.get("run").get("rollcall") and config.get("other_callers").get("strelk
                 sample=list(samples_master.keys()),
             ),
 
-if config.get("run").get("rollcall") and config.get("other_callers").get("vardict"):
+if config.get("run").get("call") and config.get("callers").get("vardict"):
     rule call_vardict:
         input:
             expand(
@@ -134,7 +134,7 @@ if config.get("run").get("rollcall") and config.get("other_callers").get("vardic
                 sample=list(samples_master.keys()),
             ),
 
-if config.get("run").get("rollcall") and config.get("other_callers").get("varscan"):
+if config.get("run").get("call") and config.get("callers").get("varscan"):
     rule call_varscan:
         input:
             expand(

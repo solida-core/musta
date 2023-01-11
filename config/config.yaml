@@ -1,12 +1,12 @@
 run:
   all: False
   call: False
-  rollcall: False
   annotate: False
   analysis: False
 
-# more variant caller
-other_callers:
+# variant callers
+callers:
+  mutect: False
   lofreq: False
   varscan: False
   muse: False
