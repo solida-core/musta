@@ -17,7 +17,7 @@ rule lofreq:
         dbsnp=config.get("resources").get("dbsnp"),
         out=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/lofreq/{sample}_",
+            "variant_calling/lofreq/{sample}.",
         ),
     log:
         resolve_results_filepath(
