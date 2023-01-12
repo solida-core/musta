@@ -28,7 +28,6 @@ rule MuSE_call:
         "MuSE call "
         "-f {params.genome} "
         "-l {params.intervals} "
-        "-n {threads} "
         "-O {params.out} "
         "{input.tumoral} " ## tumoral bam (positional)
         "{input.normal} " ## normal bam
