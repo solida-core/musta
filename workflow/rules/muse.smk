@@ -21,13 +21,13 @@ rule MuSE_call:
     log:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "logs/rollcall/{sample}.muse_call.log",
+            "logs/variant_calling/muse/{sample}.muse_call.log",
         ),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
     shell:
         "MuSE call "
         "-f {params.genome} "
-        #"-l {params.intervals} "
+        "-l {params.intervals} "
         "{input.tumoral} " ## tumoral bam (positional)
         "{input.normal} " ## normal bam
         "-O {params.out} "
