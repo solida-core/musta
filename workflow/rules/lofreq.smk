@@ -17,7 +17,7 @@ rule lofreq:
         dbsnp=config.get("resources").get("dbsnp"),
         out=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/lofreq/out/{sample}_",
+            "variant_calling/lofreq/{sample}_",
         ),
     log:
         resolve_results_filepath(
@@ -41,6 +41,6 @@ rule lofreq:
         "-d {params.dbsnp} "
         "-o {params.out} "
         ">& {log} ; "
-        "cp {params.out}_somatic_final_minus-dbsnp.snvs.vcf.gz {output.snvs} && "
-        "cp {params.out}_somatic_final_minus-dbsnp.indels.vcf.gz {output.indels} "
+        "cp {params.out}somatic_final_minus-dbsnp.snvs.vcf.gz {output.snvs} && "
+        "cp {params.out}somatic_final_minus-dbsnp.indels.vcf.gz {output.indels} "
 
