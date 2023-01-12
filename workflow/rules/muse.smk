@@ -27,7 +27,7 @@ rule MuSE_call:
     shell:
         "MuSE call "
         "-f {params.genome} "
-        "-l {params.intervals} "
+        #"-l {params.intervals} "
         "{input.tumoral} " ## tumoral bam (positional)
         "{input.normal} " ## normal bam
         "-O {params.out} "
