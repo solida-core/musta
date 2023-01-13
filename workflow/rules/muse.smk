@@ -16,7 +16,7 @@ rule MuSE_call:
         intervals=config.get("resources").get("bed"),
         out=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/muse/{sample}",
+            "variant_calling/muse/{sample}.muse",
         ),
     log:
         resolve_results_filepath(
