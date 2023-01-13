@@ -5,7 +5,7 @@ rule MuSE_call:
     output:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/muse/{sample}.muse.txt"
+            "variant_calling/muse/{sample}.MuSE.txt"
         ),
     conda:
         resolve_single_filepath(
@@ -16,7 +16,7 @@ rule MuSE_call:
         intervals=config.get("resources").get("bed"),
         out=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/muse/{sample}.muse",
+            "variant_calling/muse/{sample}",
         ),
     log:
         resolve_results_filepath(
