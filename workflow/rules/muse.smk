@@ -38,13 +38,17 @@ rule MuSE_sump:
     output:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-           "variant_calling/muse/{sample}.somatic.muse.vcf"
+           "variant_calling/muse/{sample}.somatic.muse.vcf.gz"
         ),
     conda:
         resolve_single_filepath(
             config.get("paths").get("workdir"), "workflow/envs/muse.yaml"
         ),
     params:
+        out=resolve_results_filepath(
+            config.get("paths").get("results_dir"),
+           "variant_calling/muse/{sample}.somatic.muse.vcf"
+        ),
         genome=config.get("resources").get("reference"),
         intervals=config.get("resources").get("bed"),
         dbsnp=config.get("resources").get("dbsnp"),
@@ -59,5 +63,6 @@ rule MuSE_sump:
         "-I {input} " 
         "-D {params.dbsnp} "
         "-E "
-        "-O {output} "
-        ">& {log} "
+        "-O {params.out} "
+        ">& {log} ; "
+        "bgzip -c {params.out} > {output} "

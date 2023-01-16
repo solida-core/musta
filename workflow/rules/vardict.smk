@@ -51,13 +51,17 @@ rule vardict:
     output:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/vardict/{sample}.somatic.vardict.vcf",
+            "variant_calling/vardict/{sample}.somatic.vardict.vcf.gz",
         ),
     conda:
         resolve_single_filepath(
             config.get("paths").get("workdir"), "workflow/envs/vardict.yaml"
         ),
     params:
+        out=resolve_results_filepath(
+            config.get("paths").get("results_dir"),
+            "variant_calling/vardict/{sample}.somatic.vardict.vcf",
+        ),
         genome=config.get("resources").get("reference"),
         intervals=config.get("resources").get("bed"),
         normal_name= lambda wildcards,input: get_name(input.normal_name),
@@ -72,4 +76,5 @@ rule vardict:
         "{params.intervals} "
         "| testsomatic.R | var2vcf_paired.pl "
         "-N '{params.tumor_name}|{params.normal_name}' "
-        "-f 0.01 > {output} "
+        "-f 0.01 > {params.out} ; "
+        "bgzip -c {params.out} > {output} "

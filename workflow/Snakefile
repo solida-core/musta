@@ -99,7 +99,7 @@ if config.get("run").get("call") and config.get("callers").get("muse"):
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "variant_calling/muse/{sample}.somatic.muse.vcf",
+                    "variant_calling/muse/{sample}.somatic.muse.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
@@ -129,7 +129,7 @@ if config.get("run").get("call") and config.get("callers").get("vardict"):
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "variant_calling/vardict/{sample}.somatic.vardict.vcf",
+                    "variant_calling/vardict/{sample}.somatic.vardict.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
@@ -140,14 +140,14 @@ if config.get("run").get("call") and config.get("callers").get("varscan"):
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "variant_calling/varscan/{sample}.somatic.varscan.snvs.vcf",
+                    "variant_calling/varscan/{sample}.somatic.varscan.snvs.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "variant_calling/varscan/{sample}.somatic.varscan.indels.vcf",
+                    "variant_calling/varscan/{sample}.somatic.varscan.indels.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),

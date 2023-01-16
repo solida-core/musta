@@ -103,14 +103,22 @@ rule varscan2:
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/varscan/{sample}.somatic.varscan.snvs.vcf",
+            "variant_calling/varscan/{sample}.somatic.varscan.snvs.vcf.gz",
         ),
         indels=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/varscan/{sample}.somatic.varscan.indels.vcf",
+            "variant_calling/varscan/{sample}.somatic.varscan.indels.vcf.gz",
         )
     conda: resolve_single_filepath(config.get("paths").get("workdir"), "workflow/envs/varscan.yaml")
     params:
+        snvs = resolve_results_filepath(
+            config.get("paths").get("results_dir"),
+            "variant_calling/varscan/{sample}.somatic.varscan.snvs.vcf",
+        ),
+        indels = resolve_results_filepath(
+            config.get("paths").get("results_dir"),
+            "variant_calling/varscan/{sample}.somatic.varscan.indels.vcf",
+        ),
         genome=config.get("resources").get("reference"),
         intervals=config.get("resources").get("bed"),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
@@ -125,6 +133,8 @@ rule varscan2:
         "{input.tumoral} " # tumoral samtools pileup
         "--output-vcf "
         "--tumor-purity 0.2 "
-        "--output-snp {output.snvs} "
-        "--output-indel {output.indels}"
-        ">& {log}"
+        "--output-snp {params.snvs} "
+        "--output-indel {params.indels}"
+        ">& {log} ; "
+        "bgzip -c {params.snvs} > {output.snvs} ; "
+        "bgzip -c {params.indels} > {output.indels} "
