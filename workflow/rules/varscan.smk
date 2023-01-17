@@ -55,7 +55,9 @@ rule pre_varscan2_germinal:
 rule varscan2:
     input:
         tumoral=rules.pre_varscan2_tumoral.output,
-        normal=rules.pre_varscan2_germinal.output
+        normal=rules.pre_varscan2_germinal.output,
+        normal_name= rules.get_sample_names.output.normal,
+        tumor_name=rules.get_sample_names.output.tumor,
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
@@ -77,6 +79,8 @@ rule varscan2:
         ),
         genome=config.get("resources").get("reference"),
         intervals=config.get("resources").get("bed"),
+        normal_name=lambda wildcards,input: get_name(input.normal_name),
+        tumor_name=lambda wildcards, input: get_name(input.tumor_name),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
     log:
         resolve_results_filepath(
@@ -92,5 +96,9 @@ rule varscan2:
         "--output-snp {params.snvs} "
         "--output-indel {params.indels}"
         ">& {log} ; "
+        "sed 's/NORMAL/{params.normal_name}/' {params.snvs} ; "
+        "sed 's/TUMOR/{params.tumor_name}/' {params.snvs} ; "
+        "sed 's/NORMAL/{params.normal_name}/' {params.indels} ; "
+        "sed 's/TUMOR/{params.tumor_name}/' {params.indels} ; "
         "bgzip -c {params.snvs} > {output.snvs} ; "
         "bgzip -c {params.indels} > {output.indels} "

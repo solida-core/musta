@@ -2,6 +2,8 @@ rule strelka:
     input:
         normal=lambda wildcards: get_normal_bam(wildcards),
         tumoral=lambda wildcards: get_tumoral_bam(wildcards),
+        normal_name=rules.get_sample_names.output.normal,
+        tumor_name=rules.get_sample_names.output.tumor,
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
@@ -14,6 +16,8 @@ rule strelka:
     params:
         genome=config.get("resources").get("reference"),
         intervals=config.get("resources").get("bed"),
+        normal_name=lambda wildcards,input: get_name(input.normal_name),
+        tumor_name=lambda wildcards, input: get_name(input.tumor_name),
         out=resolve_results_filepath(
             config.get("paths").get("results_dir"),
             "variant_calling/strelka/{sample}",
@@ -37,5 +41,8 @@ rule strelka:
         "--callRegions {params.intervals} "
         "--runDir {params.out} ; "
         "python {params.out}/runWorkflow.py -m local -g 10 >& {log} ; "
-        "cp {params.out}/results/variants/somatic.snvs.vcf.gz {output.snvs} && "
-        "cp {params.out}/results/variants/somatic.indels.vcf.gz {output.indels} "
+        "gunzip -c {params.out}/results/variants/somatic.snvs.vcf.gz | sed 's/NORMAL/{params.normal_name}/' | sed 's/TUMOR/{params.tumor_name}/' | bgzip > {output.snvs} ; "
+        "gunzip -c {params.out}/results/variants/somatic.indels.vcf.gz | sed 's/NORMAL/{params.normal_name}/' | sed 's/TUMOR/{params.tumor_name}/' | bgzip > {output.indels} "
+
+        #"cp {params.out}/results/variants/somatic.snvs.vcf.gz {output.snvs} && "
+        #"cp {params.out}/results/variants/somatic.indels.vcf.gz {output.indels} "
