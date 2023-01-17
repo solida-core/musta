@@ -10,6 +10,7 @@ configfile: "config/config.yaml"
 
 ##### load rules #####
 include: "rules/common.smk"
+include: "rules/samplename.smk"
 include: "rules/call_variants.smk"
 include: "rules/lofreq.smk"
 include: "rules/muse.smk"
