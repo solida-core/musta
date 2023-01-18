@@ -50,8 +50,6 @@ rule MuSE_sump:
         genome=config.get("resources").get("reference"),
         intervals=config.get("resources").get("bed"),
         dbsnp=config.get("resources").get("dbsnp"),
-        normal_name=lambda wildcards,input: get_name(input.normal_name),
-        tumor_name=lambda wildcards, input: get_name(input.tumor_name),
     log:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
@@ -65,9 +63,6 @@ rule MuSE_sump:
         "-E "
         "-O {output} "
         ">& {log} "
-        "sed 's/NORMAL/{params.normal_name}/' {params.out} ; "
-        "sed 's/TUMOR/{params.tumor_name}/' {params.out} ; "
-        "bgzip -c {params.out} > {output} "
 
 rule MuSe_out:
     input:
