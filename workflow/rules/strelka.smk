@@ -2,7 +2,6 @@ rule strelka:
     input:
         normal=lambda wildcards: get_normal_bam(wildcards),
         tumoral=lambda wildcards: get_tumoral_bam(wildcards),
-
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
@@ -10,13 +9,11 @@ rule strelka:
         ),
         indels=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/strelka/{samples}/results/{sample}.somatic.indels.vcf.gz",
+            "variant_calling/strelka/{sample}/results/{sample}.somatic.indels.vcf.gz",
         ),
     params:
         genome=config.get("resources").get("reference"),
         intervals=config.get("resources").get("bed"),
-        normal_name=lambda wildcards,input: get_name(input.normal_name),
-        tumor_name=lambda wildcards, input: get_name(input.tumor_name),
         out=resolve_results_filepath(
             config.get("paths").get("results_dir"),
             "variant_calling/strelka/{sample}",
@@ -39,7 +36,7 @@ rule strelka:
         "--outputCallableRegions --targeted "
         "--callRegions {params.intervals} "
         "--runDir {params.out} ; "
-        "python {params.out}/runWorkflow.py -m local -g 10 >& {log} ; "
+        "python {params.out}/runWorkflow.py -m local -g 10 >& {log}  "
 
 rule strelka_out:
     input:
