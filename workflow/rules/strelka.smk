@@ -40,13 +40,8 @@ rule strelka:
         "--callRegions {params.intervals} "
         "--runDir {params.out} ; "
         "python {params.out}/runWorkflow.py -m local -g 10 >& {log} ; "
-        "gunzip -c {params.out}/results/variants/somatic.snvs.vcf.gz | sed 's/NORMAL/{params.normal_name}/' | sed 's/TUMOR/{params.tumor_name}/' | bgzip -c > {output.snvs} ; "
-        "gunzip -c {params.out}/results/variants/somatic.indels.vcf.gz | sed 's/NORMAL/{params.normal_name}/' | sed 's/TUMOR/{params.tumor_name}/' | bgzip -c > {output.indels} "
 
-        #"cp {params.out}/results/variants/somatic.snvs.vcf.gz {output.snvs} && "
-        #"cp {params.out}/results/variants/somatic.indels.vcf.gz {output.indels} "
-
-rule strela_out:
+rule strelka_out:
     input:
         snvs=rules.strelka.output.snvs,
         indels=rules.strelka.output.indels,
