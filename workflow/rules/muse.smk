@@ -36,23 +36,17 @@ rule MuSE_call:
 
 rule MuSE_sump:
     input:
-        normal_name = rules.get_sample_names.output.normal,
-        tumor_name = rules.get_sample_names.output.tumor,
-        call=rules.MuSE_call.output,
+        rules.MuSE_call.output,
     output:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-           "variant_calling/muse/{sample}.somatic.muse.vcf.gz"
+           "variant_calling/muse/{sample}.somatic.muse.vcf"
         ),
     conda:
         resolve_single_filepath(
             config.get("paths").get("workdir"), "workflow/envs/muse.yaml"
         ),
     params:
-        out=resolve_results_filepath(
-            config.get("paths").get("results_dir"),
-           "variant_calling/muse/{sample}.somatic.muse.vcf"
-        ),
         genome=config.get("resources").get("reference"),
         intervals=config.get("resources").get("bed"),
         dbsnp=config.get("resources").get("dbsnp"),
@@ -66,11 +60,35 @@ rule MuSE_sump:
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
     shell:
         "MuSE sump "
-        "-I {input.call} " 
+        "-I {input} " 
         "-D {params.dbsnp} "
         "-E "
-        "-O {params.out} "
-        ">& {log} ; "
+        "-O {output} "
+        ">& {log} "
         "sed 's/NORMAL/{params.normal_name}/' {params.out} ; "
         "sed 's/TUMOR/{params.tumor_name}/' {params.out} ; "
         "bgzip -c {params.out} > {output} "
+
+rule MuSe_out:
+    input:
+        vcf=rules.MuSE_sump.output,
+        normal_name= rules.get_sample_names.output.normal,
+        tumor_name=rules.get_sample_names.output.tumor,
+    output:
+        resolve_results_filepath(
+           config.get("paths").get("results_dir"),
+            "variant_calling/muse/{sample}.somatic.muse.vcf.gz"
+        ),
+    conda:
+        resolve_single_filepath(
+            config.get("paths").get("workdir"),"workflow/envs/samtools.yaml"
+        ),
+    params:
+        normal_name=lambda wildcards, input: get_name(input.normal_name),
+        tumor_name=lambda wildcards, input: get_name(input.tumor_name),
+
+    threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
+    shell:
+        "sed 's/NORMAL/{params.normal_name}/' {input.vcf} ; "
+        "sed 's/TUMOR/{params.tumor_name}/' {input.vcf} ; "
+        "bgzip -c {input} > {output} "

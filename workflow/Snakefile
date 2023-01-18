@@ -38,6 +38,41 @@ if config.get("run").get("all"):
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
+                    "variant_calling/lofreq/{sample}.somatic.lofreq.snvs.vcf.gz",
+                ),
+                sample=list(samples_master.keys()),
+            ),
+            expand(
+                resolve_results_filepath(
+                    config.get("paths").get("results_dir"),
+                    "variant_calling/lofreq/{sample}.somatic.lofreq.indels.vcf.gz",
+                ),
+                sample=list(samples_master.keys()),
+            ),
+            expand(
+                resolve_results_filepath(
+                    config.get("paths").get("results_dir"),
+                    "variant_calling/muse/{sample}.somatic.muse.vcf.gz",
+                ),
+                sample=list(samples_master.keys()),
+            ),
+            expand(
+                resolve_results_filepath(
+                    config.get("paths").get("results_dir"),
+                    "variant_calling/strelka/{sample}.somatic.strelka.snvs.vcf.gz",
+                ),
+                sample=list(samples_master.keys()),
+                ),
+                expand(
+                    resolve_results_filepath(
+                        config.get("paths").get("results_dir"),
+                        "variant_calling/strelka/{sample}.somatic.strelka.indels.vcf.gz",
+                    ),
+                    sample=list(samples_master.keys()),
+            ),
+            expand(
+                resolve_results_filepath(
+                    config.get("paths").get("results_dir"),
                     "annotation/funcotator/{sample}_funcotated.maf",
                 ),
                 sample=list(samples_master.keys()),
