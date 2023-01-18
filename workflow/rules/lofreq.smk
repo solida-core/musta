@@ -13,6 +13,7 @@ rule lofreq:
     input:
         normal=lambda wildcards: get_normal_bam(wildcards),
         tumoral=lambda wildcards: get_tumoral_bam(wildcards),
+        intervals=rules.prepare_bedfile.output.intervals,
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
@@ -24,7 +25,6 @@ rule lofreq:
         ),
     params:
         genome=config.get("resources").get("reference"),
-        intervals=rules.prepare_bedfile.output.intervals,
         dbsnp=config.get("resources").get("dbsnp"),
         out=resolve_results_filepath(
             config.get("paths").get("results_dir"),
