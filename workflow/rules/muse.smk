@@ -84,6 +84,6 @@ rule MuSe_out:
 
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
     shell:
-        "sed 's/NORMAL/{params.normal_name}/g' {input.vcf} ; "
-        "sed 's/TUMOR/{params.tumor_name}/g' {input.vcf} ; "
+        "sed -i 's/NORMAL/{params.normal_name}/g' {input.vcf} ; "
+        "sed -i 's/TUMOR/{params.tumor_name}/g' {input.vcf} ; "
         "bgzip -c {input.vcf} > {output} "
