@@ -63,13 +63,35 @@ if config.get("run").get("all"):
                 ),
                 sample=list(samples_master.keys()),
                 ),
-                expand(
-                    resolve_results_filepath(
-                        config.get("paths").get("results_dir"),
-                        "variant_calling/strelka/{sample}.somatic.strelka.indels.vcf.gz",
-                    ),
-                    sample=list(samples_master.keys()),
+            expand(
+                resolve_results_filepath(
+                    config.get("paths").get("results_dir"),
+                    "variant_calling/strelka/{sample}.somatic.strelka.indels.vcf.gz",
+                ),
+                sample=list(samples_master.keys()),
             ),
+            expand(
+                resolve_results_filepath(
+                    config.get("paths").get("results_dir"),
+                    "variant_calling/vardict/{sample}.somatic.vardict.vcf.gz",
+                ),
+                sample=list(samples_master.keys()),
+            ),
+            expand(
+                resolve_results_filepath(
+                    config.get("paths").get("results_dir"),
+                    "variant_calling/varscan/{sample}.somatic.varscan.snvs.vcf.gz",
+                ),
+                sample=list(samples_master.keys()),
+            ),
+            expand(
+                resolve_results_filepath(
+                    config.get("paths").get("results_dir"),
+                    "variant_calling/varscan/{sample}.somatic.varscan.indels.vcf.gz",
+                ),
+                sample=list(samples_master.keys()),
+            ),
+
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
