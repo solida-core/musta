@@ -40,6 +40,7 @@ rule lofreq:
         "-l {params.intervals} "
         "-d {params.dbsnp} "
         "-o {params.out} "
+        "--call-indels "
         ">& {log} ; "
         "cp {params.out}somatic_final_minus-dbsnp.snvs.vcf.gz {output.snvs} && "
         "cp {params.out}somatic_final_minus-dbsnp.indels.vcf.gz {output.indels} "
