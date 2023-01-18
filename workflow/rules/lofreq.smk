@@ -1,3 +1,14 @@
+rule prepare_bedfile:
+    input:
+        intervals=config.get("resources").get("bed"),
+    output:
+        intervals=resolve_results_filepath(
+            config.get("paths").get("results_dir"),
+            "variant_calling/bedfile/bed.vcf",
+        ),
+    shell:
+        "gunzip -c {input.intervals} > {output.intervals}"
+
 rule lofreq:
     input:
         normal=lambda wildcards: get_normal_bam(wildcards),
@@ -13,7 +24,7 @@ rule lofreq:
         ),
     params:
         genome=config.get("resources").get("reference"),
-        intervals=config.get("resources").get("bed"),
+        intervals=rules.prepare_bedfile.output.intervals,
         dbsnp=config.get("resources").get("dbsnp"),
         out=resolve_results_filepath(
             config.get("paths").get("results_dir"),
