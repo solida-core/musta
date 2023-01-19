@@ -109,9 +109,9 @@ rule varscan2_out:
     conda: resolve_single_filepath(config.get("paths").get("workdir"), "workflow/envs/samtools.yaml"),
     threads: conservative_cpu_count(reserve_cores=2,max_cores=99),
     shell:
-        "sed 's/NORMAL/{params.normal_name}/' {input.snvs} ; "
-        "sed 's/TUMOR/{params.tumor_name}/' {input.snvs} ; "
-        "sed 's/NORMAL/{params.normal_name}/' {input.indels} ; "
-        "sed 's/TUMOR/{params.tumor_name}/' {input.indels} ; "
+        "sed '0,/NORMAL/! s/NORMAL/{params.normal_name}/g' {input.snvs} ; "
+        "sed '0,/TUMOR/! s/TUMOR/{params.tumor_name}/g' {input.snvs} ; "
+        "sed '0,/NORMAL/! s/NORMAL/{params.normal_name}/g' {input.indels} ; "
+        "sed '0,/TUMOR/! s/TUMOR/{params.tumor_name}/g' {input.indels} ; "
         "bgzip -c {input.snvs} > {output.snvs} ; "
         "bgzip -c {input.indels} > {output.indels} "
