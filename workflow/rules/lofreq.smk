@@ -48,7 +48,7 @@ rule lofreq:
         "-t {input.tumoral} "
         "-n {input.normal} "
         "--threads {threads} "
-        "-l {params.intervals} "
+        "-l {input.intervals} "
         "-d {params.dbsnp} "
         "-o {params.out} "
         "--call-indels "
