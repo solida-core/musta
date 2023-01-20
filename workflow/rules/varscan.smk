@@ -82,8 +82,8 @@ rule varscan2:
         "{input.tumoral} " # tumoral samtools pileup
         "--output-vcf "
         "--tumor-purity 0.2 "
-        "--output-snp {params.snvs} "
-        "--output-indel {params.indels}"
+        "--output-snp {output.snvs} "
+        "--output-indel {output.indels} "
         ">& {log}  "
 
 
