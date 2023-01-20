@@ -62,5 +62,5 @@ rule strelka_out:
         ),
     threads: conservative_cpu_count(reserve_cores=2,max_cores=99),
     shell:
-        "gunzip -c {input.snvs} | sed 's/NORMAL/{params.normal_name}/' | sed '0,/TUMOR/! s/TUMOR/{params.tumor_name}/' | bgzip -c > {output.snvs} ; "
-        "gunzip -c {input.indels} | sed 's/NORMAL/{params.normal_name}/' | sed '0,/TUMOR/! s/TUMOR/{params.tumor_name}/' | bgzip -c > {output.indels} "
+        "gunzip -c {input.snvs} | sed 's/NORMAL/{params.normal_name}/' | sed 's/TUMOR/{params.tumor_name}/' | bgzip -c > {output.snvs} ; "
+        "gunzip -c {input.indels} | sed 's/NORMAL/{params.normal_name}/' | sed 's/TUMOR/{params.tumor_name}/' | bgzip -c > {output.indels} "
