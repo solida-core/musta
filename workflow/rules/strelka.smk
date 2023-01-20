@@ -5,23 +5,23 @@ rule strelka:
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/strelka/{sample}/results/variants/somatic.snvs.vcf.gz",
+            "detection/strelka/{sample}/results/variants/somatic.snvs.vcf.gz",
         ),
         indels=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/strelka/{sample}/results/variants/somatic.indels.vcf.gz",
+            "detection/strelka/{sample}/results/variants/somatic.indels.vcf.gz",
         ),
     params:
         genome=config.get("resources").get("reference"),
         intervals=config.get("resources").get("bed"),
         out=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/strelka/{sample}",
+            "detection/strelka/{sample}",
         ),
     log:
         resolve_results_filepath(
-            config.get("paths").get("results_dir"),
-            "logs/variant_calling/strelka/{sample}.strelka.log",
+            config.get("paths").get("log_dir"),
+            "detection/strelka/{sample}.strelka.log",
         ),
     conda:
         resolve_single_filepath(
@@ -47,11 +47,11 @@ rule strelka_out:
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/strelka/{sample}.somatic.strelka.snvs.vcf.gz",
+            "detection/strelka/{sample}.somatic.strelka.snvs.vcf.gz",
         ),
         indels=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/strelka/{sample}.somatic.strelka.indels.vcf.gz",
+            "detection/strelka/{sample}.somatic.strelka.indels.vcf.gz",
         ),
     params:
         normal_name=lambda wildcards,input: get_name(input.normal_name),

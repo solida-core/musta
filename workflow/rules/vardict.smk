@@ -7,7 +7,7 @@ rule vardict:
     output:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/vardict/{sample}.somatic.vardict.vcf.gz",
+            "detection/vardict/{sample}.somatic.vardict.vcf.gz",
         ),
     conda:
         resolve_single_filepath(
@@ -16,7 +16,7 @@ rule vardict:
     params:
         out=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/vardict/{sample}.somatic.vardict.vcf",
+            "detection/vardict/{sample}.somatic.vardict.vcf",
         ),
         genome=config.get("resources").get("reference"),
         intervals=config.get("resources").get("bed"),

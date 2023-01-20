@@ -11,7 +11,7 @@ configfile: "config/config.yaml"
 ##### load rules #####
 include: "rules/common.smk"
 include: "rules/samplename.smk"
-include: "rules/call_variants.smk"
+include: "rules/mutect.smk"
 include: "rules/lofreq.smk"
 include: "rules/muse.smk"
 include: "rules/strelka.smk"
@@ -31,63 +31,63 @@ if config.get("run").get("all"):
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "variant_calling/mutect/{sample}.somatic.mutect.vcf.gz",
+                    "detection/mutect/{sample}.somatic.mutect.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "variant_calling/lofreq/{sample}.somatic.lofreq.snvs.vcf.gz",
+                    "detection/lofreq/{sample}.somatic.lofreq.snvs.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "variant_calling/lofreq/{sample}.somatic.lofreq.indels.vcf.gz",
+                    "detection/lofreq/{sample}.somatic.lofreq.indels.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "variant_calling/muse/{sample}.somatic.muse.vcf.gz",
+                    "detection/muse/{sample}.somatic.muse.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "variant_calling/strelka/{sample}.somatic.strelka.snvs.vcf.gz",
+                    "detection/strelka/{sample}.somatic.strelka.snvs.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
                 ),
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "variant_calling/strelka/{sample}.somatic.strelka.indels.vcf.gz",
-                ),
-                sample=list(samples_master.keys()),
-            ),
-            expand(
-                resolve_results_filepath(
-                    config.get("paths").get("results_dir"),
-                    "variant_calling/vardict/{sample}.somatic.vardict.vcf.gz",
+                    "detection/strelka/{sample}.somatic.strelka.indels.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "variant_calling/varscan/{sample}.somatic.varscan.snvs.vcf.gz",
+                    "detection/vardict/{sample}.somatic.vardict.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "variant_calling/varscan/{sample}.somatic.varscan.indels.vcf.gz",
+                    "detection/varscan/{sample}.somatic.varscan.snvs.vcf.gz",
+                ),
+                sample=list(samples_master.keys()),
+            ),
+            expand(
+                resolve_results_filepath(
+                    config.get("paths").get("results_dir"),
+                    "detection/varscan/{sample}.somatic.varscan.indels.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
@@ -127,7 +127,7 @@ if config.get("run").get("call") and config.get("callers").get("mutect"):
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "variant_calling/mutect/{sample}.somatic.mutect.vcf.gz",
+                    "detection/mutect/{sample}.somatic.mutect.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
@@ -138,14 +138,14 @@ if config.get("run").get("call") and config.get("callers").get("lofreq"):
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "variant_calling/lofreq/{sample}.somatic.lofreq.snvs.vcf.gz",
+                    "detection/lofreq/{sample}.somatic.lofreq.snvs.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "variant_calling/lofreq/{sample}.somatic.lofreq.indels.vcf.gz",
+                    "detection/lofreq/{sample}.somatic.lofreq.indels.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
@@ -157,7 +157,7 @@ if config.get("run").get("call") and config.get("callers").get("muse"):
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "variant_calling/muse/{sample}.somatic.muse.vcf.gz",
+                    "detection/muse/{sample}.somatic.muse.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
@@ -169,14 +169,14 @@ if config.get("run").get("call") and config.get("callers").get("strelka"):
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "variant_calling/strelka/{sample}.somatic.strelka.snvs.vcf.gz",
+                    "detection/strelka/{sample}.somatic.strelka.snvs.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "variant_calling/strelka/{sample}.somatic.strelka.indels.vcf.gz",
+                    "detection/strelka/{sample}.somatic.strelka.indels.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
@@ -187,7 +187,7 @@ if config.get("run").get("call") and config.get("callers").get("vardict"):
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "variant_calling/vardict/{sample}.somatic.vardict.vcf.gz",
+                    "detection/vardict/{sample}.somatic.vardict.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
@@ -198,14 +198,14 @@ if config.get("run").get("call") and config.get("callers").get("varscan"):
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "variant_calling/varscan/{sample}.somatic.varscan.snvs.vcf.gz",
+                    "detection/varscan/{sample}.somatic.varscan.snvs.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "variant_calling/varscan/{sample}.somatic.varscan.indels.vcf.gz",
+                    "detection/varscan/{sample}.somatic.varscan.indels.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),

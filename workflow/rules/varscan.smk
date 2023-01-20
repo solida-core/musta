@@ -6,7 +6,7 @@ rule pre_varscan2_tumoral:
     output:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/varscan/{sample}.tumoral.pileup",
+            "detection/varscan/{sample}.tumoral.pileup",
         ),
     conda:
        resolve_single_filepath(
@@ -15,7 +15,7 @@ rule pre_varscan2_tumoral:
     log:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
-            "variant_calling/varscan/{sample}.tumoral.log",
+            "detection/varscan/{sample}.tumoral.log",
         ),
     params:
         genome=config.get("resources").get("reference"),
@@ -38,14 +38,14 @@ rule pre_varscan2_germinal:
     output:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/varscan/{sample}.normal.pileup",
+            "detection/varscan/{sample}.normal.pileup",
         ),
     conda:
        resolve_single_filepath(config.get("paths").get("workdir"), "workflow/envs/samtools.yaml"),
     log:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
-            "variant_calling/varscan/{sample}.normal.log",
+            "detection/varscan/{sample}.normal.log",
         ),
     params:
         genome=config.get("resources").get("reference"),
@@ -69,11 +69,11 @@ rule varscan2:
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/varscan/{sample}.somatic.varscan.snvs.vcf",
+            "detection/varscan/{sample}.somatic.varscan.snvs.vcf",
         ),
         indels=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/varscan/{sample}.somatic.varscan.indels.vcf",
+            "detection/varscan/{sample}.somatic.varscan.indels.vcf",
         )
     conda: resolve_single_filepath(config.get("paths").get("workdir"), "workflow/envs/varscan.yaml")
     params:
@@ -83,7 +83,7 @@ rule varscan2:
     log:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
-            "variant_calling/varscan/{sample}.varscan.log",
+            "detection/varscan/{sample}.varscan.log",
         ),
     shell:
         "varscan somatic "
@@ -105,11 +105,11 @@ rule varscan2_out:
     output:
         snvs = resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/varscan/{sample}.somatic.varscan.snvs.vcf.gz",
+            "detection/varscan/{sample}.somatic.varscan.snvs.vcf.gz",
         ),
         indels = resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/varscan/{sample}.somatic.varscan.indels.vcf.gz",
+            "detection/varscan/{sample}.somatic.varscan.indels.vcf.gz",
         ),
     params:
         normal_name = lambda wildcards, input: get_name(input.normal_name),

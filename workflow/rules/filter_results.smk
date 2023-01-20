@@ -8,7 +8,7 @@ rule filter_mutect:
     output:
         vcf=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/mutect/matched/{sample}.somatic.filtered.vcf.gz",
+            "detection/mutect/matched/{sample}.somatic.filtered.vcf.gz",
         ),
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
@@ -16,8 +16,8 @@ rule filter_mutect:
         intervals=config.get("resources").get("bed"),
     log:
         resolve_results_filepath(
-            config.get("paths").get("results_dir"),
-            "logs/variant_calling/mutect/{sample}.filter_info.log",
+            config.get("paths").get("log_dir"),
+            "detection/mutect/{sample}.filter_info.log",
         ),
     conda:
         resolve_single_filepath(
@@ -49,8 +49,8 @@ rule filter_mutect_tumoronly:
         stats=rules.mutect_tumoronly.output.stats,
     output:
         vcf=resolve_results_filepath(
-            config.get("paths").get("results_dir"),
-            "variant_calling/mutect/tumoronly/{sample}.somatic.filtered.vcf.gz",
+            config.get("paths").get("log_dir"),
+            "detection/mutect/tumoronly/{sample}.somatic.filtered.vcf.gz",
         ),
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
@@ -59,7 +59,7 @@ rule filter_mutect_tumoronly:
     log:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "logs/variant_calling/mutect/{sample}.filter_info.log",
+            "logs/detection/mutect/{sample}.filter_info.log",
         ),
     conda:
         resolve_single_filepath(
@@ -88,7 +88,7 @@ rule gatk_SelectVariants:
     output:
         vcf=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/mutect/{sample}.somatic.mutect.vcf.gz",
+            "detection/mutect/{sample}.somatic.mutect.vcf.gz",
         ),
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
@@ -96,8 +96,8 @@ rule gatk_SelectVariants:
         arguments=config.get("params").get("gatk").get("SelectVariants"),
     log:
         resolve_results_filepath(
-            config.get("paths").get("results_dir"),
-            "logs/variant_calling/mutect/{sample}.SelectVariants.log",
+            config.get("paths").get("log_dir"),
+            "detection/mutect/{sample}.SelectVariants.log",
         ),
     conda:
         resolve_single_filepath(

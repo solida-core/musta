@@ -42,5 +42,8 @@ paths:
   results_dir: "/path/to/results_dir"
   tmp_dir: "/path/to/tmp_dir"
   log_dir: "/path/to/log_dir"
+  detection_folder_name: "detection"
+  classification_folder_name: "classification"
+  interpretation_folder_name: "interpretation"
 
 

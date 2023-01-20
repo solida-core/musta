@@ -4,7 +4,7 @@ rule prepare_bedfile:
     output:
         intervals=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/bedfile/bed.vcf",
+            "detection/bedfile/bed.vcf",
         ),
     shell:
         "gunzip -c {input.intervals} > {output.intervals}"
@@ -17,23 +17,23 @@ rule lofreq:
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/lofreq/{sample}.somatic.lofreq.snvs.vcf.gz",
+            "detection/lofreq/{sample}.somatic.lofreq.snvs.vcf.gz",
         ),
         indels=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/lofreq/{sample}.somatic.lofreq.indels.vcf.gz",
+            "detection/lofreq/{sample}.somatic.lofreq.indels.vcf.gz",
         ),
     params:
         genome=config.get("resources").get("reference"),
         dbsnp=config.get("resources").get("dbsnp"),
         out=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/lofreq/{sample}.",
+            "detection/lofreq/{sample}.",
         ),
     log:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
-            "variant_calling/lofreq/{sample}.lofreq.log",
+            "detection/lofreq/{sample}.lofreq.log",
         ),
     conda:
         resolve_single_filepath(

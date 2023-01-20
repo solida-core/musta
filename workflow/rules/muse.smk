@@ -6,7 +6,7 @@ rule MuSE_call:
     output:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/muse/{sample}.MuSE.txt"
+            "detection/muse/{sample}.MuSE.txt"
         ),
     conda:
         resolve_single_filepath(
@@ -18,12 +18,12 @@ rule MuSE_call:
 
         out=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/muse/{sample}",
+            "detection/muse/{sample}",
         ),
     log:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
-            "variant_calling/muse/{sample}.muse_call.log",
+            "detection/muse/{sample}.muse_call.log",
         ),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
     shell:
@@ -40,7 +40,7 @@ rule MuSE_sump:
     output:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-           "variant_calling/muse/{sample}.somatic.muse.vcf"
+           "detection/muse/{sample}.somatic.muse.vcf"
         ),
     conda:
         resolve_single_filepath(
@@ -53,7 +53,7 @@ rule MuSE_sump:
     log:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
-            "variant_calling/muse/{sample}.muse_sump.log",
+            "detection/muse/{sample}.muse_sump.log",
         ),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
     shell:
@@ -72,7 +72,7 @@ rule MuSe_out:
     output:
         resolve_results_filepath(
            config.get("paths").get("results_dir"),
-            "variant_calling/muse/{sample}.somatic.muse.vcf.gz"
+            "detection/muse/{sample}.somatic.muse.vcf.gz"
         ),
     conda:
         resolve_single_filepath(

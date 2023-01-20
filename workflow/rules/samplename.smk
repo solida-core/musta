@@ -15,12 +15,12 @@ rule get_sample_names:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
     log:
         normal=resolve_results_filepath(
-            config.get("paths").get("results_dir"),
-            "logs/samplename/{sample}.gsn.normal.log",
+            config.get("paths").get("log_dir"),
+            "samplename/{sample}.gsn.normal.log",
         ),
         tumor=resolve_results_filepath(
-            config.get("paths").get("results_dir"),
-            "logs/samplename/{sample}.gsn.tumor.log",
+            config.get("paths").get("log_dir"),
+            "samplename/{sample}.gsn.tumor.log",
         ),
     conda:
         resolve_single_filepath(
