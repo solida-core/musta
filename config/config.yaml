@@ -41,4 +41,6 @@ paths:
   workdir: "/path/to/workdir"
   results_dir: "/path/to/results_dir"
   tmp_dir: "/path/to/tmp_dir"
+  log_dir: "/path/to/log_dir"
+
 

@@ -12,6 +12,11 @@ rule pre_varscan2_tumoral:
        resolve_single_filepath(
             config.get("paths").get("workdir"), "workflow/envs/samtools.yaml"
         )
+    log:
+        resolve_results_filepath(
+            config.get("paths").get("log_dir"),
+            "variant_calling/varscan/{sample}.tumoral.log",
+        ),
     params:
         genome=config.get("resources").get("reference"),
         intervals=config.get("resources").get("bed"),
@@ -24,7 +29,7 @@ rule pre_varscan2_tumoral:
         "-x -C 50 -q 40 -Q 30 "
         "-l {params.intervals} "
         "{input.tumoral} "
-        "-o {output} "
+        "-o {output} >& {log} "
 
 
 rule pre_varscan2_germinal:
@@ -36,8 +41,12 @@ rule pre_varscan2_germinal:
             "variant_calling/varscan/{sample}.normal.pileup",
         ),
     conda:
-       resolve_single_filepath(config.get("paths").get("workdir"), "workflow/envs/samtools.yaml")
-
+       resolve_single_filepath(config.get("paths").get("workdir"), "workflow/envs/samtools.yaml"),
+    log:
+        resolve_results_filepath(
+            config.get("paths").get("log_dir"),
+            "variant_calling/varscan/{sample}.normal.log",
+        ),
     params:
         genome=config.get("resources").get("reference"),
         intervals=config.get("resources").get("bed"),
@@ -49,7 +58,7 @@ rule pre_varscan2_germinal:
         "-x -C 50 -q 40 -Q 30 "
         "-l {params.intervals} "
         "{input.normal} "
-        "-o {output} "
+        "-o {output} >& {log}"
 
 
 rule varscan2:
@@ -73,8 +82,8 @@ rule varscan2:
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
     log:
         resolve_results_filepath(
-            config.get("paths").get("results_dir"),
-            "logs/variant_calling/varscan/{sample}.varscan.log",
+            config.get("paths").get("log_dir"),
+            "variant_calling/varscan/{sample}.varscan.log",
         ),
     shell:
         "varscan somatic "
@@ -109,9 +118,9 @@ rule varscan2_out:
     conda: resolve_single_filepath(config.get("paths").get("workdir"), "workflow/envs/samtools.yaml"),
     threads: conservative_cpu_count(reserve_cores=2,max_cores=99),
     shell:
-        "sed '0,/NORMAL/! s/NORMAL/{params.normal_name}/g' {input.snvs} ; "
-        "sed '0,/TUMOR/! s/TUMOR/{params.tumor_name}/g' {input.snvs} ; "
-        "sed '0,/NORMAL/! s/NORMAL/{params.normal_name}/g' {input.indels} ; "
-        "sed '0,/TUMOR/! s/TUMOR/{params.tumor_name}/g' {input.indels} ; "
+        "sed -i 's/NORMAL/{params.normal_name}/g' {input.snvs} ; "
+        "sed -i 's/TUMOR/{params.tumor_name}/g' {input.snvs} ; "
+        "sed -i 's/NORMAL/{params.normal_name}/g' {input.indels} ; "
+        "sed -i 's/TUMOR/{params.tumor_name}/g' {input.indels} ; "
         "bgzip -c {input.snvs} > {output.snvs} ; "
         "bgzip -c {input.indels} > {output.indels} "

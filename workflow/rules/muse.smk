@@ -22,8 +22,8 @@ rule MuSE_call:
         ),
     log:
         resolve_results_filepath(
-            config.get("paths").get("results_dir"),
-            "logs/variant_calling/muse/{sample}.muse_call.log",
+            config.get("paths").get("log_dir"),
+            "variant_calling/muse/{sample}.muse_call.log",
         ),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
     shell:
@@ -52,8 +52,8 @@ rule MuSE_sump:
         dbsnp=config.get("resources").get("dbsnp"),
     log:
         resolve_results_filepath(
-            config.get("paths").get("results_dir"),
-            "logs/variant_calling/muse/{sample}.muse_sump.log",
+            config.get("paths").get("log_dir"),
+            "variant_calling/muse/{sample}.muse_sump.log",
         ),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
     shell:

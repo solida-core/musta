@@ -32,8 +32,8 @@ rule lofreq:
         ),
     log:
         resolve_results_filepath(
-            config.get("paths").get("results_dir"),
-            "logs/variant_calling/lofreq/{sample}.lofreq.log",
+            config.get("paths").get("log_dir"),
+            "variant_calling/lofreq/{sample}.lofreq.log",
         ),
     conda:
         resolve_single_filepath(
