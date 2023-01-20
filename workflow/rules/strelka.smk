@@ -5,11 +5,11 @@ rule strelka:
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/strelka/{sample}/results/{sample}.somatic.snvs.vcf.gz",
+            "variant_calling/strelka/{sample}/results/variants/somatic.snvs.vcf.gz",
         ),
         indels=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "variant_calling/strelka/{sample}/results/{sample}.somatic.indels.vcf.gz",
+            "variant_calling/strelka/{sample}/results/variants/somatic.indels.vcf.gz",
         ),
     params:
         genome=config.get("resources").get("reference"),
