@@ -4,6 +4,7 @@ rule vardict:
         tumoral=lambda wildcards: get_tumoral_bam(wildcards),
         normal_name=rules.get_sample_names.output.normal,
         tumor_name=rules.get_sample_names.output.tumor,
+        intervals=rules.prepare_bedfile.output.intervals,
     output:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
@@ -19,7 +20,6 @@ rule vardict:
             "detection/vardict/{sample}.somatic.vardict.vcf",
         ),
         genome=config.get("resources").get("reference"),
-        intervals=config.get("resources").get("bed"),
         normal_name= lambda wildcards,input: get_name(input.normal_name),
         tumor_name=lambda wildcards, input: get_name(input.tumor_name),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
@@ -29,7 +29,7 @@ rule vardict:
         "-f 0.01 -N {params.tumor_name} "
         "-b '{input.tumoral} | {input.normal}' "
         "-c 1 -S 2 -E 3 "
-        "{params.intervals} "
+        "{input.intervals} "
         "| testsomatic.R | var2vcf_paired.pl "
         "-N '{params.tumor_name}|{params.normal_name}' "
         "-f 0.01 > {params.out} ; "

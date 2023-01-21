@@ -1,14 +1,3 @@
-rule prepare_bedfile:
-    input:
-        intervals=config.get("resources").get("bed"),
-    output:
-        intervals=resolve_results_filepath(
-            config.get("paths").get("results_dir"),
-            "detection/bedfile/bed.vcf",
-        ),
-    shell:
-        "gunzip -c {input.intervals} > {output.intervals}"
-
 rule lofreq:
     input:
         normal=lambda wildcards: get_normal_bam(wildcards),
