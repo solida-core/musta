@@ -25,6 +25,11 @@ rule MuSE_call:
             config.get("paths").get("log_dir"),
             "detection/muse/{sample}.muse_call.log",
         ),
+    benchmark:
+        resolve_results_filepath(
+            config.get("paths").get("bench_dir"),
+            "detection/muse/{sample}.muse_call.txt",
+        ),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
     shell:
         "MuSE call "
@@ -54,6 +59,11 @@ rule MuSE_sump:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
             "detection/muse/{sample}.muse_sump.log",
+        ),
+    benchmark:
+        resolve_results_filepath(
+            config.get("paths").get("bench_dir"),
+            "detection/muse/{sample}.muse_sump.txt",
         ),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
     shell:

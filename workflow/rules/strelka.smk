@@ -23,6 +23,11 @@ rule strelka:
             config.get("paths").get("log_dir"),
             "detection/strelka/{sample}.strelka.log",
         ),
+    benchmark:
+        resolve_results_filepath(
+            config.get("paths").get("bench_dir"),
+            "detection/strelka/{sample}.strelka.txt",
+        ),
     conda:
         resolve_single_filepath(
             config.get("paths").get("workdir"), "workflow/envs/strelka.yaml"

@@ -85,6 +85,11 @@ rule varscan2:
             config.get("paths").get("log_dir"),
             "detection/varscan/{sample}.varscan.log",
         ),
+    benchmark:
+        resolve_results_filepath(
+            config.get("paths").get("bench_dir"),
+            "detection/varscan/{sample}.varscan.txt",
+        ),
     shell:
         "varscan somatic "
         "{input.normal} " # normal samtools pileup

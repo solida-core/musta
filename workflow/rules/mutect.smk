@@ -34,6 +34,11 @@ rule mutect_matched:
             config.get("paths").get("log_dir"),
             "detection/mutect/{sample}.mutect.log",
         ),
+    benchmark:
+        resolve_results_filepath(
+            config.get("paths").get("bench_dir"),
+            "detection/mutect/{sample}.mutect.txt",
+        ),
     conda:
         resolve_single_filepath(
             config.get("paths").get("workdir"), "workflow/envs/gatk.yaml"
@@ -79,6 +84,11 @@ rule learn_orientation_model:
             config.get("paths").get("log_dir"),
             "detection/mutect/{sample}.pileupsummaries_T.log",
         ),
+    benchmark:
+        resolve_results_filepath(
+            config.get("paths").get("bench_dir"),
+            "detection/mutect/{sample}.pileupsummaries_T.txt",
+        ),
     conda:
         resolve_single_filepath(
             config.get("paths").get("workdir"), "workflow/envs/gatk.yaml"
@@ -110,6 +120,11 @@ rule pileup_summaries_tumoral:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
             "detection/mutect/{sample}.pileupsummaries_T.log",
+        ),
+    benchmark:
+        resolve_results_filepath(
+            config.get("paths").get("bench_dir"),
+            "detection/mutect/{sample}.pileupsummaries_T.txt",
         ),
     conda:
         resolve_single_filepath(
@@ -144,6 +159,11 @@ rule pileup_summaries_normal:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
             "detection/mutect/{sample}.pileupsummaries_C.log",
+        ),
+    benchmark:
+        resolve_results_filepath(
+            config.get("paths").get("bench_dir"),
+            "detection/mutect/{sample}.pileupsummaries_C.txt",
         ),
     conda:
         resolve_single_filepath(
@@ -181,6 +201,11 @@ rule calculate_contamination:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
             "detection/mutect/{sample}.calculate_contamination.log",
+        ),
+    benchmark:
+        resolve_results_filepath(
+            config.get("paths").get("bench_dir"),
+            "detection/mutect/{sample}.calculate_contamination.txt",
         ),
     conda:
         resolve_single_filepath(
@@ -220,6 +245,11 @@ rule filter_mutect:
             config.get("paths").get("log_dir"),
             "detection/mutect/{sample}.filter_info.log",
         ),
+    benchmark:
+        resolve_results_filepath(
+            config.get("paths").get("bench_dir"),
+            "detection/mutect/{sample}.filter_info.txt",
+        ),
     conda:
         resolve_single_filepath(
             config.get("paths").get("workdir"), "workflow/envs/gatk.yaml"
@@ -256,6 +286,11 @@ rule gatk_SelectVariants:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
             "detection/mutect/{sample}.SelectVariants.log",
+        ),
+    benchmark:
+        resolve_results_filepath(
+            config.get("paths").get("bench_dir"),
+            "detection/mutect/{sample}.SelectVariants.txt",
         ),
     conda:
         resolve_single_filepath(

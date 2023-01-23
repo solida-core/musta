@@ -23,6 +23,11 @@ rule vardict:
         normal_name= lambda wildcards,input: get_name(input.normal_name),
         tumor_name=lambda wildcards, input: get_name(input.tumor_name),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
+    benchmark:
+        resolve_results_filepath(
+            config.get("paths").get("bench_dir"),
+            "detection/vardict/{sample}.vardict.txt",
+        ),
     shell:
         "vardict "
         "-G {params.genome} "

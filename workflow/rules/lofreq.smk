@@ -24,6 +24,11 @@ rule lofreq:
             config.get("paths").get("log_dir"),
             "detection/lofreq/{sample}.lofreq.log",
         ),
+    benchmark:
+        resolve_results_filepath(
+            config.get("paths").get("bench_dir"),
+            "detection/lofreq/{sample}.lofreq.txt",
+        ),
     conda:
         resolve_single_filepath(
             config.get("paths").get("workdir"), "workflow/envs/lofreq.yaml"
