@@ -64,3 +64,22 @@ rule strelka_out:
     shell:
         "gunzip -c {input.snvs} | sed 's/NORMAL/{params.normal_name}/' | sed 's/TUMOR/{params.tumor_name}/' | bgzip -c > {output.snvs} ; "
         "gunzip -c {input.indels} | sed 's/NORMAL/{params.normal_name}/' | sed 's/TUMOR/{params.tumor_name}/' | bgzip -c > {output.indels} "
+
+rule strelka_hold_on:
+    input:
+        snvs=rules.strelka_out.output.snvs,
+        indels=rules.strelka_out.output.indels,
+
+    output:
+        snvs=resolve_results_filepath(
+            config.get("paths").get("results_dir"),
+            "detection/results/{sample}.somatic.strelka.snvs.vcf.gz",
+        ),
+        indels=resolve_results_filepath(
+            config.get("paths").get("results_dir"),
+            "detection/results/{sample}.somatic.strelka.indels.vcf.gz",
+        ),
+
+    shell:
+        "cp {input.snvs} {output.snvs} ; "
+        "cp {input.indels} {output.indels} "

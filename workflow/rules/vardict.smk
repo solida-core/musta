@@ -34,3 +34,17 @@ rule vardict:
         "-N '{params.tumor_name}|{params.normal_name}' "
         "-f 0.01 > {params.out} ; "
         "bgzip -c {params.out} > {output} "
+
+
+rule vardict_hold_on:
+    input:
+        snvs=rules.vardict.output,
+
+    output:
+        snvs=resolve_results_filepath(
+            config.get("paths").get("results_dir"),
+            "detection/results/{sample}.somatic.vardict.vcf.gz"
+        ),
+
+    shell:
+        "cp {input.snvs} {output.snvs} "

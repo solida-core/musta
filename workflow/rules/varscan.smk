@@ -124,3 +124,22 @@ rule varscan2_out:
         "sed -i 's/TUMOR/{params.tumor_name}/g' {input.indels} ; "
         "bgzip -c {input.snvs} > {output.snvs} ; "
         "bgzip -c {input.indels} > {output.indels} "
+
+rule varscan_hold_on:
+    input:
+        snvs=rules.varscan2_out.output.snvs,
+        indels=rules.varscan2_out.output.indels,
+
+    output:
+        snvs=resolve_results_filepath(
+            config.get("paths").get("results_dir"),
+            "detection/results/{sample}.somatic.varscan.snvs.vcf.gz",
+        ),
+        indels=resolve_results_filepath(
+            config.get("paths").get("results_dir"),
+            "detection/results/{sample}.somatic.varscan.indels.vcf.gz",
+        ),
+
+    shell:
+        "cp {input.snvs} {output.snvs} ; "
+        "cp {input.indels} {output.indels} "

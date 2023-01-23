@@ -45,3 +45,22 @@ rule lofreq:
         "cp {params.out}somatic_final_minus-dbsnp.snvs.vcf.gz {output.snvs} && "
         "cp {params.out}somatic_final_minus-dbsnp.indels.vcf.gz {output.indels} "
 
+
+rule lofreq_hold_on:
+    input:
+        snvs=rules.lofreq.output.snvs,
+        indels=rules.lofreq.output.indels,
+
+    output:
+        snvs=resolve_results_filepath(
+            config.get("paths").get("results_dir"),
+            "detection/results/{sample}.somatic.lofreq.snvs.vcf.gz",
+        ),
+        indels=resolve_results_filepath(
+            config.get("paths").get("results_dir"),
+            "detection/results/{sample}.somatic.lofreq.indels.vcf.gz",
+        ),
+
+    shell:
+        "cp {input.snvs} {output.snvs} ; "
+        "cp {input.indels} {output.indels} "

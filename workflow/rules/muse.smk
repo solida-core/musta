@@ -87,3 +87,16 @@ rule MuSe_out:
         "sed -i '0,/NORMAL/! s/NORMAL/{params.normal_name}/g' {input.vcf} ; "
         "sed -i '0,/TUMOR/! s/TUMOR/{params.tumor_name}/g' {input.vcf} ; "
         "bgzip -c {input.vcf} > {output} "
+
+rule muse_hold_on:
+    input:
+        snvs=rules.MuSe_out.output,
+
+    output:
+        snvs=resolve_results_filepath(
+                config.get("paths").get("results_dir"),
+                "detection/results/{sample}.somatic.muse.vcf.gz"
+        ),
+
+    shell:
+        "cp {input.snvs} {output.snvs} "
