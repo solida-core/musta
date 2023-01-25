@@ -55,7 +55,6 @@ rule lofreq_hold_on:
     input:
         snvs=rules.lofreq.output.snvs,
         indels=rules.lofreq.output.indels,
-
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
@@ -65,7 +64,7 @@ rule lofreq_hold_on:
             config.get("paths").get("results_dir"),
             "detection/results/{sample}.somatic.lofreq.indels.vcf.gz",
         ),
-
+    threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
     shell:
         "cp {input.snvs} {output.snvs} ; "
         "cp {input.indels} {output.indels} "

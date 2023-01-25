@@ -317,6 +317,6 @@ rule mutect_hold_on:
             config.get("paths").get("results_dir"),
             "detection/results/{sample}.somatic.mutect.vcf.gz",
         ),
-
+    threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
     shell:
         "cp {input.snvs} {output.snvs} "

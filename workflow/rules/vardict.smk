@@ -44,12 +44,11 @@ rule vardict:
 rule vardict_hold_on:
     input:
         snvs=rules.vardict.output,
-
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
             "detection/results/{sample}.somatic.vardict.vcf.gz"
         ),
-
+    threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
     shell:
         "cp {input.snvs} {output.snvs} "
