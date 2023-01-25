@@ -89,7 +89,7 @@ rule somaticseq_hold_on:
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "detection/results/{sample}.somatic.varscan.snvs.vcf.gz",
+            "detection/results/{sample}.consensus.snvs.vcf.gz",
         ),
         indels=resolve_results_filepath(
             config.get("paths").get("results_dir"),
