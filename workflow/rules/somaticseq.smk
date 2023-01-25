@@ -10,7 +10,8 @@ rule somaticseq:
         varscan_snvs=rules.varscan_hold_on.output.snvs,
         varscan_indels=rules.varscan_hold_on.output.indels,
         lofreq_snvs=rules.lofreq_hold_on.output.snvs,
-        lofreq_indels=rules.lofreq_hold_on.output.indels
+        lofreq_indels=rules.lofreq_hold_on.output.indels,
+        intervals=rules.prepare_bedfile.output.intervals,
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
@@ -27,7 +28,6 @@ rule somaticseq:
         ),
         genome=config.get("resources").get("reference"),
         dbsnp=config.get("resources").get("dbsnp"),
-        intervals=config.get("resources").get("bed"),
     log:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
@@ -49,7 +49,7 @@ rule somaticseq:
         "-ref {params.genome} "
         "-dbsnp {params.dbsnp} "
         # "-cosmic "
-        "--inclusion-region {params.intervals} "
+        "--inclusion-region {input.intervals} "
         "paired "
         "--tumor-bam-file {input.tumoral} "
         "--normal-bam-file {input.normal} "
