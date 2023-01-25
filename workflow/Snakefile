@@ -18,6 +18,7 @@ include: "rules/muse.smk"
 include: "rules/strelka.smk"
 include: "rules/vardict.smk"
 include: "rules/varscan.smk"
+include: "rules/somaticseq.smk"
 include: "rules/call_variants_tumoronly.smk"
 include: "rules/filter_results.smk"
 include: "rules/annotation.smk"
@@ -92,7 +93,20 @@ if config.get("run").get("all"):
                 ),
                 sample=list(samples_master.keys()),
             ),
-
+            expand(
+                resolve_results_filepath(
+                    config.get("paths").get("results_dir"),
+                    "detection/results/{sample}.consensus.snvs.vcf.gz",
+                ),
+                sample=list(samples_master.keys()),
+            ),
+            expand(
+                resolve_results_filepath(
+                    config.get("paths").get("results_dir"),
+                    "detection/results/{sample}.consensus.indels.vcf.gz",
+                ),
+                sample=list(samples_master.keys()),
+            ),
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
@@ -207,6 +221,24 @@ if config.get("run").get("call") and config.get("callers").get("varscan"):
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
                     "detection/results/{sample}.somatic.varscan.indels.vcf.gz",
+                ),
+                sample=list(samples_master.keys()),
+            ),
+
+if config.get("run").get("combine"):
+    rule combine_somaticseq:
+        input:
+            expand(
+                resolve_results_filepath(
+                    config.get("paths").get("results_dir"),
+                    "detection/results/{sample}.consensus.snvs.vcf.gz",
+                ),
+                sample=list(samples_master.keys()),
+            ),
+            expand(
+                resolve_results_filepath(
+                    config.get("paths").get("results_dir"),
+                    "detection/results/{sample}.consensus.indels.vcf.gz",
                 ),
                 sample=list(samples_master.keys()),
             ),

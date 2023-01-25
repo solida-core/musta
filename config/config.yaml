@@ -1,6 +1,7 @@
 run:
   all: False
   call: False
+  combine: False
   annotate: False
   analysis: False
 
