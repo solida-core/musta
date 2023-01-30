@@ -1,11 +1,13 @@
 rule Funcotator:
     input:
         vcf=get_annotation_input(),
+        normal_name= rules.get_sample_names.output.normal,
+        tumor_name=rules.get_sample_names.output.tumor,
     output:
         vcf=report(
             resolve_results_filepath(
                 config.get("paths").get("results_dir"),
-                "results/annotation/funcotator/{sample}_funcotated.maf",
+                "classification/results/{sample}.annotated.maf",
         ),
         caption=resolve_single_filepath(
         config.get("paths").get("workdir"), "workflow/report/vcf.rst"
@@ -21,12 +23,12 @@ rule Funcotator:
         .get("gatk")
         .get("Funcotator")
         .get("reference_version"),
-        tumoral=lambda wildcards: get_tumorname(wildcards),
-        normal=lambda wildcards: get_normalname(wildcards),
+        normal_name = lambda wildcards, input: get_name(input.normal_name),
+        tumor_name = lambda wildcards, input: get_name(input.tumor_name),
     log:
         resolve_results_filepath(
-            config.get("paths").get("results_dir"),
-            "logs/gatk/Funcotator/{sample}.funcotator.log",
+            config.get("paths").get("log_dir"),
+            "classification/{sample}.funcotator.log",
         ),
     conda:
         resolve_single_filepath(
@@ -44,8 +46,8 @@ rule Funcotator:
         "-O {output.vcf} "
         "--data-sources-path {params.resources} "
         "--output-file-format MAF "
-        "--annotation-default normal_barcode:{params.normal} "
-        "--annotation-default tumor_barcode:{params.tumoral} "
+        "--annotation-default normal_barcode:{params.normal_name} "
+        "--annotation-default tumor_barcode:{params.tumor_name} "
         "--ref-version {params.genome_version} "
         "--tmp-dir {resources.tmpdir} "
         ">& {log} "
