@@ -47,7 +47,7 @@ rule somaticseq:
         "somaticseq_parallel.py "
         "-outdir {params.outdir} "
         "-ref {params.genome} "
-        "-dbsnp {params.dbsnp} "
+        #"-dbsnp {params.dbsnp} "
         # "-cosmic "
         "--inclusion-region {input.intervals} "
         "paired "
