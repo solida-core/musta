@@ -148,3 +148,25 @@ rule varscan_hold_on:
     shell:
         "cp {input.snvs} {output.snvs} ; "
         "cp {input.indels} {output.indels} "
+
+rule varscan_tbi:
+    input:
+        snvs=rules.varscan_hold_on.output.snvs,
+        indels=rules.varscan_hold_on.output.indels,
+    output:
+        snvs = resolve_results_filepath(
+            config.get("paths").get("results_dir"),
+            "detection/results/{sample}.somatic.varscan.snvs.vcf.gz.tbi",
+        ),
+        indels = resolve_results_filepath(
+            config.get("paths").get("results_dir"),
+            "detection/results/{sample}.somatic.varscan.indels.vcf.gz.tbi",
+        ),
+    conda:
+        resolve_single_filepath(
+            config.get("paths").get("workdir"),"workflow/envs/tabix.yaml"
+        ),
+    threads: conservative_cpu_count(reserve_cores=2,max_cores=99),
+    shell:
+        "tabix -p vcf {input.snvs} ; "
+        "tabix -p vcf {input.indels}  "

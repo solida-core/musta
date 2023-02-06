@@ -110,3 +110,19 @@ rule muse_hold_on:
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
     shell:
         "cp {input.snvs} {output.snvs} "
+
+rule muse_tbi:
+    input:
+        snvs=rules.muse_hold_on.output.snvs,
+    output:
+        snvs = resolve_results_filepath(
+            config.get("paths").get("results_dir"),
+            "detection/results/{sample}.somatic.muse.vcf.gz.tbi",
+        ),
+    conda:
+        resolve_single_filepath(
+            config.get("paths").get("workdir"),"workflow/envs/tabix.yaml"
+        ),
+    threads: conservative_cpu_count(reserve_cores=2,max_cores=99),
+    shell:
+        "tabix -p vcf {input.snvs} "
