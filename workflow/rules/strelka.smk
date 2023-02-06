@@ -63,7 +63,7 @@ rule strelka_out:
         tumor_name=lambda wildcards, input: get_name(input.tumor_name),
     conda:
         resolve_single_filepath(
-            config.get("paths").get("workdir"),"workflow/envs/samtools.yaml"
+            config.get("paths").get("workdir"),"workflow/envs/tabix.yaml"
         ),
     threads: conservative_cpu_count(reserve_cores=2,max_cores=99),
     shell:

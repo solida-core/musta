@@ -76,7 +76,7 @@ rule somaticseq_out:
             config.get("paths").get("results_dir"),
             "detection/somaticseq/{sample}/{sample}.somaticseq.indels.vcf.gz",
         ),
-    conda: resolve_single_filepath(config.get("paths").get("workdir"), "workflow/envs/samtools.yaml"),
+    conda: resolve_single_filepath(config.get("paths").get("workdir"), "workflow/envs/tabix.yaml"),
     threads: conservative_cpu_count(reserve_cores=2,max_cores=99),
     shell:
         "bgzip -c {input.snvs} > {output.snvs} ; "

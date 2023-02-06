@@ -86,7 +86,7 @@ rule MuSe_out:
         ),
     conda:
         resolve_single_filepath(
-            config.get("paths").get("workdir"),"workflow/envs/samtools.yaml"
+            config.get("paths").get("workdir"),"workflow/envs/tabix.yaml"
         ),
     params:
         normal_name=lambda wildcards, input: get_name(input.normal_name),
