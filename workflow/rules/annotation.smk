@@ -7,7 +7,7 @@ rule Funcotator:
         vcf=report(
             resolve_results_filepath(
                 config.get("paths").get("results_dir"),
-                "classification/results/{sample}.annotated.maf",
+                "classification/results/{sample}.annotated.vcf",
         ),
         caption=resolve_single_filepath(
         config.get("paths").get("workdir"), "workflow/report/vcf.rst"
@@ -45,9 +45,42 @@ rule Funcotator:
         "-V {input.vcf} "
         "-O {output.vcf} "
         "--data-sources-path {params.resources} "
-        "--output-file-format MAF "
+        "--output-file-format VCF "
         "--annotation-default normal_barcode:{params.normal_name} "
         "--annotation-default tumor_barcode:{params.tumor_name} "
         "--ref-version {params.genome_version} "
         "--tmp-dir {resources.tmpdir} "
+        ">& {log} "
+
+rule funcotator_maf:
+    input:
+        vcf=rules.Funcotator.output.vcf,
+    output:
+        maf=resolve_results_filepath(
+            config.get("paths").get("results_dir"),
+            "classification/results/{sample}.annotated.vcf",
+        ),
+    params:
+        normal_name=rules.Funcotator.params.normal_name,
+        tumor_name=rules.Funcotator.params.tumor_name,
+    log:
+        resolve_results_filepath(
+            config.get("paths").get("log_dir"),
+            "classification/{sample}.vcf2maf.log",
+        ),
+    conda:
+        resolve_single_filepath(
+            config.get("paths").get("workdir"), "workflow/envs/vcf2maf.yaml"
+        )
+    threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
+    resources:
+        tmpdir=config.get("paths").get("tmp_dir"),
+    shell:
+        "vcf2maf.pl "
+        "--input-vcf {input.vcf} "
+        "--output-maf {output.maf} "
+        "--tumor-id {params.tumor_name} "
+        "--normal-id {params.normal_name} "
+        "--tmp-dir {resources.tmpdir} "
+        "--verbose "
         ">& {log} "
