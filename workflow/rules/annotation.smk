@@ -58,7 +58,7 @@ rule funcotator_maf:
     output:
         maf=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "classification/results/{sample}.annotated.vcf",
+            "classification/results/{sample}.annotated.maf",
         ),
     params:
         normal_name=rules.Funcotator.params.normal_name,
