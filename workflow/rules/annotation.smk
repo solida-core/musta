@@ -55,14 +55,16 @@ rule Funcotator:
 rule funcotator_maf:
     input:
         vcf=rules.Funcotator.output.vcf,
+        normal_name= rules.get_sample_names.output.normal,
+        tumor_name=rules.get_sample_names.output.tumor,
     output:
         maf=resolve_results_filepath(
             config.get("paths").get("results_dir"),
             "classification/results/{sample}.annotated.maf",
         ),
     params:
-        normal_name=rules.Funcotator.params.normal_name,
-        tumor_name=rules.Funcotator.params.tumor_name,
+        normal_name = lambda wildcards, input: get_name(input.normal_name),
+        tumor_name = lambda wildcards, input: get_name(input.tumor_name),
     log:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
