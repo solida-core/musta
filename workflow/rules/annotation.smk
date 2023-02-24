@@ -86,5 +86,6 @@ rule funcotator_maf:
         "--normal-id {params.normal_name} "
         "--ref-fasta {params.genome} "
         "--tmp-dir {resources.tmpdir} "
+        "--inhibit-vep "
         "--verbose "
         ">& {log} "
