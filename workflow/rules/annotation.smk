@@ -52,20 +52,16 @@ rule Funcotator:
         "--tmp-dir {resources.tmpdir} "
         ">& {log} "
 
-rule funcotator_vcf:
+rule funcotator_maf2maf:
     input:
         maf=rules.Funcotator.output.maf,
-        normal_name= rules.get_sample_names.output.normal,
-        tumor_name=rules.get_sample_names.output.tumor,
     output:
-        vcf=resolve_results_filepath(
+        maf=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "classification/results/{sample}.annotated.vcf",
+            "classification/results/{sample}.maf",
         ),
     params:
         genome=config.get("resources").get("reference"),
-        normal_name=lambda wildcards, input: get_name(input.normal_name),
-        tumor_name=lambda wildcards, input: get_name(input.tumor_name),
     log:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
@@ -79,9 +75,9 @@ rule funcotator_vcf:
     resources:
         tmpdir=config.get("paths").get("tmp_dir"),
     shell:
-        "maf2vcf.pl "
+        "maf2maf.pl "
         "--input-maf {input.maf} "
-        "--output-vcf {output.vcf} "
-        "--output-dir /volumes/workdir/outputs/classification/results "
+        "--output-maf {output.maf} "
         "--ref-fasta {params.genome} "
+        "--tmp-dir {resources.tmpdir} "
         ">& {log} "
