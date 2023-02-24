@@ -82,5 +82,6 @@ rule funcotator_vcf:
         "maf2vcf.pl "
         "--input-maf {input.maf} "
         "--output-vcf {output.vcf} "
+        "--output-dir /volumes/workdir/outputs/classification/results "
         "--ref-fasta {params.genome} "
         ">& {log} "
