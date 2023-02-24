@@ -63,8 +63,9 @@ rule funcotator_maf:
             "classification/results/{sample}.annotated.maf",
         ),
     params:
-        normal_name = lambda wildcards, input: get_name(input.normal_name),
-        tumor_name = lambda wildcards, input: get_name(input.tumor_name),
+        genome=config.get("resources").get("reference"),
+        normal_name=lambda wildcards, input: get_name(input.normal_name),
+        tumor_name=lambda wildcards, input: get_name(input.tumor_name),
     log:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
@@ -83,6 +84,7 @@ rule funcotator_maf:
         "--output-maf {output.maf} "
         "--tumor-id {params.tumor_name} "
         "--normal-id {params.normal_name} "
+        "--ref-fasta {params.genome} "
         "--tmp-dir {resources.tmpdir} "
         "--verbose "
         ">& {log} "
