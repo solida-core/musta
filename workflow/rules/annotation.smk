@@ -4,10 +4,10 @@ rule Funcotator:
         normal_name= rules.get_sample_names.output.normal,
         tumor_name=rules.get_sample_names.output.tumor,
     output:
-        vcf=report(
+        maf=report(
             resolve_results_filepath(
                 config.get("paths").get("results_dir"),
-                "classification/results/{sample}.annotated.vcf",
+                "classification/results/{sample}.annotated.maf",
         ),
         caption=resolve_single_filepath(
         config.get("paths").get("workdir"), "workflow/report/vcf.rst"
@@ -45,22 +45,22 @@ rule Funcotator:
         "-V {input.vcf} "
         "-O {output.vcf} "
         "--data-sources-path {params.resources} "
-        "--output-file-format VCF "
+        "--output-file-format MAF "
         "--annotation-default normal_barcode:{params.normal_name} "
         "--annotation-default tumor_barcode:{params.tumor_name} "
         "--ref-version {params.genome_version} "
         "--tmp-dir {resources.tmpdir} "
         ">& {log} "
 
-rule funcotator_maf:
+rule funcotator_vcf:
     input:
-        vcf=rules.Funcotator.output.vcf,
+        maf=rules.Funcotator.output.maf,
         normal_name= rules.get_sample_names.output.normal,
         tumor_name=rules.get_sample_names.output.tumor,
     output:
-        maf=resolve_results_filepath(
+        vcf=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "classification/results/{sample}.annotated.maf",
+            "classification/results/{sample}.annotated.vcf",
         ),
     params:
         genome=config.get("resources").get("reference"),
@@ -79,11 +79,9 @@ rule funcotator_maf:
     resources:
         tmpdir=config.get("paths").get("tmp_dir"),
     shell:
-        "vcf2maf.pl "
-        "--input-vcf {input.vcf} "
-        "--output-maf {output.maf} "
-        "--tumor-id {params.tumor_name} "
-        "--normal-id {params.normal_name} "
+        "maf2vcf.pl "
+        "--input-maf {input.maf} "
+        "--output-vcf {output.vcf} "
         "--ref-fasta {params.genome} "
         "--tmp-dir {resources.tmpdir} "
         "--verbose "
