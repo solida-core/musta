@@ -3,4 +3,6 @@ channels:
   - bioconda
   - anaconda
 dependencies:
-  - vcf2maf=1.6.21
+  - vcf2maf
+  - ensembl-vep
+  - samtools
