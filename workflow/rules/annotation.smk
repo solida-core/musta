@@ -83,6 +83,4 @@ rule funcotator_vcf:
         "--input-maf {input.maf} "
         "--output-vcf {output.vcf} "
         "--ref-fasta {params.genome} "
-        "--tmp-dir {resources.tmpdir} "
-        "--verbose "
         ">& {log} "
