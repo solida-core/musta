@@ -43,7 +43,7 @@ rule Funcotator:
         "-R {params.genome} "
         #"-L {params.intervals} "
         "-V {input.vcf} "
-        "-O {output.vcf} "
+        "-O {output.maf} "
         "--data-sources-path {params.resources} "
         "--output-file-format MAF "
         "--annotation-default normal_barcode:{params.normal_name} "
