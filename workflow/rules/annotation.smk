@@ -52,32 +52,33 @@ rule Funcotator:
         "--tmp-dir {resources.tmpdir} "
         ">& {log} "
 
-# rule funcotator_vcf2maf:
-#     input:
-#         vcf=rules.Funcotator.output.vcf,
-#     output:
-#         maf=resolve_results_filepath(
-#             config.get("paths").get("results_dir"),
-#             "classification/results/{sample}.maf",
-#         ),
-#     params:
-#         genome=config.get("resources").get("reference"),
-#     log:
-#         resolve_results_filepath(
-#             config.get("paths").get("log_dir"),
-#             "classification/{sample}.vcf2maf.log",
-#         ),
-#     conda:
-#         resolve_single_filepath(
-#             config.get("paths").get("workdir"), "workflow/envs/vcf2maf.yaml"
-#         )
-#     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
-#     resources:
-#         tmpdir=config.get("paths").get("tmp_dir"),
-#     shell:
-#         "vcf2maf.pl "
-#         "--input-maf {input.maf} "
-#         "--output-maf {output.maf} "
-#         "--ref-fasta {params.genome} "
-#         "--tmp-dir {resources.tmpdir} "
-#         ">& {log} "
+rule funcotator_vcf2maf:
+    input:
+        vcf=rules.Funcotator.output.vcf,
+    output:
+        maf=resolve_results_filepath(
+            config.get("paths").get("results_dir"),
+            "classification/results/{sample}.annotated.maf",
+        ),
+    params:
+        genome=config.get("resources").get("reference"),
+    log:
+        resolve_results_filepath(
+            config.get("paths").get("log_dir"),
+            "classification/{sample}.vcf2maf.log",
+        ),
+    conda:
+        resolve_single_filepath(
+            config.get("paths").get("workdir"), "workflow/envs/vcf2maf.yaml"
+        )
+    threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
+    resources:
+        tmpdir=config.get("paths").get("tmp_dir"),
+    shell:
+        "vcf2maf.pl "
+        "--input-maf {input.maf} "
+        "--output-maf {output.maf} "
+        "--ref-fasta {params.genome} "
+        "--online "
+        "--tmp-dir {resources.tmpdir} "
+        ">& {log} "

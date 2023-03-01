@@ -6,3 +6,7 @@ dependencies:
   - vcf2maf
   - ensembl-vep
   - samtools
+  - htslib
+  - bcftools
+  - samtools
+  - ucsc-liftover
