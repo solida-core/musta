@@ -250,7 +250,7 @@ if config.get("run").get("annotate"):
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "classification/results/{sample}.maf",
+                    "classification/results/{sample}.annotated.vcf",
                 ),
                 sample=list(samples_master.keys()),
             ),

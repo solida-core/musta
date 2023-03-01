@@ -4,10 +4,10 @@ rule Funcotator:
         normal_name= rules.get_sample_names.output.normal,
         tumor_name=rules.get_sample_names.output.tumor,
     output:
-        maf=report(
+        vcf=report(
             resolve_results_filepath(
                 config.get("paths").get("results_dir"),
-                "classification/results/{sample}.annotated.maf",
+                "classification/results/{sample}.annotated.vcf",
         ),
         caption=resolve_single_filepath(
         config.get("paths").get("workdir"), "workflow/report/vcf.rst"
@@ -41,43 +41,43 @@ rule Funcotator:
         "gatk Funcotator "
         "--java-options {params.custom} "
         "-R {params.genome} "
-        #"-L {params.intervals} "
+        "-L {params.intervals} "
         "-V {input.vcf} "
-        "-O {output.maf} "
+        "-O {output.vcf} "
         "--data-sources-path {params.resources} "
-        "--output-file-format MAF "
+        "--output-file-format VCF "
         "--annotation-default normal_barcode:{params.normal_name} "
         "--annotation-default tumor_barcode:{params.tumor_name} "
         "--ref-version {params.genome_version} "
         "--tmp-dir {resources.tmpdir} "
         ">& {log} "
 
-rule funcotator_maf2maf:
-    input:
-        maf=rules.Funcotator.output.maf,
-    output:
-        maf=resolve_results_filepath(
-            config.get("paths").get("results_dir"),
-            "classification/results/{sample}.maf",
-        ),
-    params:
-        genome=config.get("resources").get("reference"),
-    log:
-        resolve_results_filepath(
-            config.get("paths").get("log_dir"),
-            "classification/{sample}.vcf2maf.log",
-        ),
-    conda:
-        resolve_single_filepath(
-            config.get("paths").get("workdir"), "workflow/envs/vcf2maf.yaml"
-        )
-    threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
-    resources:
-        tmpdir=config.get("paths").get("tmp_dir"),
-    shell:
-        "maf2maf.pl "
-        "--input-maf {input.maf} "
-        "--output-maf {output.maf} "
-        "--ref-fasta {params.genome} "
-        "--tmp-dir {resources.tmpdir} "
-        ">& {log} "
+# rule funcotator_vcf2maf:
+#     input:
+#         vcf=rules.Funcotator.output.vcf,
+#     output:
+#         maf=resolve_results_filepath(
+#             config.get("paths").get("results_dir"),
+#             "classification/results/{sample}.maf",
+#         ),
+#     params:
+#         genome=config.get("resources").get("reference"),
+#     log:
+#         resolve_results_filepath(
+#             config.get("paths").get("log_dir"),
+#             "classification/{sample}.vcf2maf.log",
+#         ),
+#     conda:
+#         resolve_single_filepath(
+#             config.get("paths").get("workdir"), "workflow/envs/vcf2maf.yaml"
+#         )
+#     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
+#     resources:
+#         tmpdir=config.get("paths").get("tmp_dir"),
+#     shell:
+#         "vcf2maf.pl "
+#         "--input-maf {input.maf} "
+#         "--output-maf {output.maf} "
+#         "--ref-fasta {params.genome} "
+#         "--tmp-dir {resources.tmpdir} "
+#         ">& {log} "
