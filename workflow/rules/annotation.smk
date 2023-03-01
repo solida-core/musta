@@ -41,7 +41,7 @@ rule Funcotator:
         "gatk Funcotator "
         "--java-options {params.custom} "
         "-R {params.genome} "
-        "-L {params.intervals} "
+        #"-L {params.intervals} "
         "-V {input.vcf} "
         "-O {output.vcf} "
         "--data-sources-path {params.resources} "
