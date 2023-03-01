@@ -76,7 +76,7 @@ rule funcotator_vcf2maf:
         tmpdir=config.get("paths").get("tmp_dir"),
     shell:
         "vcf2maf.pl "
-        "--input-maf {input.maf} "
+        "--input-vcf {input.vcf} "
         "--output-maf {output.maf} "
         "--ref-fasta {params.genome} "
         "--online "
