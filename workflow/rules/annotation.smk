@@ -75,7 +75,7 @@ rule funcotator_vcf2maf:
     resources:
         tmpdir=config.get("paths").get("tmp_dir"),
     shell:
-        "VEPPATH=$(which vep) ; "
+        "VEPPATH=$(dirname $(which vep)) ; "
         "vcf2maf.pl "
         "--input-vcf {input.vcf} "
         "--output-maf {output.maf} "
