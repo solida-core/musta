@@ -80,4 +80,5 @@ rule funcotator_vcf2maf:
         "--output-maf {output.maf} "
         "--ref-fasta {params.genome} "
         "--tmp-dir {resources.tmpdir} "
+        "--vep-path `which vep` "
         ">& {log} "
