@@ -79,6 +79,5 @@ rule funcotator_vcf2maf:
         "--input-vcf {input.vcf} "
         "--output-maf {output.maf} "
         "--ref-fasta {params.genome} "
-        "--online "
         "--tmp-dir {resources.tmpdir} "
         ">& {log} "
