@@ -49,7 +49,6 @@ rule Funcotator:
         "--annotation-default normal_barcode:{params.normal_name} "
         "--annotation-default tumor_barcode:{params.tumor_name} "
         "--ref-version {params.genome_version} "
-        "--cache-version 106 "
         "--tmp-dir {resources.tmpdir} "
         ">& {log} "
 
@@ -82,5 +81,6 @@ rule funcotator_vcf2maf:
         "--output-maf {output.maf} "
         "--ref-fasta {params.genome} "
         "--tmp-dir {resources.tmpdir} "
+        "--cache-version 106 "
         "--vep-path $VEPPATH "
         ">& {log} "
