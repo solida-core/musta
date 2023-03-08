@@ -1,8 +1,8 @@
 channels:
   - bioconda
 dependencies:
-  - vcf2maf=1.6.21
-  - ensembl-vep=106.0
+  - vcf2maf
+  - ensembl-vep
   - htslib
   - bcftools
   - samtools
