@@ -19,10 +19,7 @@ rule Funcotator:
         genome=config.get("resources").get("reference"),
         intervals=config.get("resources").get("bed"),
         resources=config.get("params").get("gatk").get("Funcotator").get("resources"),
-        genome_version=config.get("params")
-        .get("gatk")
-        .get("Funcotator")
-        .get("reference_version"),
+        genome_version=config.get("params").get("gatk").get("Funcotator").get("reference_version"),
         normal_name = lambda wildcards, input: get_name(input.normal_name),
         tumor_name = lambda wildcards, input: get_name(input.tumor_name),
     log:
@@ -41,7 +38,6 @@ rule Funcotator:
         "gatk Funcotator "
         "--java-options {params.custom} "
         "-R {params.genome} "
-        #"-L {params.intervals} "
         "-V {input.vcf} "
         "-O {output.vcf} "
         "--data-sources-path {params.resources} "
@@ -55,6 +51,8 @@ rule Funcotator:
 rule funcotator_vcf2maf:
     input:
         vcf=rules.Funcotator.output.vcf,
+        normal_name= rules.get_sample_names.output.normal,
+        tumor_name=rules.get_sample_names.output.tumor,
     output:
         maf=resolve_results_filepath(
             config.get("paths").get("results_dir"),
@@ -62,6 +60,11 @@ rule funcotator_vcf2maf:
         ),
     params:
         genome=config.get("resources").get("reference"),
+        genome_version=get_vep_genome_version(config.get("params").get("vep").get("reference_version")),
+        resources=config.get("params").get('vep').get("resources"),
+        cache_version=config.get("params").get('vep').get("cache_version"),
+        normal_name= lambda wildcards,input: get_name(input.normal_name),
+        tumor_name=lambda wildcards, input: get_name(input.tumor_name),
     log:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
@@ -80,7 +83,13 @@ rule funcotator_vcf2maf:
         "--input-vcf {input.vcf} "
         "--output-maf {output.maf} "
         "--ref-fasta {params.genome} "
+        "--normal-id {params.normal_name} "
+        "--tumor-id {params.tumor_name} "
+        "--ncbi-build "
         "--tmp-dir {resources.tmpdir} "
         "--cache-version 106 "
         "--vep-path $VEPPATH "
+        "--vep-data {params.resources} "
+        "--verbose "
         ">& {log} "
+

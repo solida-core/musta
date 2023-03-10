@@ -173,6 +173,10 @@ def get_normal_bam(wildcards):
     # print(wildcards.sample)
     return samples_master[wildcards.sample]["normal_bam"][0]
 
+def get_vep_genome_version(version):
+    if version in ['hg19', 'hg38']:
+        return 'GRCh37' if version in 'hg19' else 'GRCh38'
+    return version
 
 def select_filtered(wildcards):
     with open(config["samples"], "r") as file:
