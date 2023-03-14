@@ -50,7 +50,8 @@ rule Funcotator:
 
 rule funcotator_vcf2maf:
     input:
-        vcf=rules.Funcotator.output.vcf,
+        vcf=get_annotation_input(),
+        #vcf=rules.Funcotator.output.vcf,
         normal_name= rules.get_sample_names.output.normal,
         tumor_name=rules.get_sample_names.output.tumor,
     output:
