@@ -48,10 +48,22 @@ rule Funcotator:
         "--tmp-dir {resources.tmpdir} "
         ">& {log} "
 
-rule funcotator_vcf2maf:
+rule gunzip:
     input:
         vcf=get_annotation_input(),
+    output:
+        vcf=resolve_results_filepath(
+                config.get("paths").get("results_dir"),
+                "classification/results/{sample}.vcf"
+        ),
+    shell:
+        "gunzip -c {input.vcf} > {output.vcf}"
+
+rule funcotator_vcf2maf:
+    input:
+        #vcf=get_annotation_input(),
         #vcf=rules.Funcotator.output.vcf,
+        vcf=rules.gunzip.output.vcf,
         normal_name= rules.get_sample_names.output.normal,
         tumor_name=rules.get_sample_names.output.tumor,
     output:
