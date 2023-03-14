@@ -57,7 +57,7 @@ rule gunzip:
                 "classification/results/{sample}.vcf"
         ),
     shell:
-        "gunzip -c {input.vcf} > {output.vcf}"
+        "gunzip -c {input.vcf} > {output.vcf} "
 
 rule funcotator_vcf2maf:
     input:
