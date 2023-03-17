@@ -52,7 +52,7 @@ rule vep:
         "--numbers --domains --gene_phenotype --canonical "
         "--protein --biotype --tsl --pubmed --variant_class "
         "--shift_hgvs 1 --check_existing --total_length "
-        "--allele_number --no_escape --xref_refseq --failed 1"
+        "--allele_number --no_escape --xref_refseq --failed 1 "
         "--vcf "
         "--minimal --flag_pick_allele --pick_order canonical,tsl,biotype,rank,ccds,length " 
         "--polyphen b --af --af_1kg --af_esp --regulatory "
