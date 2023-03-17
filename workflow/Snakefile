@@ -21,7 +21,8 @@ include: "rules/varscan.smk"
 include: "rules/somaticseq.smk"
 include: "rules/call_variants_tumoronly.smk"
 include: "rules/filter_results.smk"
-include: "rules/annotation.smk"
+include: "rules/funcotator.smk"
+include: "rules/vep.smk"
 include: "rules/maftools.smk"
 
 
