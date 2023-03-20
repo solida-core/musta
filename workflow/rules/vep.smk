@@ -47,7 +47,7 @@ rule vep:
         "--fasta {params.genome} "
         #"--normal_id {params.normal_name} "
         #"--tumor_id {params.tumor_name} "
-        "--dir {params.resources}"
+        "--dir {params.resources} "
         "--assembly {params.genome_version} "
         "--cache --cache_version {params.cache_version} "
         "--sift b --ccds --uniprot --hgvs --symbol "
