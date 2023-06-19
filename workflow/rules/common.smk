@@ -274,16 +274,32 @@ def get_input_files(wildcards):
         "normal": get_normal_bam(wildcards),
         "tumoral": get_tumoral_bam(wildcards),
         "intervals": rules.prepare_bedfile.output.intervals,
-        "mutect": rules.mutect_hold_on.output.snvs if config["callers"]["mutect"] else None,
-        "varscan_snvs": rules.varscan_hold_on.output.snvs if config["callers"]["varscan"] else None,
-        "varscan_indels": rules.varscan_hold_on.output.snvs if config["callers"]["varscan"] else None,
-        "vardict": rules.vardict_hold_on.output.snvs if config["callers"]["vardict"] else None,
-        "muse": rules.muse_hold_on.output.snvs if config["callers"]["muse"] else None,
-        "lofreq_snvs": rules.lofreq_hold_on.output.snvs if config["callers"]["lofreq"] else None,
-        "lofreq_indels": rules.lofreq_hold_on.output.snvs if config["callers"]["lofreq"] else None,
-        "strelka_snvs": rules.strelka_hold_on.output.snvs if config["callers"]["strelka"] else None,
-        "strelka_indels": rules.strelka_hold_on.output.indels if config["callers"]["strelka"] else None
+        "mutect": rules.mutect_hold_on.output.snvs,
+        "varscan_snvs": rules.varscan_hold_on.output.snvs,
+        "varscan_indels": rules.varscan_hold_on.output.snvs,
+        "vardict": rules.vardict_hold_on.output.snvs,
+        "muse": rules.muse_hold_on.output.snvs,
+        "lofreq_snvs": rules.lofreq_hold_on.output.snvs,
+        "lofreq_indels": rules.lofreq_hold_on.output.snvs,
+        "strelka_snvs": rules.strelka_hold_on.output.snvs,
+        "strelka_indels": rules.strelka_hold_on.output.indels
     }
+
+    if not config["callers"]["mutect"]:
+        input_files["mutect"] = None
+    if not config["callers"]["varscan"]:
+        input_files["varscan_snvs"] = None
+        input_files["varscan_indels"] = None
+    if not config["callers"]["vardict"]:
+        input_files["vardict"] = None
+    if not config["callers"]["muse"]:
+        input_files["muse"] = None
+    if not config["callers"]["lofreq"]:
+        input_files["lofreq_snvs"] = None
+        input_files["lofreq_indels"] = None
+    if not config["callers"]["strelka"]:
+        input_files["strelka_snvs"] = None
+        input_files["strelka_indels"] = None
 
     return input_files
 
