@@ -282,7 +282,7 @@ def strelka_snvs_flag(wildcards):
     else:
         return ""
 
-def strelka_snvs_flag(wildcards):
+def strelka_indels_flag(wildcards):
     if config["callers"]["strelka"]:
         return "--strelka-indels {}".format(rules.strelka_hold_on.output.indels)
     else:
