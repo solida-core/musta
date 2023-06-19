@@ -1,5 +1,5 @@
 rule somaticseq:
-    input: get_input_files(),
+    input: get_input_files(wildcards),
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
