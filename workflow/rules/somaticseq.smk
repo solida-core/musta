@@ -122,38 +122,6 @@ rule somaticseq_tbi:
         "tabix -p vcf {input.snvs} ; "
         "tabix -p vcf {input.indels}  "
 
-#############################################
-def mutect_flag(wildcards):
-    if "mutect_hold_on" in rules:
-        return "--mutect2-vcf {}".format(rules.mutect_hold_on.output.snvs)
-    else:
-        return ""
 
-def varscan_snvs_flag(wildcards):
-    if "varscan_hold_on" in rules:
-        return "--varscan-snv {}".format(rules.varscan_hold_on.output.snvs)
-    else:
-        return ""
 
-# Definisci le altre funzioni per gli input condizionali
 
-# Nella definizione della regola, aggiungi i flag agli input corrispondenti
-
-rule somaticseq:
-    input:
-        normal = lambda wildcards: get_normal_bam(wildcards),
-        tumoral = lambda wildcards: get_tumoral_bam(wildcards),
-        intervals=rules.prepare_bedfile.output.intervals,
-        mutect_flag = mutect_flag,
-        varscan_snvs_flag = varscan_snvs_flag,
-        # Aggiungi gli altri flag
-    output:
-        # Specifica gli output della regola
-    params:
-        outdir = "path/to/outdir",
-        genome = "path/to/genome",
-        dbsnp = "path/to/dbsnp"
-    shell:
-        """
-        somaticseq_parallel.py
-        -outdir {params
