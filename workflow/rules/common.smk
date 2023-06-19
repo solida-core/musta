@@ -263,15 +263,6 @@ def exist_dir(path, delete=False):
 def resolve_results_filepath(basepath, outname):
     return os.path.join(basepath, outname)
 
-muse=rules.muse_hold_on.output.snvs,
-        vardict=rules.vardict_hold_on.output.snvs,
-        strelka_snvs=rules.strelka_hold_on.output.snvs,
-        strelka_indels=rules.strelka_hold_on.output.indels,
-        mutect=rules.mutect_hold_on.output.snvs,
-        varscan_snvs=rules.varscan_hold_on.output.snvs,
-        varscan_indels=rules.varscan_hold_on.output.indels,
-        lofreq_snvs=rules.lofreq_hold_on.output.snvs,
-        lofreq_indels=rules.lofreq_hold_on.output.indels,
 def muse_flag(wildcards):
     if config["callers"]["muse"]:
         return "--muse-vcf {}".format(rules.muse_hold_on.output.snvs)
