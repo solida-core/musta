@@ -285,21 +285,21 @@ def get_input_files(wildcards):
         "strelka_indels": rules.strelka_hold_on.output.indels
     }
 
-    if not config["callers"]["mutect"]:
-        input_files["mutect"] = None
-    if not config["callers"]["varscan"]:
-        input_files["varscan_snvs"] = None
-        input_files["varscan_indels"] = None
-    if not config["callers"]["vardict"]:
-        input_files["vardict"] = None
-    if not config["callers"]["muse"]:
-        input_files["muse"] = None
-    if not config["callers"]["lofreq"]:
-        input_files["lofreq_snvs"] = None
-        input_files["lofreq_indels"] = None
-    if not config["callers"]["strelka"]:
-        input_files["strelka_snvs"] = None
-        input_files["strelka_indels"] = None
+    # if not config["callers"]["mutect"]:
+    #     input_files["mutect"] = None
+    # if not config["callers"]["varscan"]:
+    #     input_files["varscan_snvs"] = None
+    #     input_files["varscan_indels"] = None
+    # if not config["callers"]["vardict"]:
+    #     input_files["vardict"] = None
+    # if not config["callers"]["muse"]:
+    #     input_files["muse"] = None
+    # if not config["callers"]["lofreq"]:
+    #     input_files["lofreq_snvs"] = None
+    #     input_files["lofreq_indels"] = None
+    # if not config["callers"]["strelka"]:
+    #     input_files["strelka_snvs"] = None
+    #     input_files["strelka_indels"] = None
 
     return input_files
 
