@@ -270,22 +270,18 @@ def generate_flag(flag_name, input_file):
         return ""
 
 def get_input_files(wildcards):
-    input_files = {
-        "normal": get_normal_bam(wildcards),
-        "tumoral": get_tumoral_bam(wildcards),
-        "intervals": rules.prepare_bedfile.output.intervals,
-        "mutect": rules.mutect_hold_on.output.snvs,
-        "varscan_snvs": rules.varscan_hold_on.output.snvs,
-        "varscan_indels": rules.varscan_hold_on.output.snvs,
-        "vardict": rules.vardict_hold_on.output.snvs,
-        "muse": rules.muse_hold_on.output.snvs,
-        "lofreq_snvs": rules.lofreq_hold_on.output.snvs,
-        "lofreq_indels": rules.lofreq_hold_on.output.snvs,
-        "strelka_snvs": rules.strelka_hold_on.output.snvs,
-        "strelka_indels": rules.strelka_hold_on.output.indels
-    }
-
-    # if not config["callers"]["mutect"]:
+    input_files = [
+        get_normal_bam(wildcards),
+        get_tumoral_bam(wildcards),
+        rules.prepare_bedfile.output.intervals,
+        rules.mutect_hold_on.output.snvs if config["callers"]["mutect"] else "",
+        rules.varscan_hold_on.output.snvs if config["callers"]["varscan"] else "",
+        rules.vardict_hold_on.output.snvs if config["callers"]["vardict"] else "",
+        rules.muse_hold_on.output.snvs if config["callers"]["muse"] else "",
+        rules.lofreq_hold_on.output.snvs if config["callers"]["lofreq"] else "",
+        rules.strelka_hold_on.output.snvs if config["callers"]["strelka"] else "",
+        rules.strelka_hold_on.output.indels if config["callers"]["strelka"] else ""
+    ]    # if not config["callers"]["mutect"]:
     #     input_files["mutect"] = None
     # if not config["callers"]["varscan"]:
     #     input_files["varscan_snvs"] = None

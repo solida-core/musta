@@ -38,10 +38,10 @@ rule somaticseq:
         -ref {params.genome} 
         #"-dbsnp {params.dbsnp} 
         # "-cosmic "
-        --inclusion-region {input.intervals} 
+        --inclusion-region {input[2]} 
         paired "
-        --tumor-bam-file {input.tumoral} 
-        --normal-bam-file {input.normal} 
+        --tumor-bam-file {input[1]} 
+        --normal-bam-file {input[0]} 
         
         """
 
