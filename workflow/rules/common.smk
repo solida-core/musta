@@ -263,58 +263,27 @@ def exist_dir(path, delete=False):
 def resolve_results_filepath(basepath, outname):
     return os.path.join(basepath, outname)
 
-def muse_flag(wildcards):
-    if config["callers"]["muse"]:
-        return "--muse-vcf {}".format(rules.muse_hold_on.output.snvs)
+def generate_flag(flag_name, input_file):
+    if input_file:
+        return f"--{flag_name} {input_file}"
     else:
         return ""
 
-def vardict_flag(wildcards):
-    if config["callers"]["vardict"]:
-        return "--vardict-vcf {}".format(rules.vardict_hold_on.output.snvs)
-    else:
-        return ""
+def get_input_files(wildcards):
+    input_files = {
+        "normal": get_normal_bam(wildcards),
+        "tumoral": get_tumoral_bam(wildcards),
+        "intervals": rules.prepare_bedfile.output.intervals,
+        "mutect": rules.mutect_hold_on.output.snvs if config["callers"]["mutect"] else None,
+        "varscan_snvs": rules.varscan_hold_on.output.snvs if config["callers"]["varscan"] else None,
+        "varscan_indels": rules.varscan_hold_on.output.snvs if config["callers"]["varscan"] else None,
+        "vardict": rules.vardict_hold_on.output.snvs if config["callers"]["vardict"] else None,
+        "muse": rules.muse_hold_on.output.snvs if config["callers"]["muse"] else None,
+        "lofreq_snvs": rules.lofreq_hold_on.output.snvs if config["callers"]["lofreq"] else None,
+        "lofreq_indels": rules.lofreq_hold_on.output.snvs if config["callers"]["lofreq"] else None,
+        "strelka_snvs": rules.strelka_hold_on.output.snvs if config["callers"]["strelka"] else None,
+        "strelka_indels": rules.strelka_hold_on.output.indels if config["callers"]["strelka"] else None
+    }
 
+    return input_files
 
-def strelka_snvs_flag(wildcards):
-    if config["callers"]["strelka"]:
-        return "--strelka-snv {}".format(rules.strelka_hold_on.output.snvs)
-    else:
-        return ""
-
-def strelka_indels_flag(wildcards):
-    if config["callers"]["strelka"]:
-        return "--strelka-indels {}".format(rules.strelka_hold_on.output.indels)
-    else:
-        return ""
-
-
-def mutect_flag(wildcards):
-    if config["callers"]["mutect"]:
-        return "--mutect2-vcf {}".format(rules.mutect_hold_on.output.snvs)
-    else:
-        return ""
-
-def varscan_snvs_flag(wildcards):
-    if config["callers"]["varscan"]:
-        return "--varscan-snv {}".format(rules.varscan_hold_on.output.snvs)
-    else:
-        return ""
-
-def varscan_indels_flag(wildcards):
-    if config["callers"]["varscan"]:
-        return "--varscan-indels {}".format(rules.varscan_hold_on.output.indels)
-    else:
-        return ""
-
-def lofreq_snvs_flag(wildcards):
-    if config["callers"]["lofreq"]:
-        return "--lofreq-snv {}".format(rules.lofreq_hold_on.output.snvs)
-    else:
-        return ""
-
-def lofreq_indels_flag(wildcards):
-    if config["callers"]["lofreq"]:
-        return "--lofreq-indels {}".format(rules.lofreq_hold_on.output.indels)
-    else:
-        return ""

@@ -1,17 +1,5 @@
 rule somaticseq:
-    input:
-        normal = lambda wildcards: get_normal_bam(wildcards),
-        tumoral = lambda wildcards: get_tumoral_bam(wildcards),
-        muse=muse_flag,
-        vardict=vardict_flag,
-        strelka_snvs=strelka_snvs_flag,
-        strelka_indels=strelka_indels_flag,
-        mutect=mutect_flag,
-        varscan_snvs=varscan_snvs_flag,
-        varscan_indels=varscan_indels_flag,
-        lofreq_snvs=lofreq_snvs_flag,
-        lofreq_indels=lofreq_indels_flag,
-        intervals=rules.prepare_bedfile.output.intervals,
+    input: get_input_files,
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
@@ -44,24 +32,24 @@ rule somaticseq:
         )
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     shell:
-        "somaticseq_parallel.py "
-        "-outdir {params.outdir} "
-        "-ref {params.genome} "
-        #"-dbsnp {params.dbsnp} "
+        """
+        somaticseq_parallel.py 
+        -outdir {params.outdir} 
+        -ref {params.genome} 
+        #"-dbsnp {params.dbsnp} 
         # "-cosmic "
-        "--inclusion-region {input.intervals} "
-        "paired "
-        "--tumor-bam-file {input.tumoral} "
-        "--normal-bam-file {input.normal} "
-        "{input.mutect} "
-        "{input.varscan_snvs} "
-        "{input.varscan_indels} "
-        "{input.vardict} "
-        "{input.muse} "
-        "{input.lofreq_snvs} "
-        "{input.lofreq_indels} "
-        "{input.strelka_snvs} "
-        "{input.strelka_indels} "
+        --inclusion-region {input.intervals} 
+        paired "
+        --tumor-bam-file {input.tumoral} 
+        --normal-bam-file {input.normal} 
+        {generate_flag('mutect2-vcf', input.mutect)} 
+        {generate_flag('varscan-snv', input.varscan_snvs)} 
+        {generate_flag('vardict-vcf', input.vardict)}
+        {generate_flag('muse-vcf', input.muse)}
+        {generate_flag("lofreq-snv", input.lofreq_snvs)}
+        {generate_flag("strelka-snv", input.strelka_snvs)}
+        {generate_flag("strelka-indel", input.strelka_indels)}
+        """
 
 rule somaticseq_out:
     input:
