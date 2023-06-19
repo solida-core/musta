@@ -1,5 +1,5 @@
 rule somaticseq:
-    input: get_input_files,
+    input: get_input_files(),
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
@@ -42,13 +42,7 @@ rule somaticseq:
         paired "
         --tumor-bam-file {input.tumoral} 
         --normal-bam-file {input.normal} 
-        {generate_flag('mutect2-vcf', input.mutect)} 
-        {generate_flag('varscan-snv', input.varscan_snvs)} 
-        {generate_flag('vardict-vcf', input.vardict)}
-        {generate_flag('muse-vcf', input.muse)}
-        {generate_flag("lofreq-snv", input.lofreq_snvs)}
-        {generate_flag("strelka-snv", input.strelka_snvs)}
-        {generate_flag("strelka-indel", input.strelka_indels)}
+        
         """
 
 rule somaticseq_out:
