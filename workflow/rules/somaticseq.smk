@@ -2,15 +2,15 @@ rule somaticseq:
     input:
         normal = lambda wildcards: get_normal_bam(wildcards),
         tumoral = lambda wildcards: get_tumoral_bam(wildcards),
-        muse=rules.muse_hold_on.output.snvs,
-        vardict=rules.vardict_hold_on.output.snvs,
-        strelka_snvs=rules.strelka_hold_on.output.snvs,
-        strelka_indels=rules.strelka_hold_on.output.indels,
-        mutect=rules.mutect_hold_on.output.snvs,
-        varscan_snvs=rules.varscan_hold_on.output.snvs,
-        varscan_indels=rules.varscan_hold_on.output.indels,
-        lofreq_snvs=rules.lofreq_hold_on.output.snvs,
-        lofreq_indels=rules.lofreq_hold_on.output.indels,
+        muse=muse_flag,
+        vardict=vardict_flag,
+        strelka_snvs=strelka_snvs_flag,
+        strelka_indels=strelka_indels_flag,
+        mutect=mutect_flag,
+        varscan_snvs=varscan_snvs_flag,
+        varscan_indels=varscan_indels_flag,
+        lofreq_snvs=lofreq_snvs_flag,
+        lofreq_indels=lofreq_indels_flag,
         intervals=rules.prepare_bedfile.output.intervals,
     output:
         snvs=resolve_results_filepath(
@@ -53,15 +53,15 @@ rule somaticseq:
         "paired "
         "--tumor-bam-file {input.tumoral} "
         "--normal-bam-file {input.normal} "
-        "--mutect2-vcf {input.mutect} "
-        "--varscan-snv {input.varscan_snvs} "
-        "--varscan-indel {input.varscan_indels} "
-        "--vardict-vcf {input.vardict} "
-        "--muse-vcf {input.muse} "
-        "--lofreq-snv {input.lofreq_snvs} "
-        "--lofreq-indel {input.lofreq_indels} "
-        "--strelka-snv {input.strelka_snvs} "
-        "--strelka-indel {input.strelka_indels} "
+        "{input.mutect} "
+        "{input.varscan_snvs} "
+        "{input.varscan_indels} "
+        "{input.vardict} "
+        "{input.muse} "
+        "{input.lofreq_snvs} "
+        "{input.lofreq_indels} "
+        "{input.strelka_snvs} "
+        "{input.strelka_indels} "
 
 rule somaticseq_out:
     input:
@@ -121,3 +121,39 @@ rule somaticseq_tbi:
     shell:
         "tabix -p vcf {input.snvs} ; "
         "tabix -p vcf {input.indels}  "
+
+#############################################
+def mutect_flag(wildcards):
+    if "mutect_hold_on" in rules:
+        return "--mutect2-vcf {}".format(rules.mutect_hold_on.output.snvs)
+    else:
+        return ""
+
+def varscan_snvs_flag(wildcards):
+    if "varscan_hold_on" in rules:
+        return "--varscan-snv {}".format(rules.varscan_hold_on.output.snvs)
+    else:
+        return ""
+
+# Definisci le altre funzioni per gli input condizionali
+
+# Nella definizione della regola, aggiungi i flag agli input corrispondenti
+
+rule somaticseq:
+    input:
+        normal = lambda wildcards: get_normal_bam(wildcards),
+        tumoral = lambda wildcards: get_tumoral_bam(wildcards),
+        intervals=rules.prepare_bedfile.output.intervals,
+        mutect_flag = mutect_flag,
+        varscan_snvs_flag = varscan_snvs_flag,
+        # Aggiungi gli altri flag
+    output:
+        # Specifica gli output della regola
+    params:
+        outdir = "path/to/outdir",
+        genome = "path/to/genome",
+        dbsnp = "path/to/dbsnp"
+    shell:
+        """
+        somaticseq_parallel.py
+        -outdir {params
