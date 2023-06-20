@@ -290,8 +290,8 @@ def strelka_indels_flag():
 
 
 def mutect_flag():
-    if config["callers"]["mutect"] and rules.somaticseq.input.mutect:
-        return "--mutect2-vcf {}".format(rules.somaticseq.input.mutect)
+    if config["callers"]["mutect"] and input.mutect:
+        return "--mutect2-vcf {}".format(input.mutect)
     else:
         return ""
 
