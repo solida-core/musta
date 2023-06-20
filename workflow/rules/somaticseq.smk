@@ -28,7 +28,6 @@ rule somaticseq:
         ),
         genome=config.get("resources").get("reference"),
         dbsnp=config.get("resources").get("dbsnp"),
-        vardict=,
         muse=generate_flag('muse-vcf', input.muse),
         varscan_snvs=generate_flag('varscan-snv', input.varscan_snvs),
         varscan_indels=generate_flag('varscan-indel', input.varscan_indels),
