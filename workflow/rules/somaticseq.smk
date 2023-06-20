@@ -28,7 +28,7 @@ rule somaticseq:
         ),
         genome=config.get("resources").get("reference"),
         dbsnp=config.get("resources").get("dbsnp"),
-        mutect=generate_flag('mutect-vcf', input.mutect),
+        mutect=generate_flag('mutect-vcf', {input.mutect}),
         vardict=generate_flag('vardict-vcf', input.vardict),
         muse=generate_flag('muse-vcf', input.muse),
         varscan_snvs=generate_flag('varscan-snv', input.varscan_snvs),
