@@ -28,7 +28,7 @@ rule somaticseq:
         ),
         genome=config.get("resources").get("reference"),
         dbsnp=config.get("resources").get("dbsnp"),
-        mutect=generate_flag('mutect-vcf', {input.mutect}),
+        mutect=,
         vardict=generate_flag('vardict-vcf', input.vardict),
         muse=generate_flag('muse-vcf', input.muse),
         varscan_snvs=generate_flag('varscan-snv', input.varscan_snvs),
@@ -62,7 +62,7 @@ rule somaticseq:
         "paired "
         "--tumor-bam-file {input.tumoral} "
         "--normal-bam-file {input.normal} "
-        "{params.mutect} "
+        "{generate_flag('mutect-vcf', {input.mutect})} "
         "{params.varscan_snvs} "
         "{params.varscan_indels} "
         "{params.vardict} "
