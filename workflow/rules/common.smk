@@ -263,58 +263,8 @@ def exist_dir(path, delete=False):
 def resolve_results_filepath(basepath, outname):
     return os.path.join(basepath, outname)
 
-def muse_flag():
-    if config["callers"]["muse"] and rules.somaticseq.input.muse:
-        return "--muse-vcf {}".format(rules.somaticseq.input.muse)
-    else:
-        return ""
-
-def vardict_flag():
-    if config["callers"]["vardict"] and rules.somaticseq.input.vardict:
-        return "--vardict-vcf {}".format(rules.somaticseq.input.vardict)
-    else:
-        return ""
-
-
-def strelka_snvs_flag():
-    if config["callers"]["strelka"] and rules.somaticseq.input.strelka_snvs:
-        return "--strelka-snv {}".format(rules.somaticseq.input.strelka_snvs)
-    else:
-        return ""
-
-def strelka_indels_flag():
-    if config["callers"]["strelka"] and rules.somaticseq.input.strelka_snvs:
-        return "--strelka-indels {}".format(rules.somaticseq.input.strelka_snvs)
-    else:
-        return ""
-
-
-def mutect_flag():
-    if config["callers"]["mutect"] and input.mutect:
-        return "--mutect2-vcf {}".format(input.mutect)
-    else:
-        return ""
-
-def varscan_snvs_flag():
-    if config["callers"]["varscan"] and rules.somaticseq.input.varscan_snvs:
-        return "--varscan-snv {}".format(rules.somaticseq.input.varscan_snvs)
-    else:
-        return ""
-
-def varscan_indels_flag():
-    if config["callers"]["varscan"] and rules.somaticseq.input.varscan_indels:
-        return "--varscan-indels {}".format(rules.somaticseq.input.varscan_indels)
-    else:
-        return ""
-
-def lofreq_snvs_flag(wildcards):
-    if config["callers"]["lofreq"]:
-        return "--lofreq-snv {}".format(rules.lofreq_hold_on.output.snvs)
-    else:
-        return ""
-
-def lofreq_indels_flag(wildcards):
-    if config["callers"]["lofreq"]:
-        return "--lofreq-indels {}".format(rules.lofreq_hold_on.output.indels)
+def generate_flag(flag_name, input_file):
+    if input_file:
+        return f"--{flag_name} {input_file}"
     else:
         return ""
