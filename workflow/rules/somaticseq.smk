@@ -53,7 +53,7 @@ rule somaticseq:
         "paired "
         "--tumor-bam-file {input.tumoral} "
         "--normal-bam-file {input.normal} "
-        "{generate_flag('mutect-vcf', {input.mutect})} "
+        "{generate_flag('mutect-vcf', input.mutect)} "
         "{generate_flag('vardict-vcf', input.vardict)} "
         "{generate_flag('muse-vcf', input.muse)} "
         "{generate_flag('varscan-snv', input.varscan_snvs)} "
@@ -61,7 +61,7 @@ rule somaticseq:
         "{generate_flag('lofreq-snv', input.lofreq_snvs)} "
         "{generate_flag('lofreq-indel', input.lofreq_indels)} "
         "{generate_flag('strelka-snv', input.strelka_snvs)} "
-        "{generate_flag('strelka-indel', {input.strelka_indels})} "
+        "{generate_flag('strelka-indel', input.strelka_indels)} "
 
 rule somaticseq_out:
     input:
