@@ -28,15 +28,15 @@ rule somaticseq:
         ),
         genome=config.get("resources").get("reference"),
         dbsnp=config.get("resources").get("dbsnp"),
-        mutect="--mutect2-vcf {input.mutect} " if input.mutect else "",
-        vardict="--vardict-vcf {input.vardict} " if input.vardict else "",
-        muse="--muse-vcf {input.muse} " if input.muse else "",
-        varscan_snvs="--varscan-snv {input.varscan_snvs} " if input.varscan_snvs else "",
-        varscan_indels="--varscan-indel {input.varscan_indels} " if input.varscan_indels else "",
-        lofreq_snvs="--lofreq-snv {input.lofreq_snvs} " if input.lofreq_snvs else "",
-        lofreq_indels="--lofreq-indel {input.lofreq_indels} " if input.lofreq_indels else "",
-        strelka_snvs="--strelka-snv {input.strelka_snvs} " if input.strelka_snvs else "",
-        strelka_indels="--strelka-indel {input.strelka_indels} " if input.strelka_indels else "",
+        mutect=mutect_flag(),
+        vardict=vardict_flag(),
+        muse=muse_flag(),
+        varscan_snvs=varscan_snvs_flag(),
+        varscan_indels=varscan_indels_flag(),
+        lofreq_snvs=lofreq_snvs_flag(),
+        lofreq_indels=lofreq_indels_flag(),
+        strelka_snvs=strelka_snvs_flag(),
+        strelka_indels=strelka_indels_flag(),
     log:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
@@ -62,15 +62,15 @@ rule somaticseq:
         "paired "
         "--tumor-bam-file {input.tumoral} "
         "--normal-bam-file {input.normal} "
-        "--mutect2-vcf {input.mutect} "
-        "--varscan-snv {input.varscan_snvs} "
-        "--varscan-indel {input.varscan_indels} "
-        "--vardict-vcf {input.vardict} "
-        "--muse-vcf {input.muse} "
-        "--lofreq-snv {input.lofreq_snvs} "
-        "--lofreq-indel {input.lofreq_indels} "
-        "--strelka-snv {input.strelka_snvs} "
-        "--strelka-indel {input.strelka_indels} "
+        "{params.mutect} "
+        "{params.varscan_snvs} "
+        "{params.varscan_indels} "
+        "{params.vardict} "
+        "{params.muse} "
+        "{params.lofreq_snvs} "
+        "{params.lofreq_indels} "
+        "{params.strelka_snvs} "
+        "{params.strelka_indels} "
 
 rule somaticseq_out:
     input:
