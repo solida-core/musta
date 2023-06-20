@@ -29,6 +29,14 @@ rule somaticseq:
         genome=config.get("resources").get("reference"),
         dbsnp=config.get("resources").get("dbsnp"),
         mutect_flag=generate_flag("mutect-vcf", "{input.mutect}"),
+        vardict_flag=generate_flag('vardict-vcf', "{input.vardict}"),
+        muse_flag=generate_flag('muse-vcf', "{input.muse}"),
+        varscan_snvs_flag=generate_flag('varscan-snv', "{input.varscan_snvs}"),
+        varscan_indels_flag=generate_flag('varscan-indel', "{input.varscan_indels}"),
+        lofreq_snvs_flag=generate_flag('lofreq-snv', "{input.lofreq_snvs}"),
+        lofreq_indels_flag=generate_flag('lofreq-indel', "{input.lofreq_indels}"),
+        strelka_snvs_flag=generate_flag('strelka-snv', "{input.strelka_snvs}"),
+        strelka_indels_flag=generate_flag('strelka-indel', "{input.strelka_indels}"),
     log:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
@@ -55,15 +63,15 @@ rule somaticseq:
         "--tumor-bam-file {input.tumoral} "
         "--normal-bam-file {input.normal} "
         "{params.mutect_flag} "
-        # "{{generate_flag('mutect-vcf', input.mutect)}} "
-        # "{generate_flag('vardict-vcf', input.vardict)} "
-        # "{generate_flag('muse-vcf', input.muse)} "
-        # "{generate_flag('varscan-snv', input.varscan_snvs)} "
-        # "{generate_flag('varscan-indel', input.varscan_indels)} "
-        # "{generate_flag('lofreq-snv', input.lofreq_snvs)} "
-        # "{generate_flag('lofreq-indel', input.lofreq_indels)} "
-        # "{generate_flag('strelka-snv', input.strelka_snvs)} "
-        # "{generate_flag('strelka-indel', input.strelka_indels)} "
+        "{params.muse_flag} "
+        "{params.vardict_flag} "
+        "{params.lofreq_snvs_flag} "
+        "{params.lofreq_indels_flag} "
+        "{params.strelka_snvs_flag} "
+        "{params.strelka_indels_flag} "
+        "{params.varscan_snvs_flag} "
+        "{params.varscan_indels_flag} "
+
 
 rule somaticseq_out:
     input:
