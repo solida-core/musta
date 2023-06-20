@@ -9,7 +9,7 @@ rule somaticseq:
         strelka_indels=rules.strelka_hold_on.output.indels if config["callers"]["strelka"] else [],
         mutect=rules.mutect_hold_on.output.snvs if config["callers"]["mutect"] else [],
         varscan_snvs=rules.varscan_hold_on.output.snvs if config["callers"]["varscan"] else [],
-        varscan_indels=rules.varscan_hold_on.output.indels if config["callers"]["varscab"] else [],
+        varscan_indels=rules.varscan_hold_on.output.indels if config["callers"]["varscan"] else [],
         lofreq_snvs=rules.lofreq_hold_on.output.snvs if config["callers"]["lofreq"] else [],
         lofreq_indels=rules.lofreq_hold_on.output.indels if config["callers"]["lofreq"] else [],
     output:
