@@ -1,5 +1,17 @@
 rule somaticseq:
-    input: lambda wildcards: get_input_files(wildcards),
+    input:
+        normal = lambda wildcards: get_normal_bam(wildcards),
+        tumoral = lambda wildcards: get_tumoral_bam(wildcards),
+        intervals=rules.prepare_bedfile.output.intervals,
+        muse=rules.muse_hold_on.output.snvs if config["callers"]["muse"] else [],
+        vardict=rules.vardict_hold_on.output.snvs if config["callers"]["vardict"] else [],
+        strelka_snvs=rules.strelka_hold_on.output.snvs if config["callers"]["strelka"] else [],
+        strelka_indels=rules.strelka_hold_on.output.indels if config["callers"]["strelka"] else [],
+        mutect=rules.mutect_hold_on.output.snvs if config["callers"]["mutect"] else [],
+        varscan_snvs=rules.varscan_hold_on.output.snvs if config["callers"]["varscan"] else [],
+        varscan_indels=rules.varscan_hold_on.output.indels if config["callers"]["varscab"] else [],
+        lofreq_snvs=rules.lofreq_hold_on.output.snvs if config["callers"]["lofreq"] else [],
+        lofreq_indels=rules.lofreq_hold_on.output.indels if config["callers"]["lofreq"] else [],
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
@@ -16,6 +28,15 @@ rule somaticseq:
         ),
         genome=config.get("resources").get("reference"),
         dbsnp=config.get("resources").get("dbsnp"),
+        mutect="--mutect2-vcf {input.mutect} " if input.mutect else "",
+        vardict="--vardict-vcf {input.vardict} " if input.vardict else "",
+        muse="--muse-vcf {input.muse} " if input.muse else "",
+        varscan_snvs="--varscan-snv {input.varscan_snvs} " if input.varscan_snvs else "",
+        varscan_indels="--varscan-indel {input.varscan_indels} " if input.varscan_indels else "",
+        lofreq_snvs="--lofreq-snv {input.lofreq_snvs} " if input.lofreq_snvs else "",
+        lofreq_indels="--lofreq-indel {input.lofreq_indels} " if input.lofreq_indels else "",
+        strelka_snvs="--strelka-snv {input.strelka_snvs} " if input.strelka_snvs else "",
+        strelka_indels="--strelka-indel {input.strelka_indels} " if input.strelka_indels else "",
     log:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
@@ -32,18 +53,24 @@ rule somaticseq:
         )
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     shell:
-        """
-        somaticseq_parallel.py 
-        -outdir {params.outdir} 
-        -ref {params.genome} 
-        #"-dbsnp {params.dbsnp} 
+        "somaticseq_parallel.py "
+        "-outdir {params.outdir} "
+        "-ref {params.genome} "
+        #"-dbsnp {params.dbsnp} "
         # "-cosmic "
-        --inclusion-region {input[2]} 
-        paired "
-        --tumor-bam-file {input[1]} 
-        --normal-bam-file {input[0]} 
-        
-        """
+        "--inclusion-region {input.intervals} "
+        "paired "
+        "--tumor-bam-file {input.tumoral} "
+        "--normal-bam-file {input.normal} "
+        "--mutect2-vcf {input.mutect} "
+        "--varscan-snv {input.varscan_snvs} "
+        "--varscan-indel {input.varscan_indels} "
+        "--vardict-vcf {input.vardict} "
+        "--muse-vcf {input.muse} "
+        "--lofreq-snv {input.lofreq_snvs} "
+        "--lofreq-indel {input.lofreq_indels} "
+        "--strelka-snv {input.strelka_snvs} "
+        "--strelka-indel {input.strelka_indels} "
 
 rule somaticseq_out:
     input:
@@ -103,7 +130,3 @@ rule somaticseq_tbi:
     shell:
         "tabix -p vcf {input.snvs} ; "
         "tabix -p vcf {input.indels}  "
-
-
-
-
