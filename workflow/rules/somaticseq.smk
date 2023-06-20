@@ -28,8 +28,7 @@ rule somaticseq:
         ),
         genome=config.get("resources").get("reference"),
         dbsnp=config.get("resources").get("dbsnp"),
-        mutect=,
-        vardict=generate_flag('vardict-vcf', input.vardict),
+        vardict=,
         muse=generate_flag('muse-vcf', input.muse),
         varscan_snvs=generate_flag('varscan-snv', input.varscan_snvs),
         varscan_indels=generate_flag('varscan-indel', input.varscan_indels),
@@ -63,7 +62,7 @@ rule somaticseq:
         "--tumor-bam-file {input.tumoral} "
         "--normal-bam-file {input.normal} "
         "{generate_flag('mutect-vcf', {input.mutect})} "
-        "{params.varscan_snvs} "
+        "{generate_flag('vardict-vcf', input.vardict)} "
         "{params.varscan_indels} "
         "{params.vardict} "
         "{params.muse} "
