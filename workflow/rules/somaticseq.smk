@@ -33,7 +33,7 @@ rule somaticseq:
         muse_flag=lambda wildcards, input: generate_flag('muse-vcf', input.muse),
         varscan_snvs_flag=lambda wildcards, input: generate_flag('varscan-snv', input.varscan_snvs),
         varscan_indels_flag=lambda wildcards, input: generate_flag('varscan-indel', input.varscan_indels),
-        lofreq_snvs_flag=lambda wildcards, input: generate_flag('lofreq-snv', input.lofreq_snvs}),
+        lofreq_snvs_flag=lambda wildcards, input: generate_flag('lofreq-snv', input.lofreq_snvs),
         lofreq_indels_flag=lambda wildcards, input: generate_flag('lofreq-indel', input.lofreq_indels),
         strelka_snvs_flag=lambda wildcards, input: generate_flag('strelka-snv', input.strelka_snvs),
         strelka_indels_flag=lambda wildcards, input: generate_flag('strelka-indel', input.strelka_indels),
