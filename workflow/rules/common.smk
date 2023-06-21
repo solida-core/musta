@@ -265,6 +265,6 @@ def resolve_results_filepath(basepath, outname):
 
 def generate_flag(flag_name, input_file):
     if input_file:
-        return f"--{flag_name} {input_file}"
+        return "--{} {}".format(flag_name, input_file)
     else:
         return ""
