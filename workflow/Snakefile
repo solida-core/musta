@@ -25,7 +25,6 @@ include: "rules/funcotator.smk"
 include: "rules/vep.smk"
 include: "rules/maftools.smk"
 
-
 ##### target rules #####
 if config.get("run").get("all"):
 
@@ -251,35 +250,35 @@ if config.get("run").get("annotate"):
             # expand(
             #     resolve_results_filepath(
             #         config.get("paths").get("results_dir"),
-            #         "classification/results/{sample}.annotated.maf",
+            #         "classification/results/{sample}.funcotator.maf",
+            #     ),
+            #     sample=list(samples_master.keys()),
+            # ),
+            # expand(
+            #     resolve_results_filepath(
+            #         config.get("paths").get("results_dir"),
+            #         "classification/results/{sample}.funcotator.vcf2maf.maf",
+            #     ),
+            #     sample=list(samples_master.keys()),
+            # ),
+            # expand(
+            #     resolve_results_filepath(
+            #         config.get("paths").get("results_dir"),
+            #         "classification/results/{sample}.funcotator.vcf",
             #     ),
             #     sample=list(samples_master.keys()),
             # ),
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "classification/results/{sample}.funcotator.maf",
-                ),
-                sample=list(samples_master.keys()),
-            ),
-            expand(
-                resolve_results_filepath(
-                    config.get("paths").get("results_dir"),
-                    "classification/results/{sample}.funcotator.vcf2maf.maf",
-                ),
-                sample=list(samples_master.keys()),
-            ),
-            expand(
-                resolve_results_filepath(
-                    config.get("paths").get("results_dir"),
-                    "classification/results/{sample}.funcotator.vcf",
-                ),
-                sample=list(samples_master.keys()),
-            ),
-            expand(
-                resolve_results_filepath(
-                    config.get("paths").get("results_dir"),
                     "classification/results/{sample}.vep.vcf",
+                ),
+                sample=list(samples_master.keys()),
+            ),
+            expand(
+                resolve_results_filepath(
+                    config.get("paths").get("results_dir"),
+                    "classification/results/{sample}.vep.maf",
                 ),
                 sample=list(samples_master.keys()),
             ),
