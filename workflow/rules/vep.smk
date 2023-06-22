@@ -11,7 +11,7 @@
 
 rule vep:
     input:
-        vcf=get_annotation_input(),
+        vcf=lambda wildcards: get_annotation_input(wildcards),
         normal_name= rules.get_sample_names.output.normal,
         tumor_name=rules.get_sample_names.output.tumor,
     output:

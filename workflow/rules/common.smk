@@ -190,17 +190,21 @@ def select_filtered(wildcards):
 ## functions for pipeline starting from vcf
 
 
-def get_annotation_input():
-    vcf_list = lambda wildcards: get_vcf_list(wildcards)
-    return vcf_list if vcf_list else rules.somaticseq_hold_on.output.snvs
+def get_annotation_input(wildcards):
+    with open(config["samples"],"r") as file:
+        samples_master = yaml.load(file,Loader=yaml.FullLoader)
+    if not samples_master[wildcards.sample]["vcf"]:
+        return rules.somaticseq_hold_on.output.snvs
+    else:
+        return samples_master[wildcards.sample]["vcf"][0]
 
-
-def get_vcf_list(wildcards):
-    with open(config["samples"], "r") as file:
-        samples_master = yaml.load(file, Loader=yaml.FullLoader)
-        samples_master.keys()
-
-    return samples_master[wildcards.sample]["vcf"][0] if "vcf" in samples_master[wildcards.sample] else None
+#
+# def get_vcf_list(wildcards):
+#     with open(config["samples"], "r") as file:
+#         samples_master = yaml.load(file, Loader=yaml.FullLoader)
+#         samples_master.keys()
+#
+#     return samples_master[wildcards.sample]["vcf"][0] if "vcf" in samples_master[wildcards.sample] else None
 
 
 def get_maf_file_input():
