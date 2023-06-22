@@ -192,10 +192,7 @@ def select_filtered(wildcards):
 
 def get_annotation_input():
     vcf_list = lambda wildcards: get_vcf_list(wildcards)
-    return vcf_list if vcf_list else resolve_results_filepath(
-        config.get("paths").get("results_dir"),
-        "detection/results/{sample}.consensus.snvs.vcf.gz",
-    )
+    return vcf_list if vcf_list else rules.somaticseq_hold_on.output.snvs
 
 
 def get_vcf_list(wildcards):
