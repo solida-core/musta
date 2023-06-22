@@ -271,24 +271,24 @@ if config.get("run").get("annotate"):
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "classification/results/{sample}.vep.vcf",
+                    "classification/results/{sample}.annotated.vep.vcf",
                 ),
                 sample=list(samples_master.keys()),
             ),
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "classification/results/{sample}.vep.maf",
+                    "classification/results/{sample}.annotated.vep.maf",
                 ),
                 sample=list(samples_master.keys()),
             ),
-            expand(
-                resolve_results_filepath(
-                    config.get("paths").get("results_dir"),
-                    "classification/results/{sample}.vcf2maf.maf",
-                ),
-                sample=list(samples_master.keys()),
-            ),
+            # expand(
+            #     resolve_results_filepath(
+            #         config.get("paths").get("results_dir"),
+            #         "classification/results/{sample}.vcf2maf.maf",
+            #     ),
+            #     sample=list(samples_master.keys()),
+            # ),
 
 if config.get("run").get("analysis"):
 

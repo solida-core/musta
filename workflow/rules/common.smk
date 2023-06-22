@@ -191,13 +191,11 @@ def select_filtered(wildcards):
 
 
 def get_annotation_input():
-    if config.get("run").get("annotate"):
-        return lambda wildcards: get_vcf_list(wildcards)
-    else:
-        return resolve_results_filepath(
-            config.get("paths").get("results_dir"),
-            "results/{sample}_somatic_filtered_selected.vcf.gz",
-        )
+    vcf_list = lambda wildcards: get_vcf_list(wildcards)
+    return vcf_list if vcf_list else resolve_results_filepath(
+        config.get("paths").get("results_dir"),
+        "detection/results/{sample}.consensus.snvs.vcf.gz",
+    )
 
 
 def get_vcf_list(wildcards):
