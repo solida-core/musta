@@ -202,7 +202,8 @@ def get_vcf_list(wildcards):
     with open(config["samples"], "r") as file:
         samples_master = yaml.load(file, Loader=yaml.FullLoader)
         samples_master.keys()
-    return samples_master[wildcards.sample]["vcf"][0]
+
+    return samples_master[wildcards.sample]["vcf"][0] if "vcf" in samples_master[wildcards.sample] else None
 
 
 def get_maf_file_input():
