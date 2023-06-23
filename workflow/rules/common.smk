@@ -193,7 +193,7 @@ def select_filtered(wildcards):
 def get_annotation_input(wildcards):
     with open(config["samples"],"r") as file:
         samples_master = yaml.load(file,Loader=yaml.FullLoader)
-    if not 'vcf' in samples_master[wildcards.sample]["vcf"] or not samples_master[wildcards.sample]["vcf"]:
+    if not samples_master[wildcards.sample]["vcf"]:
         return rules.somaticseq_hold_on.output.snvs
     else:
         return samples_master[wildcards.sample]["vcf"][0]
