@@ -40,7 +40,6 @@ rule strelka:
         "--referenceFasta {params.genome} "
         "--outputCallableRegions --targeted "
         "--callRegions {params.intervals} "
-        "--exome "
         "--runDir {params.out} ; "
         "python {params.out}/runWorkflow.py -m local -g 10 >& {log}  "
 
