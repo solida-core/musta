@@ -82,7 +82,7 @@ rule MuSe_out:
     output:
         resolve_results_filepath(
            config.get("paths").get("results_dir"),
-            "detection/muse/{sample}.somatic.muse.vcf.gz"
+            "detection/muse/{sample}.somatic.muse.snvs.vcf.gz"
         ),
     conda:
         resolve_single_filepath(
@@ -105,7 +105,7 @@ rule muse_hold_on:
     output:
         snvs=resolve_results_filepath(
                 config.get("paths").get("results_dir"),
-                "detection/results/{sample}.somatic.muse.vcf.gz"
+                "detection/results/{sample}.somatic.muse.snvs.vcf.gz"
         ),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
     shell:
@@ -117,7 +117,7 @@ rule muse_tbi:
     output:
         snvs = resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "detection/results/{sample}.somatic.muse.vcf.gz.tbi",
+            "detection/results/{sample}.somatic.muse.snvs.vcf.gz.tbi",
         ),
     conda:
         resolve_single_filepath(

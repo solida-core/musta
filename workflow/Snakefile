@@ -33,7 +33,7 @@ if config.get("run").get("all"):
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "detection/results/{sample}.somatic.mutect.vcf.gz.tbi",
+                    "detection/results/{sample}.somatic.mutect.snvs.vcf.gz.tbi",
                 ),
                 sample=list(samples_master.keys()),
             ),
@@ -54,7 +54,7 @@ if config.get("run").get("all"):
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "detection/results/{sample}.somatic.muse.vcf.gz.tbi",
+                    "detection/results/{sample}.somatic.muse.snvs.vcf.gz.tbi",
                 ),
                 sample=list(samples_master.keys()),
             ),
@@ -75,7 +75,7 @@ if config.get("run").get("all"):
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "detection/results/{sample}.somatic.vardict.vcf.gz.tbi",
+                    "detection/results/{sample}.somatic.vardict.snvs.vcf.gz.tbi",
                 ),
                 sample=list(samples_master.keys()),
             ),
@@ -142,7 +142,7 @@ if config.get("run").get("call") and config.get("callers").get("mutect"):
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "detection/results/{sample}.somatic.mutect.vcf.gz.tbi",
+                    "detection/results/{sample}.somatic.mutect.snvs.vcf.gz.tbi",
                 ),
                 sample=list(samples_master.keys()),
             ),
@@ -172,7 +172,7 @@ if config.get("run").get("call") and config.get("callers").get("muse"):
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "detection/results/{sample}.somatic.muse.vcf.gz.tbi",
+                    "detection/results/{sample}.somatic.muse.snvs.vcf.gz.tbi",
                 ),
                 sample=list(samples_master.keys()),
             ),
@@ -202,7 +202,7 @@ if config.get("run").get("call") and config.get("callers").get("vardict"):
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "detection/results/{sample}.somatic.vardict.vcf.gz.tbi",
+                    "detection/results/{sample}.somatic.vardict.snvs.vcf.gz.tbi",
                 ),
                 sample=list(samples_master.keys()),
             ),

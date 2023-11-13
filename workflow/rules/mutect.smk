@@ -276,7 +276,7 @@ rule gatk_SelectVariants:
     output:
         vcf=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "detection/mutect/{sample}.somatic.mutect.vcf.gz",
+            "detection/mutect/{sample}.somatic.mutect.snvs.vcf.gz",
         ),
     params:
         custom=java_params(tmp_dir=config.get("paths").get("tmp_dir"), multiply_by=5),
@@ -315,7 +315,7 @@ rule mutect_hold_on:
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "detection/results/{sample}.somatic.mutect.vcf.gz",
+            "detection/results/{sample}.somatic.mutect.snvs.vcf.gz",
         ),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
     shell:
@@ -327,7 +327,7 @@ rule mutect_tbi:
     output:
         snvs = resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "detection/results/{sample}.somatic.mutect.vcf.gz.tbi",
+            "detection/results/{sample}.somatic.mutect.snvs.vcf.gz.tbi",
         ),
     conda:
         resolve_single_filepath(

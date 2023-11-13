@@ -8,7 +8,7 @@ rule vardict:
     output:
         resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "detection/vardict/{sample}.somatic.vardict.vcf.gz",
+            "detection/vardict/{sample}.somatic.vardict.snvs.vcf.gz",
         ),
     conda:
         resolve_single_filepath(
@@ -47,7 +47,7 @@ rule vardict_hold_on:
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "detection/results/{sample}.somatic.vardict.vcf.gz"
+            "detection/results/{sample}.somatic.vardict.snvs.vcf.gz"
         ),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
     shell:
@@ -59,7 +59,7 @@ rule vardict_tbi:
     output:
         snvs = resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "detection/results/{sample}.somatic.vardict.vcf.gz.tbi",
+            "detection/results/{sample}.somatic.vardict.snvs.vcf.gz.tbi",
         ),
     conda:
         resolve_single_filepath(
