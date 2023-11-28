@@ -268,31 +268,6 @@ if config.get("run").get("annotate") and config.get("annotators").get("vep"):
                 sample=list(samples_master.keys()),
             ),
 
-if config.get("run").get("annotate") and config.get("annotators").get("vep"):
-    rule run_vep:
-        input:
-            expand(
-                resolve_results_filepath(
-                    config.get("paths").get("results_dir"),
-                    "classification/results/{sample}.annotated.vep.vcf.gz",
-                ),
-                sample=list(samples_master.keys()),
-            ),
-            expand(
-                resolve_results_filepath(
-                    config.get("paths").get("results_dir"),
-                    "classification/results/{sample}.annotated.vep.vcf.gz.tbi",
-                ),
-                sample=list(samples_master.keys()),
-            ),
-            expand(
-                resolve_results_filepath(
-                    config.get("paths").get("results_dir"),
-                    "classification/results/{sample}.annotated.vep.maf",
-                ),
-                sample=list(samples_master.keys()),
-            ),
-
 if config.get("run").get("annotate") and config.get("annotators").get("funcotator"):
     rule run_funcotator:
         input:
