@@ -27,7 +27,11 @@ rule vep:
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
         tmpdir=config.get("paths").get("tmp_dir"),
-
+    benchmark:
+        resolve_results_filepath(
+            config.get("paths").get("bench_dir"),
+            "classification/vep/{sample}.vep.txt",
+        ),
     shell:
         "VEPPATH=$(dirname $(which vep)) ; "
         "vep "
@@ -68,6 +72,11 @@ rule vep2maf:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
             "classification/vep/{sample}.vep2maf.log",
+        ),
+    benchmark:
+        resolve_results_filepath(
+            config.get("paths").get("bench_dir"),
+            "classification/vep/{sample}.vcf2maf.txt",
         ),
     conda:
         resolve_single_filepath(

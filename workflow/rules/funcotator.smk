@@ -27,6 +27,11 @@ rule funcotator_vcf:
             config.get("paths").get("log_dir"),
             "classification/funcotator/{sample}.funcotator.vcf.log",
         ),
+    benchmark:
+        resolve_results_filepath(
+            config.get("paths").get("bench_dir"),
+            "classification/funcotator/{sample}.funcotator.vcf.txt",
+        ),
     conda:
         resolve_single_filepath(
             config.get("paths").get("workdir"), "workflow/envs/gatk.yaml"
@@ -70,6 +75,11 @@ rule funcotator_maf:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
             "classification/funcotator/{sample}.funcotator.vcf2maf.log",
+        ),
+    benchmark:
+        resolve_results_filepath(
+            config.get("paths").get("bench_dir"),
+            "classification/funcotator/{sample}.funcotator.vcf2maf.txt",
         ),
     conda:
         resolve_single_filepath(
