@@ -76,7 +76,7 @@ rule vep2maf:
     benchmark:
         resolve_results_filepath(
             config.get("paths").get("bench_dir"),
-            "classification/vep/{sample}.vcf2maf.txt",
+            "classification/vep/{sample}.vep2maf.txt",
         ),
     conda:
         resolve_single_filepath(
