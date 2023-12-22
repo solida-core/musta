@@ -1,4 +1,3 @@
-
 rule maftools_base:
     input:
         mafs=get_maf_file_input(),
@@ -6,7 +5,7 @@ rule maftools_base:
         summary=report(
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "results/analysis/base/plots/summary.png",
+                "interpretation/base/plots/summary.png",
         ),
         caption=resolve_single_filepath(
         config.get("paths").get("workdir"), "workflow/report/summary.rst"
@@ -16,7 +15,7 @@ rule maftools_base:
         oncoplot=report(
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "results/analysis/base/plots/large_oncoplot.png",
+                "interpretation/base/plots/large_oncoplot.png",
         ),
         caption=resolve_single_filepath(
         config.get("paths").get("workdir"), "workflow/report/oncoplot.rst"
@@ -26,7 +25,7 @@ rule maftools_base:
         tgca=report(
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "results/analysis/base/plots/TGCA_compare.png",
+                "interpretation/base/plots/TGCA_compare.png",
         ),
         caption=resolve_single_filepath(
         config.get("paths").get("workdir"), "workflow/report/tgca.rst"
@@ -36,7 +35,7 @@ rule maftools_base:
         vaf=report(
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "results/analysis/base/plots/top10_VAF.png",
+                "interpretation/base/plots/top10_VAF.png",
         ),
         caption=resolve_single_filepath(
         config.get("paths").get("workdir"), "workflow/report/vaf.rst"
@@ -49,10 +48,16 @@ rule maftools_base:
     conda:
         resolve_single_filepath(
             config.get("paths").get("workdir"), "workflow/envs/maftools.yaml"
-        )
+        ),
     log:
-        resolve_single_filepath(
-            config.get("paths").get("results_dir"), "logs/maftools/maftools_base.log"
+        resolve_results_filepath(
+            config.get("paths").get("log_dir"),
+            "interpretation/base.log",
+        ),
+    benchmark:
+        resolve_results_filepath(
+            config.get("paths").get("bench_dir"),
+            "interpretation/base.txt",
         ),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
@@ -71,7 +76,7 @@ rule maftools_signatures:
         signatures=report(
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "results/analysis/signatures/plots/cosmic_signatures.png",
+                "interpretation/signatures/plots/cosmic_signatures.png",
         ),
         caption=resolve_single_filepath(
         config.get("paths").get("workdir"), "workflow/report/signatures.rst"
@@ -86,9 +91,14 @@ rule maftools_signatures:
             config.get("paths").get("workdir"), "workflow/envs/maftools.yaml"
         )
     log:
-        resolve_single_filepath(
-            config.get("paths").get("results_dir"),
-            "logs/maftools/maftools_signatures.log",
+        resolve_results_filepath(
+            config.get("paths").get("log_dir"),
+            "interpretation/signatures.log",
+        ),
+    benchmark:
+        resolve_results_filepath(
+            config.get("paths").get("bench_dir"),
+            "interpretation/signatures.txt",
         ),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
@@ -107,7 +117,7 @@ rule maftools_driver:
         interactions=report(
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "results/analysis/driver/plots/somatic_interactions.png",
+                "interpretation/driver/plots/somatic_interactions.png",
         ),
         caption=resolve_single_filepath(
         config.get("paths").get("workdir"), "workflow/report/interactions.rst"
@@ -121,8 +131,14 @@ rule maftools_driver:
             config.get("paths").get("workdir"), "workflow/envs/maftools.yaml"
         )
     log:
-        resolve_single_filepath(
-            config.get("paths").get("results_dir"), "logs/maftools/maftools_driver.log"
+        resolve_results_filepath(
+            config.get("paths").get("log_dir"),
+            "interpretation/gene_drivers.log",
+        ),
+    benchmark:
+        resolve_results_filepath(
+            config.get("paths").get("bench_dir"),
+            "interpretation/gene_drivers.txt",
         ),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
@@ -140,7 +156,7 @@ rule maftools_pathways:
     output:
         resolve_single_filepath(
             config.get("paths").get("results_dir"),
-            "results/analysis/pathways/plots/oncogenic_pathways.png",
+            "interpretation/pathways/plots/oncogenic_pathways.png",
         ),
     params:
         outdir=lambda w, output: os.path.split(os.path.split(output[0])[0])[0],
@@ -149,9 +165,14 @@ rule maftools_pathways:
             config.get("paths").get("workdir"), "workflow/envs/maftools.yaml"
         )
     log:
-        resolve_single_filepath(
-            config.get("paths").get("results_dir"),
-            "logs/maftools/maftools_pathways.log",
+        resolve_results_filepath(
+            config.get("paths").get("log_dir"),
+            "interpretation/pathways.log",
+        ),
+    benchmark:
+        resolve_results_filepath(
+            config.get("paths").get("bench_dir"),
+            "interpretation/pathways.txt",
         ),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
@@ -169,7 +190,7 @@ rule maftools_heterogeneity:
     output:
         resolve_single_filepath(
             config.get("paths").get("results_dir"),
-            "results/analysis/heterogeneity/tables/successful.tsv",
+            "interpretation/heterogeneity/tables/successful.tsv",
         ),
     params:
         outdir=lambda w, output: os.path.split(os.path.split(output[0])[0])[0],
@@ -178,9 +199,14 @@ rule maftools_heterogeneity:
             config.get("paths").get("workdir"), "workflow/envs/maftools.yaml"
         )
     log:
-        resolve_single_filepath(
-            config.get("paths").get("results_dir"),
-            "logs/maftools/maftools_heterogeneity.log",
+        resolve_results_filepath(
+            config.get("paths").get("log_dir"),
+            "interpretation/heterogeneity.log",
+        ),
+    benchmark:
+        resolve_results_filepath(
+            config.get("paths").get("bench_dir"),
+            "interpretation/heterogeneity.txt",
         ),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:

@@ -116,23 +116,23 @@ if config.get("run").get("all"):
             ),
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "analysis/signatures/plots/cosmic_signatures.png",
+                "interpretation/signatures/plots/cosmic_signatures.png",
             ),
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "analysis/driver/plots/somatic_interactions.png",
+                "interpretation/driver/plots/somatic_interactions.png",
             ),
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "analysis/base/plots/top10_VAF.png",
+                "interpretation/base/plots/top10_VAF.png",
             ),
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "analysis/pathways/plots/oncogenic_pathways.png",
+                "interpretation/pathways/plots/oncogenic_pathways.png",
             ),
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "analysis/heterogeneity/tables/successful.tsv",
+                "interpretation/heterogeneity/tables/successful.tsv",
             ),
 
 
@@ -299,21 +299,21 @@ if config.get("run").get("analysis"):
         input:
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "analysis/signatures/plots/cosmic_signatures.png",
+                "interpretation/signatures/plots/cosmic_signatures.png",
             ),
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "analysis/driver/plots/somatic_interactions.png",
+                "interpretation/driver/plots/somatic_interactions.png",
             ),
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "analysis/base/plots/top10_VAF.png",
+                "interpretation/base/plots/top10_VAF.png",
             ),
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "analysis/pathways/plots/oncogenic_pathways.png",
+                "interpretation/pathways/plots/oncogenic_pathways.png",
             ),
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "analysis/heterogeneity/tables/successful.tsv",
+                "interpretation/heterogeneity/tables/successful.tsv",
             ),
