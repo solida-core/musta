@@ -165,7 +165,7 @@ tryCatch({
 }, error = function(err) {
     print("Error while plotting VAF (top genes: 10)")
     print(err)
-    file.create(file.path(output_path, "plots", "top20_VAF.png"))
+    file.create(file.path(output_path, "plots", "top10_VAF.png"))
 })
 
 tryCatch({
