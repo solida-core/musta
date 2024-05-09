@@ -139,7 +139,7 @@ for (gene in rownames(z)) {
         )
     dev.off()
     }, error = function(err) {
-        print("Error while plotting plotting lollipop for gene: " + gene)
+        print(paste("Error while plotting plotting lollipop for gene:" , gene))
         print(err)
     })
 }
