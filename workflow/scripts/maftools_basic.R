@@ -128,15 +128,20 @@ dir.exists(file.path(output_path, "plots", "lollipop"))
 
 for (gene in rownames(z)) {
     print(gene)
-    png(filename = file.path(output_path, "plots", "lollipop", paste(gene, ".lollipop.png")), width = 500, height = 250, units = 'mm', res = 400)
-    lollipopPlot(
-        maf = my_maf,
-        gene = gene,
-        AACol = aminoacid_cname,
-        showMutationRate = TRUE
-    )
-    dev.off()
 
+    tryCatch({
+        png(filename = file.path(output_path, "plots", "lollipop", paste0(gene, ".lollipop.png")), width = 500, height = 250, units = 'mm', res = 400)
+        lollipopPlot(
+            maf = my_maf,
+            gene = gene,
+            #AACol = aminoacid_cname,
+            showMutationRate = TRUE
+        )
+    dev.off()
+    }, error = function(err) {
+        print("Error while plotting plotting lollipop for gene: " + gene)
+        print(err)
+    })
 }
 
 samples <- as.list(as.data.frame(getSampleSummary(my_maf))["Tumor_Sample_Barcode"])
