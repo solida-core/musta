@@ -12,6 +12,7 @@ input_maf=snakemake@input[["mafs"]]
 print(input_maf)
 project_id=snakemake@params[["project_id"]]
 output_path=snakemake@params[["outdir"]]
+all_variants <- as.logical(snakemake@params[["all_variants"]])
 ## combine input files
 getwd()
 
@@ -22,13 +23,19 @@ list.all.maf.files <- lapply(maf.filenames,function(i){
 
 ###merging the all the .maf files
 maf_all <- maftools::merge_mafs(list.all.maf.files)
-if ("FILTER" %in% getFields(maf_all)) {
-  my_maf <- subsetMaf(maf_all, query = "FILTER == 'PASS'")
-} else if ("SOMATIC" %in% getFields(maf_all)) {
-  my_maf <- subsetMaf(maf_all, query = "SOMATIC == 'true'")
-} else {
+
+if (all_variants == TRUE) {
   my_maf <- maf_all
+} else {
+  if ("FILTER" %in% getFields(maf_all)) {
+    my_maf <- subsetMaf(maf_all, query = "FILTER == 'PASS'")
+  } else if ("SOMATIC" %in% getFields(maf_all)) {
+    my_maf <- subsetMaf(maf_all, query = "SOMATIC == 'true'")
+  } else {
+    my_maf <- maf_all
+  }
 }
+
 ## create out dir
 dir.create(file.path(output_path), showWarnings = F)
 dir.exists(output_path)

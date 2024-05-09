@@ -19,6 +19,9 @@ annotators:
   funcotator: False
   vep: False
 
+variants:
+  all: False
+
 # path or URL to sample sheet (TSV format, columns: sample, condition, ...)
 samples: config/samples.yaml
 

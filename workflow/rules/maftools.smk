@@ -44,6 +44,7 @@ rule maftools_base:
         ),
     params:
         project_id=config.get("params").get("maftools").get("project_name"),
+        all_variants=config.get("variants").get("all"),
         outdir=lambda w, output: os.path.split(os.path.split(output[0])[0])[0],
     conda:
         resolve_single_filepath(
@@ -85,6 +86,7 @@ rule maftools_signatures:
         ),
     params:
         project_id=config.get("params").get("maftools").get("project_name"),
+        all_variants=config.get("variants").get("all"),
         outdir=lambda w, output: os.path.split(os.path.split(output[0])[0])[0],
     conda:
         resolve_single_filepath(
@@ -125,6 +127,7 @@ rule maftools_driver:
             category="Somatic Interactions",
         ),
     params:
+        all_variants=config.get("variants").get("all"),
         outdir=lambda w, output: os.path.split(os.path.split(output[0])[0])[0],
     conda:
         resolve_single_filepath(
@@ -159,6 +162,7 @@ rule maftools_pathways:
             "interpretation/pathways/plots/oncogenic_pathways.png",
         ),
     params:
+        all_variants=config.get("variants").get("all"),
         outdir=lambda w, output: os.path.split(os.path.split(output[0])[0])[0],
     conda:
         resolve_single_filepath(
@@ -193,6 +197,7 @@ rule maftools_heterogeneity:
             "interpretation/heterogeneity/tables/successful.tsv",
         ),
     params:
+        all_variants=config.get("variants").get("all"),
         outdir=lambda w, output: os.path.split(os.path.split(output[0])[0])[0],
     conda:
         resolve_single_filepath(
