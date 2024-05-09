@@ -49,14 +49,19 @@ tryCatch({
     file.create(file.path(output_path, "plots", "somatic_interactions.png"))
 })
 
-pdf(file = NULL)
-write.table(as.data.frame(somaticInteractions(maf = my_maf, top = 25, pvalue = c(0.05, 0.1), fontSize = 0.6), row.names = F),
-            file = file.path(output_path,"tables","somatic_interactions.tsv"), sep = "\t", row.names = F, col.names = T)
-dev.off()
+tryCatch({
+    pdf(file = NULL)
+    write.table(as.data.frame(somaticInteractions(maf = my_maf, top = 25, pvalue = c(0.05, 0.1), fontSize = 0.6), row.names = F),
+                file = file.path(output_path,"tables","somatic_interactions.tsv"), sep = "\t", row.names = F, col.names = T)
+    dev.off()
 
-my_maf.sig <- oncodrive(maf = my_maf, AACol = aminoacid_cname, minMut = 5, pvalMethod = 'zscore')
+    my_maf.sig <- oncodrive(maf = my_maf, AACol = aminoacid_cname, minMut = 5, pvalMethod = 'zscore')
 
-write.table(as.data.frame(my_maf.sig), file = file.path(output_path,"tables","oncodrive.tsv"), sep = "\t", row.names = F, col.names = T)
+    write.table(as.data.frame(my_maf.sig), file = file.path(output_path,"tables","oncodrive.tsv"), sep = "\t", row.names = F, col.names = T)
+}, error = function(err) {
+    print("Error while creating table")
+    print(err)
+})
 
 tryCatch({
     png(filename = file.path(output_path,"plots","oncodrive.png"), width = 500, height = 250, units='mm', res = 400)
