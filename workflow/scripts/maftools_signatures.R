@@ -121,34 +121,40 @@ for (row in 2:nrow(new_df)) {
   new_df[row,"drop"] <- new_df[row, "cophenetic"]-new_df[row-1, "cophenetic"]
 }
 
-signature_to_extract <- as.integer(new_df[new_df$drop==min(new_df$drop), "rank"])
+tryCatch({
+    signature_to_extract <- as.integer(new_df[new_df$drop==min(new_df$drop), "rank"])
 
-my_maf.sig <- extractSignatures(mat = my_maf.tnm, n = signature_to_extract)
+    my_maf.sig <- extractSignatures(mat = my_maf.tnm, n = signature_to_extract)
 
-signatures_matrix <- as.data.frame(my_maf.sig$signatures)
-signatures_matrix <- cbind(rownames(signatures_matrix), signatures_matrix)
-names(signatures_matrix)[names(signatures_matrix)=="rownames(signatures_matrix)"] <- "trinucleotide"
-write.table(signatures_matrix, file = file.path(output_path,"tables","signatures_matrix.tsv"), sep = "\t", row.names = F, col.names = T)
+    signatures_matrix <- as.data.frame(my_maf.sig$signatures)
+    signatures_matrix <- cbind(rownames(signatures_matrix), signatures_matrix)
+    names(signatures_matrix)[names(signatures_matrix)=="rownames(signatures_matrix)"] <- "trinucleotide"
+    write.table(signatures_matrix, file = file.path(output_path,"tables","signatures_matrix.tsv"), sep = "\t", row.names = F, col.names = T)
 
-#Compate against updated version3 60 signatures
-my_maf.v3.cosm <- compareSignatures(nmfRes = my_maf.sig, sig_db = "SBS")
+    #Compate against updated version3 60 signatures
+    my_maf.v3.cosm <- compareSignatures(nmfRes = my_maf.sig, sig_db = "SBS")
 
-cosine_simil_matrix <- as.data.frame(my_maf.v3.cosm$cosine_similarities)
-cosine_simil_matrix <- cbind(rownames(cosine_simil_matrix), cosine_simil_matrix)
-names(cosine_simil_matrix)[names(cosine_simil_matrix)=="rownames(cosine_simil_matrix)"] <- "signature"
-write.table(cosine_simil_matrix, file = file.path(output_path,"tables","cosime_similarities_matrix.tsv"), sep = "\t", row.names = F, col.names = T)
+    cosine_simil_matrix <- as.data.frame(my_maf.v3.cosm$cosine_similarities)
+    cosine_simil_matrix <- cbind(rownames(cosine_simil_matrix), cosine_simil_matrix)
+    names(cosine_simil_matrix)[names(cosine_simil_matrix)=="rownames(cosine_simil_matrix)"] <- "signature"
+    write.table(cosine_simil_matrix, file = file.path(output_path,"tables","cosime_similarities_matrix.tsv"), sep = "\t", row.names = F, col.names = T)
 
-dev.off()
+    dev.off()
 
-png(filename = file.path(output_path,"plots","cosine_similarities_heatmap.png"), width = 300, height = 150, units='mm', res = 400)
-pheatmap(mat = my_maf.v3.cosm$cosine_similarities, cluster_rows = FALSE, main = "Cosine similarity against validated signatures",
-         fontsize_col = 8, cellwidth = 10, cellheight = 10, fontsize_row = 8)
-dev.off()
+    png(filename = file.path(output_path,"plots","cosine_similarities_heatmap.png"), width = 300, height = 150, units='mm', res = 400)
+    pheatmap(mat = my_maf.v3.cosm$cosine_similarities, cluster_rows = FALSE, main = "Cosine similarity against validated signatures",
+             fontsize_col = 8, cellwidth = 10, cellheight = 10, fontsize_row = 8)
+    dev.off()
 
-png(filename = file.path(output_path,"plots","cosmic_signatures.png"), width = 500, height = 250, units='mm', res = 400)
-plotSignatures(nmfRes = my_maf.sig, title_size = 1.5, sig_db = "SBS",font_size = 1.4, yaxisLim = NA)
-dev.off()
+    png(filename = file.path(output_path,"plots","cosmic_signatures.png"), width = 500, height = 250, units='mm', res = 400)
+    plotSignatures(nmfRes = my_maf.sig, title_size = 1.5, sig_db = "SBS",font_size = 1.4, yaxisLim = NA)
+    dev.off()
 
-png(filename = file.path(output_path,"plots","signature_contributions.png"), width = 500, height = 250, units='mm', res = 400)
-plotSignatures(nmfRes = my_maf.sig, title_size = 1.2, sig_db = "SBS", contributions = T, show_barcodes = F)
-dev.off()
+    png(filename = file.path(output_path,"plots","signature_contributions.png"), width = 500, height = 250, units='mm', res = 400)
+    plotSignatures(nmfRes = my_maf.sig, title_size = 1.2, sig_db = "SBS", contributions = T, show_barcodes = F)
+    dev.off()
+}, error = function(err) {
+    print("Error while extracting Signatures")
+    print(err)
+    file.create(file.path(output_path, "plots", "cosmic_signatures.png"))
+})
