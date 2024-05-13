@@ -74,16 +74,20 @@ message("Processing MAF for Signatures")
 dir.create(file.path(output_path,"tables"), showWarnings = F)
 dir.create(file.path(output_path,"plots"), showWarnings = F)
 
-my_maf.tnm <- trinucleotideMatrix(maf = my_maf, prefix = chr_prefix, add = add_prefix, ref_genome = genome_lib)
+tryCatch({
+    my_maf.tnm <- trinucleotideMatrix(maf = my_maf, prefix = chr_prefix, add = add_prefix, ref_genome = genome_lib)
 
-nmf_matrix <- as.data.frame(my_maf.tnm$nmf_matrix)
-nmf_matrix <- cbind(rownames(nmf_matrix), nmf_matrix)
-names(nmf_matrix)[names(nmf_matrix)=="rownames(nmf_matrix)"] <- "sample_ID"
-write.table(nmf_matrix, file = file.path(output_path,"tables","nmf_matrix.tsv"), sep = "\t", row.names = F, col.names = T)
+    nmf_matrix <- as.data.frame(my_maf.tnm$nmf_matrix)
+    nmf_matrix <- cbind(rownames(nmf_matrix), nmf_matrix)
+    names(nmf_matrix)[names(nmf_matrix)=="rownames(nmf_matrix)"] <- "sample_ID"
+    write.table(nmf_matrix, file = file.path(output_path,"tables","nmf_matrix.tsv"), sep = "\t", row.names = F, col.names = T)
 
-APOBEC_scores_matrix <- as.data.frame(my_maf.tnm$APOBEC_scores)
-write.table(APOBEC_scores_matrix, file = file.path(output_path,"tables","APOBEC_scores_matrix.tsv"), sep = "\t", row.names = F, col.names = T)
-
+    APOBEC_scores_matrix <- as.data.frame(my_maf.tnm$APOBEC_scores)
+    write.table(APOBEC_scores_matrix, file = file.path(output_path,"tables","APOBEC_scores_matrix.tsv"), sep = "\t", row.names = F, col.names = T)
+}, error = function(err) {
+    print("Error while extracting Signatures")
+    print(err)
+})
 
 tryCatch({
     apobec_diff_df <- plotApobecDiff(tnm = my_maf.tnm, maf = my_maf, pVal = 0.05)
@@ -99,7 +103,12 @@ tryCatch({
 })
 
 
-my_maf.sign <- estimateSignatures(mat = my_maf.tnm, nTry = 6)
+tryCatch({
+    my_maf.sign <- estimateSignatures(mat = my_maf.tnm, nTry = 6)
+}, error = function(err) {
+    print("Error while extracting Signatures")
+    print(err)
+})
 
 tryCatch({
     png(filename = file.path(output_path,"plots","plotCophenetic.png"), width = 500, height = 250, units='mm', res = 400)
@@ -111,15 +120,20 @@ tryCatch({
     file.create(file.path(output_path, "plots", "plotCophenetic.png"))
 })
 
-new_df <- as.data.frame(my_maf.sign$nmfSummary$cophenetic)
-names(new_df) <- "cophenetic"
-rownames(new_df) <- rownames(my_maf.sign$nmfSummary)
-new_df["rank"] <- rownames(my_maf.sign$nmfSummary)
-new_df["drop"] <- NA
-new_df[1,"drop"] <- 0
-for (row in 2:nrow(new_df)) {
-  new_df[row,"drop"] <- new_df[row, "cophenetic"]-new_df[row-1, "cophenetic"]
-}
+tryCatch({
+    new_df <- as.data.frame(my_maf.sign$nmfSummary$cophenetic)
+    names(new_df) <- "cophenetic"
+    rownames(new_df) <- rownames(my_maf.sign$nmfSummary)
+    new_df["rank"] <- rownames(my_maf.sign$nmfSummary)
+    new_df["drop"] <- NA
+    new_df[1,"drop"] <- 0
+    for (row in 2:nrow(new_df)) {
+      new_df[row,"drop"] <- new_df[row, "cophenetic"]-new_df[row-1, "cophenetic"]
+    }
+}, error = function(err) {
+    print("Error while extracting Signatures")
+    print(err)
+})
 
 tryCatch({
     signature_to_extract <- as.integer(new_df[new_df$drop==min(new_df$drop), "rank"])
