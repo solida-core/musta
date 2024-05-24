@@ -15,11 +15,11 @@ rule somaticseq:
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "detection/somaticseq/{sample}/Consensus.sSNV.vcf",
+            "detection/somaticseq/{sample}/musta.sSNV.vcf",
         ),
         indels=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "detection/somaticseq/{sample}/Consensus.sINDEL.vcf",
+            "detection/somaticseq/{sample}/musta.sINDEL.vcf",
         ),
     params:
         outdir=resolve_results_filepath(
@@ -99,11 +99,11 @@ rule somaticseq_hold_on:
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "detection/results/{sample}.consensus.snvs.vcf.gz",
+            "detection/results/{sample}.musta.snvs.vcf.gz",
         ),
         indels=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "detection/results/{sample}.consensus.indels.vcf.gz",
+            "detection/results/{sample}.musta.indels.vcf.gz",
         ),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99),
     shell:
@@ -117,11 +117,11 @@ rule somaticseq_tbi:
     output:
         snvs = resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "detection/results/{sample}.consensus.snvs.vcf.gz.tbi",
+            "detection/results/{sample}.musta.snvs.vcf.gz.tbi",
         ),
         indels = resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "detection/results/{sample}.consensus.indels.vcf.gz.tbi",
+            "detection/results/{sample}.musta.indels.vcf.gz.tbi",
         ),
     conda:
         resolve_single_filepath(

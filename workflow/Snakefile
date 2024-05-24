@@ -96,14 +96,14 @@ if config.get("run").get("all"):
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "detection/results/{sample}.consensus.snvs.vcf.gz.tbi",
+                    "detection/results/{sample}.musta.snvs.vcf.gz.tbi",
                 ),
                 sample=list(samples_master.keys()),
             ),
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "detection/results/{sample}.consensus.indels.vcf.gz.tbi",
+                    "detection/results/{sample}.musta.indels.vcf.gz.tbi",
                 ),
                 sample=list(samples_master.keys()),
             ),
@@ -231,14 +231,14 @@ if config.get("run").get("combine"):
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "detection/results/{sample}.consensus.snvs.vcf.gz.tbi",
+                    "detection/results/{sample}.musta.snvs.vcf.gz.tbi",
                 ),
                 sample=list(samples_master.keys()),
             ),
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),
-                    "detection/results/{sample}.consensus.indels.vcf.gz.tbi",
+                    "detection/results/{sample}.musta.indels.vcf.gz.tbi",
                 ),
                 sample=list(samples_master.keys()),
             ),
