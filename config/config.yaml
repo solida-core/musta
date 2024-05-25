@@ -46,7 +46,7 @@ params:
     cache_version: "106"
   multiqc: "--force --interactive --cl_config 'max_table_rows: 700'"
   maftools:
-    project_name: "Current_analysis"
+    project_name: "musta"
 
 
 paths:

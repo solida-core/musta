@@ -122,10 +122,10 @@ if config.get("run").get("all"):
                 config.get("paths").get("results_dir"),
                 "interpretation/driver/plots/somatic_interactions.png",
             ),
-            resolve_single_filepath(
-                config.get("paths").get("results_dir"),
-                "interpretation/base/plots/top10_VAF.png",
-            ),
+            # resolve_single_filepath(
+            #     config.get("paths").get("results_dir"),
+            #     "interpretation/base/plots/top10_VAF.png",
+            # ),
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
                 "interpretation/pathways/plots/oncogenic_pathways.png",

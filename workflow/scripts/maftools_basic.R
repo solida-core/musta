@@ -47,7 +47,7 @@ aminoacid_cname <- 'Protein_Change'
 if ('HGVSp' %in% names(my_maf@data)) {
     aminoacid_cname <- 'HGVSp'
 }
-aminoacid_cname
+# aminoacid_cname
 genome_vers <- 'hg19'
 genome_lib <- "BSgenome.Hsapiens.UCSC.hg19"
 genome_strings <- c("hg38", "GRCh38")
@@ -56,8 +56,8 @@ if (my_maf@data[1, "NCBI_Build"] %in% genome_strings) {
     genome_lib <- "BSgenome.Hsapiens.UCSC.hg38"
     library("BSgenome.Hsapiens.UCSC.hg38", quietly = TRUE)
 }
-genome_vers
-genome_lib
+# genome_vers
+# genome_lib
 
 chr_prefix <- NULL
 add_prefix <- F
@@ -66,8 +66,8 @@ if (str_detect(my_maf@data[1, "Chromosome"], pattern = "chr", negate = T)) {
     chr_prefix <- 'chr'
     add_prefix <- T
 }
-chr_prefix
-add_prefix
+# chr_prefix
+# add_prefix
 
 ## summaty tables
 message("Processing MAF for General Statistics")
@@ -76,22 +76,76 @@ dir.create(file.path(output_path, "plots"), showWarnings = F)
 
 ## summaty tables
 message("Write summary table")
-write.table(as.data.frame(my_maf@summary[-c(2), c(1, 2)], row.names = F), file = file.path(output_path, "tables", "overview.tsv"), sep = "\t", row.names = F, col.names = T)
+my_summary <- my_maf@summary[-c(2), c(1, 2)]
+print("Summary: ", my_summary)
+write.table(as.data.frame(my_summary, row.names = F),
+            file = file.path(output_path, "tables", "overview.tsv"),
+            sep = "\t", row.names = F, col.names = T)
 
-#Shows sample summry.
+#Shows sample summary.
 message("Write Samples Summary table")
-write.table(as.data.frame(getSampleSummary(my_maf), row.names = F), file = file.path(output_path, "tables", "sample_summary.tsv"), sep = "\t", row.names = F, col.names = T)
+sample_summary <- getSampleSummary(my_maf)
+print("Sample Summary: ", sample_summary)
+write.table(as.data.frame(sample_summary, row.names = F),
+            file = file.path(output_path, "tables", "sample_summary.tsv"),
+            sep = "\t", row.names = F, col.names = T)
 
 #Shows gene summary.
 message("Write Gene Summary table")
-write.table(as.data.frame(getGeneSummary(my_maf), row.names = F), file = file.path(output_path, "tables", "gene_summary.tsv"), sep = "\t", row.names = F, col.names = T)
+gene_summary <- getGeneSummary(my_maf)
+print("Gene Summary: ", gene_summary)
+write.table(as.data.frame(gene_summary, row.names = F),
+            file = file.path(output_path, "tables", "gene_summary.tsv"),
+            sep = "\t", row.names = F, col.names = T)
 
 message("Plot MAF Summary")
-png(filename = file.path(output_path, "plots", "summary.png"), width = 500, height = 250, units = 'mm', res = 500)
-plotmafSummary(maf = my_maf, rmOutlier = TRUE, addStat = 'median', dashboard = TRUE, titvRaw = T, top = 10, log_scale = F,
+png(filename = file.path(output_path, "plots", "summary.png"),
+    width = 500,
+    height = 250,
+    units = 'mm',
+    res = 500)
+plotmafSummary(maf = my_maf,
+               rmOutlier = TRUE,
+               addStat = 'median',
+               dashboard = TRUE,
+               titvRaw = T,
+               top = 10, log_scale = F,
                textSize = 4, titleSize = c(1.3, 0.9))
 dev.off()
 
+png(filename = file.path(output_path, "plots", "summary.with_samplenames.png"),
+    width = 500,
+    height = 250,
+    units = 'mm',
+    res = 500)
+plotmafSummary(maf = my_maf,
+               rmOutlier = TRUE,
+               addStat = 'median',
+               dashboard = TRUE,
+               titvRaw = T,
+               showBarcodes = T,
+               top = 10, log_scale = F,
+               textSize = 4, titleSize = c(1.3, 0.9))
+dev.off()
+
+message("Plot MafBar")
+png(filename = file.path(output_path, "plots", "mafbar.png"),
+    width = 500,
+    height = 250,
+    units = 'mm',
+    res = 500)
+mafbarplot(
+  my_maf,
+  n = 20,
+  genes = NULL,
+  color = NULL,
+  fontSize = 1,
+  includeCN = FALSE,
+  legendfontSize = 1,
+  borderCol = "#34495e",
+  showPct = TRUE
+)
+dev.off()
 
 #oncoplot for top ten mutated genes.
 vc_cols <- RColorBrewer::brewer.pal(n = 8, name = 'Paired')
@@ -105,39 +159,95 @@ names(vc_cols) <- c(
     'Splice_Site',
     'In_Frame_Del'
 )
-message("Oncopot generation")
-png(filename = file.path(output_path, "plots", "oncoplot.png"), width = 500, height = 250, units = 'mm', res = 400)
+message("Oncopot generation (top 10 mutated genes")
+png(filename = file.path(output_path, "plots", "oncoplot.png"),
+    width = 500,
+    height = 250,
+    units = 'mm',
+    res = 400)
 oncoplot(maf = my_maf, colors = vc_cols, top = 10, altered = T,
          logColBar = T, drawRowBar = T, draw_titv = F,
-         drawBox = F, titleText = NULL, legendFontSize = 1.6, writeMatrix = T, showTumorSampleBarcodes = T, barcode_mar = 15)
+         drawBox = F, titleText = NULL,
+         legendFontSize = 1.6, writeMatrix = T,
+         showTumorSampleBarcodes = F, barcode_mar = 15)
 dev.off()
 
+png(filename = file.path(output_path, "plots", "oncoplot.with_samplenames.png"),
+    width = 500,
+    height = 250,
+    units = 'mm',
+    res = 400)
+oncoplot(maf = my_maf, colors = vc_cols, top = 10, altered = T,
+         logColBar = T, drawRowBar = T, draw_titv = F,
+         drawBox = F, titleText = NULL,
+         legendFontSize = 1.6, writeMatrix = T,
+         showTumorSampleBarcodes = T, barcode_mar = 15)
+dev.off()
 
-png(filename = file.path(output_path, "plots", "large_oncoplot.png"), width = 500, height = 250, units = 'mm', res = 400)
+message("Oncopot generation (top 50 mutated genes")
+png(filename = file.path(output_path, "plots", "large_oncoplot.png"),
+    width = 500,
+    height = 250,
+    units = 'mm',
+    res = 400)
 oncoplot(maf = my_maf, colors = vc_cols, altered = F,
          logColBar = F, drawRowBar = F, draw_titv = F,
-         drawBox = F, titleText = "Oncoplot 50 genes", legendFontSize = 1.6, drawColBar = F, top = 50, sortByMutation = F)
+         drawBox = F, titleText = "Oncoplot 50 genes",
+         showTumorSampleBarcodes = F, barcode_mar = 15,
+         legendFontSize = 1.6, drawColBar = F, top = 50, sortByMutation = F)
+dev.off()
+
+png(filename = file.path(output_path, "plots", "large_oncoplot.with_samplenames.png"),
+    width = 500,
+    height = 250,
+    units = 'mm',
+    res = 400)
+oncoplot(maf = my_maf, colors = vc_cols, altered = F,
+         logColBar = F, drawRowBar = F, draw_titv = F,
+         drawBox = F, titleText = "Oncoplot 50 genes",
+         showTumorSampleBarcodes = T, barcode_mar = 15,
+         legendFontSize = 1.6, drawColBar = F, top = 50, sortByMutation = F)
 dev.off()
 
 actual_path <- getwd()
 z <- read.table(file.path(actual_path, "onco_matrix.txt"), sep = "\t")
 
+message("Plot titv summary")
 my_maf.titv <- titv(maf = my_maf, plot = FALSE, useSyn = TRUE)
-titv(maf = my_maf, plot = FALSE, useSyn = TRUE, file = file.path(output_path, "tables", "transitions_and_transversions"))
-#plot titv summary
-png(filename = file.path(output_path, "plots", "titv.png"), width = 500, height = 250, units = 'mm', res = 400)
+titv(maf = my_maf,
+     plot = FALSE,
+     useSyn = TRUE,
+     file = file.path(output_path, "tables", "transitions_and_transversions"))
+
+png(filename = file.path(output_path, "plots", "titv.png"),
+    width = 500,
+    height = 250,
+    units = 'mm',
+    res = 400)
 plotTiTv(res = my_maf.titv)
 dev.off()
 
+png(filename = file.path(output_path, "plots", "titv.with_samplenames.png"),
+    width = 500,
+    height = 250,
+    units = 'mm',
+    res = 400)
+plotTiTv(res = my_maf.titv, showBarcodes = TRUE)
+dev.off()
 
 dir.create(file.path(output_path, "plots", "lollipop"), showWarnings = F)
 dir.exists(file.path(output_path, "plots", "lollipop"))
 
+message("Generation  lollipop plot of amino acid changes")
 for (gene in rownames(z)) {
     print(gene)
 
     tryCatch({
-        png(filename = file.path(output_path, "plots", "lollipop", paste0(gene, ".lollipop.png")), width = 500, height = 250, units = 'mm', res = 400)
+        png(filename = file.path(output_path, "plots", "lollipop", paste0(gene, ".lollipop.png")),
+            width = 500,
+            height = 250,
+            units = 'mm',
+            res = 400)
         lollipopPlot(
             maf = my_maf,
             gene = gene,
@@ -157,6 +267,7 @@ samples <- as.list(samples$Tumor_Sample_Barcode)
 dir.create(file.path(output_path, "plots", "rainfall"), showWarnings = F)
 dir.exists(file.path(output_path, "plots", "rainfall"))
 i <- 0
+message("Plots inter variant distance as a function of genomic locus.")
 for (sample in samples) {
     print(sample)
     i <- i + 1
@@ -168,32 +279,69 @@ for (sample in samples) {
 }
 
 
-png(filename = file.path(output_path, "plots", "TGCA_compare.png"), width = 500, height = 250, units = 'mm', res = 400)
-my_maf.mutload <- tcgaCompare(maf = my_maf, cohortName = project_id, logscale = TRUE, capture_size = 50)
+png(filename = file.path(output_path, "plots", "TGCA_compare.png"),
+    width = 500,
+    height = 250,
+    units = 'mm',
+    res = 400)
+my_maf.mutload <- tcgaCompare(maf = my_maf,
+                              cohortName = project_id,
+                              logscale = TRUE,
+                              capture_size = 50)
 dev.off()
 
-write.table(my_maf.mutload$median_mutation_burden, file = file.path(output_path, "tables", "TGCA_median_mutation_burden.tsv"), sep = "\t", row.names = F, col.names = T)
+png(filename = file.path(output_path, "plots", "TGCA_compare.primary_site.png"),
+    width = 500,
+    height = 250,
+    units = 'mm',
+    res = 400)
+my_maf.mutload <- tcgaCompare(maf = my_maf,
+                              cohortName = project_id,
+                              logscale = TRUE,
+                               primarySite = TRUE,
+                              capture_size = 50)
+dev.off()
 
-write.table(my_maf.mutload$mutation_burden_perSample, file = file.path(output_path, "tables", "TGCA_mutation_burden_perSample.tsv"), sep = "\t", row.names = F, col.names = T)
+write.table(my_maf.mutload$median_mutation_burden,
+            file = file.path(output_path, "tables", "TGCA_median_mutation_burden.tsv"),
+            sep = "\t", row.names = F, col.names = T)
 
-write.table(my_maf.mutload$pairwise_t_test, file = file.path(output_path, "tables", "TGCA_pairwise_t_test.tsv"), sep = "\t", row.names = F, col.names = T)
+write.table(my_maf.mutload$mutation_burden_perSample,
+            file = file.path(output_path, "tables", "TGCA_mutation_burden_perSample.tsv"),
+            sep = "\t", row.names = F, col.names = T)
 
+write.table(my_maf.mutload$pairwise_t_test,
+            file = file.path(output_path, "tables", "TGCA_pairwise_t_test.tsv"),
+            sep = "\t", row.names = F, col.names = T)
+
+
+messeage("Plots vaf distribution of genes as a boxplot")
 tryCatch({
-    png(filename = file.path(output_path, "plots", "top10_VAF.png"), width = 500, height = 250, units = 'mm', res = 400)
-    plotVaf(maf = my_maf, top = 10, showN = T)
+    png(filename = file.path(output_path, "plots", "top10_VAF.png"),
+        width = 500,
+        height = 250,
+        units = 'mm',
+        res = 400)
+    plotVaf(maf = my_maf,
+            top = 10,
+            showN = T)
     dev.off()
 }, error = function(err) {
     print("Error while plotting VAF (top genes: 10)")
     print(err)
-    file.create(file.path(output_path, "plots", "top10_VAF.png"))
+    # file.create(file.path(output_path, "plots", "top10_VAF.png"))
 })
 
 tryCatch({
-    png(filename = file.path(output_path, "plots", "top20_VAF.png"), width = 500, height = 250, units = 'mm', res = 400)
+    png(filename = file.path(output_path, "plots", "top20_VAF.png"),
+        width = 500,
+        height = 250,
+        units = 'mm',
+        res = 400)
     plotVaf(maf = my_maf, top = 20, showN = T)
     dev.off()
 }, error = function(err) {
     print("Error while plotting VAF (top genes: 20)")
     print(err)
-    file.create(file.path(output_path, "plots", "top20_VAF.png"))
+    # file.create(file.path(output_path, "plots", "top20_VAF.png"))
 })

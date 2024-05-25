@@ -32,16 +32,16 @@ rule maftools_base:
             ),
             category="Maftools",
         ),
-        vaf=report(
-            resolve_single_filepath(
-                config.get("paths").get("results_dir"),
-                "interpretation/base/plots/top10_VAF.png",
-        ),
-        caption=resolve_single_filepath(
-        config.get("paths").get("workdir"), "workflow/report/vaf.rst"
-            ),
-            category="Maftools",
-        ),
+        # # vaf=report(
+        # #     resolve_single_filepath(
+        # #         config.get("paths").get("results_dir"),
+        # #         "interpretation/base/plots/top10_VAF.png",
+        # # ),
+        # # caption=resolve_single_filepath(
+        # # config.get("paths").get("workdir"), "workflow/report/vaf.rst"
+        # #     ),
+        # #     category="Maftools",
+        # ),
     params:
         project_id=config.get("params").get("maftools").get("project_name"),
         all_variants=config.get("variants").get("all"),
