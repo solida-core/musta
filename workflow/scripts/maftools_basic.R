@@ -9,7 +9,7 @@ library('stringr')
 sessionInfo()
 ## input
 input_maf <- snakemake@input[["mafs"]]
-print(input_maf)
+message("Input files:", input_maf)
 project_id <- snakemake@params[["project_id"]]
 output_path <- snakemake@params[["outdir"]]
 all_variants <- as.logical(snakemake@params[["all_variants"]])
@@ -56,8 +56,9 @@ if (my_maf@data[1, "NCBI_Build"] %in% genome_strings) {
     genome_lib <- "BSgenome.Hsapiens.UCSC.hg38"
     library("BSgenome.Hsapiens.UCSC.hg38", quietly = TRUE)
 }
-# genome_vers
-# genome_lib
+
+message("Genome Version: ", genome_vers)
+message("Genome Library: ", genome_lib)
 
 chr_prefix <- NULL
 add_prefix <- F
