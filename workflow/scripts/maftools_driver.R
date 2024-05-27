@@ -18,8 +18,8 @@ all_variants <- as.logical(snakemake@params[["all_variants"]])
 getwd()
 
 maf.filenames <- file.path(input_maf)
-list.all.maf.files <- lapply(maf.filenames,function(i){
-  read.delim(i, sep = "\t", header = TRUE, fill = TRUE, comment.char = "#")
+list.all.maf.files <- lapply(maf.filenames, function(i) {
+    read.delim(i, sep = "\t", header = TRUE, fill = TRUE, comment.char = "#")
 })
 
 ###merging the all the .maf files
@@ -41,30 +41,30 @@ if (all_variants == TRUE) {
 ## create out dir
 dir.create(file.path(output_path), showWarnings = F)
 dir.exists(output_path)
-message("Output path is: ",output_path)
+message("Output path is: ", output_path)
 
 ## check from maf
 aminoacid_cname <- 'Protein_Change'
-if('HGVSp' %in% names(my_maf@data)){
-  aminoacid_cname <- 'HGVSp'
+if ('HGVSp' %in% names(my_maf@data)) {
+    aminoacid_cname <- 'HGVSp'
 }
 # aminoacid_cname
 
 message("Processing MAF for Driver Genes")
-dir.create(file.path(output_path,"tables"), showWarnings = F)
-dir.create(file.path(output_path,"plots"), showWarnings = F)
+dir.create(file.path(output_path, "tables"), showWarnings = F)
+dir.create(file.path(output_path, "plots"), showWarnings = F)
 
 
 message("Somatic Interation: detect mutually exclusive, co-occuring and altered genesets.")
 tryCatch({
-    png(filename = file.path(output_path,"plots","somatic_interactions.png"), width = 500, height = 250, units='mm', res = 400)
+    png(filename = file.path(output_path, "plots", "somatic_interactions.png"), width = 500, height = 250, units = 'mm', res = 400)
     somaticInteractions(maf = my_maf, top = 25, pvalue = c(0.05, 0.1), fontSize = 0.8, colPal = "RdYlGn",
-                    sigSymbolsFontSize = 1, sigSymbolsSize = 2.5,showSum = F)
+                        sigSymbolsFontSize = 1, sigSymbolsSize = 2.5, showSum = F)
     dev.off()
 
     pdf(file = NULL)
     write.table(as.data.frame(somaticInteractions(maf = my_maf, top = 25, pvalue = c(0.05, 0.1), fontSize = 0.6), row.names = F),
-                file = file.path(output_path,"tables","somatic_interactions.tsv"), sep = "\t", row.names = F, col.names = T)
+                file = file.path(output_path, "tables", "somatic_interactions.tsv"), sep = "\t", row.names = F, col.names = T)
     dev.off()
 
 }, error = function(err) {
@@ -75,11 +75,11 @@ tryCatch({
 
 message("Checks for drug-gene interactions and druggable categories ")
 tryCatch({
-    png(filename = file.path(output_path,"plots","drug_interactions.barplot.png"), width = 500, height = 250, units='mm', res = 400)
+    png(filename = file.path(output_path, "plots", "drug_interactions.barplot.png"), width = 500, height = 250, units = 'mm', res = 400)
     dgi <- drugInteractions(maf = my_maf, fontSize = 0.9, plotType = "bar", top = 25)
     dev.off()
 
-    png(filename = file.path(output_path,"plots","drug_interactions.piechart.png"), width = 500, height = 250, units='mm', res = 400)
+    png(filename = file.path(output_path, "plots", "drug_interactions.piechart.png"), width = 500, height = 250, units = 'mm', res = 400)
     dgi <- drugInteractions(maf = my_maf, fontSize = 0.7, plotType = "pie", top = 25)
     dev.off()
 }, error = function(err) {
@@ -91,10 +91,10 @@ tryCatch({
 message("OncoDrive: Detect cancer driver genes based on positional clustering of variants.")
 tryCatch({
     my_maf.sig <- oncodrive(maf = my_maf, AACol = aminoacid_cname, minMut = 5, pvalMethod = 'zscore')
-    write.table(as.data.frame(my_maf.sig), file = file.path(output_path,"tables","oncodrive.tsv"), sep = "\t", row.names = F, col.names = T)
+    write.table(as.data.frame(my_maf.sig), file = file.path(output_path, "tables", "oncodrive.tsv"), sep = "\t", row.names = F, col.names = T)
 
-    png(filename = file.path(output_path,"plots","oncodrive.png"), width = 500, height = 250, units='mm', res = 400)
-    plotOncodrive(res = my_maf.sig, fdrCutOff = 0.01, useFraction = T , labelSize = 1)
+    png(filename = file.path(output_path, "plots", "oncodrive.png"), width = 500, height = 250, units = 'mm', res = 400)
+    plotOncodrive(res = my_maf.sig, fdrCutOff = 0.01, useFraction = T, labelSize = 1)
     dev.off()
 }, error = function(err) {
     print("Error while detecting cancer driver genes")
