@@ -119,10 +119,10 @@ rule maftools_driver:
         interactions=report(
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "interpretation/driver/plots/somatic_interactions.png",
+                "interpretation/driver/plots/oncodrive.png",
         ),
         caption=resolve_single_filepath(
-        config.get("paths").get("workdir"), "workflow/report/interactions.rst"
+        config.get("paths").get("workdir"), "workflow/report/oncodrive.rst"
             ),
             category="Somatic Interactions",
         ),

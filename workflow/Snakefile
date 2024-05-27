@@ -303,7 +303,7 @@ if config.get("run").get("analysis"):
             ),
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "interpretation/driver/plots/somatic_interactions.png",
+                "interpretation/driver/plots/oncodrive.png",
             ),
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
