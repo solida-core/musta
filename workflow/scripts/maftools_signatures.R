@@ -117,7 +117,7 @@ message("Estimate number of signatures")
 tryCatch({
     my_maf.sign <- estimateSignatures(mat = my_maf.tnm, nTry = 6)
 }, error = function(err) {
-    my_maf.sign <- estimateSignatures(mat = my_maf.tnm, nTry = 6,  pConstant=0.1)
+    my_maf.sign <- estimateSignatures(mat = my_maf.tnm, nTry = 6, pConstant = 0.1)
     # print("Error while extracting Signatures")
     # print(err)
 })
@@ -155,7 +155,7 @@ tryCatch({
     tryCatch({
         my_maf.sig <- extractSignatures(mat = my_maf.tnm, n = signature_to_extract)
     }, error = function(err) {
-        my_maf.sig <- extractSignatures(mat = my_maf.tnm, n = signature_to_extract, pConstant=0.1)
+        my_maf.sig <- extractSignatures(mat = my_maf.tnm, n = signature_to_extract, pConstant = 0.1)
     }
 
     signatures_matrix <- as.data.frame(my_maf.sig$signatures)
