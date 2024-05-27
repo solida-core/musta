@@ -92,11 +92,23 @@ write.table(as.data.frame(sample_summary, row.names = F),
             sep = "\t", row.names = F, col.names = T)
 
 #Shows gene summary.
-message("Write Gene Summary table")
+message("Write Gene Summary tables")
 gene_summary <- getGeneSummary(my_maf)
 print("Gene Summary: ", gene_summary)
 write.table(as.data.frame(gene_summary, row.names = F),
             file = file.path(output_path, "tables", "gene_summary.tsv"),
+            sep = "\t", row.names = F, col.names = T)
+
+message("Generates a count matrix of mutations. i.e, number of mutations per gene per sample")
+count_of_mutations <- mutCountMatrix(
+    my_maf,
+    includeSyn = FALSE,
+    countOnly = NULL,
+    removeNonMutated = TRUE
+)
+print("Number of muations per gene per sample: ", count_of_mutations)
+write.table(as.data.frame(count_of_mutations, row.names = F),
+            file = file.path(output_path, "tables", "mutations_count_matrix.tsv"),
             sep = "\t", row.names = F, col.names = T)
 
 message("Plot MAF Summary")
