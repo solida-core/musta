@@ -26,15 +26,15 @@ list.all.maf.files <- lapply(maf.filenames, function(i) {
 maf_all <- maftools::merge_mafs(list.all.maf.files)
 
 if (all_variants == TRUE) {
-  my_maf <- maf_all
-} else {
-  if ("FILTER" %in% getFields(maf_all)) {
-    my_maf <- subsetMaf(maf_all, query = "FILTER == 'PASS'")
-  } else if ("SOMATIC" %in% getFields(maf_all)) {
-    my_maf <- subsetMaf(maf_all, query = "SOMATIC == 'true'")
-  } else {
     my_maf <- maf_all
-  }
+} else {
+    if ("FILTER" %in% getFields(maf_all)) {
+        my_maf <- subsetMaf(maf_all, query = "FILTER == 'PASS'")
+    } else if ("SOMATIC" %in% getFields(maf_all)) {
+        my_maf <- subsetMaf(maf_all, query = "SOMATIC == 'true'")
+    } else {
+        my_maf <- maf_all
+    }
 }
 
 ## create out dir
@@ -148,15 +148,15 @@ png(filename = file.path(output_path, "plots", "mafbar.png"),
     units = 'mm',
     res = 500)
 mafbarplot(
-  my_maf,
-  n = 20,
-  genes = NULL,
-  color = NULL,
-  fontSize = 1,
-  includeCN = FALSE,
-  legendfontSize = 1,
-  borderCol = "#34495e",
-  showPct = TRUE
+    my_maf,
+    n = 20,
+    genes = NULL,
+    color = NULL,
+    fontSize = 1,
+    includeCN = FALSE,
+    legendfontSize = 1,
+    borderCol = "#34495e",
+    showPct = TRUE
 )
 dev.off()
 
@@ -267,9 +267,9 @@ for (gene in rownames(z)) {
             #AACol = aminoacid_cname,
             showMutationRate = TRUE
         )
-    dev.off()
+        dev.off()
     }, error = function(err) {
-        print(paste("Error while plotting plotting lollipop for gene:" , gene))
+        print(paste("Error while plotting plotting lollipop for gene:", gene))
         print(err)
     })
 }
@@ -311,7 +311,7 @@ png(filename = file.path(output_path, "plots", "TGCA_compare.primary_site.png"),
 my_maf.mutload <- tcgaCompare(maf = my_maf,
                               cohortName = project_id,
                               logscale = TRUE,
-                               primarySite = TRUE,
+                              primarySite = TRUE,
                               capture_size = 50)
 dev.off()
 
