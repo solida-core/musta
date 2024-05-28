@@ -1,9 +1,9 @@
 run:
   all: False
-  call: False
-  combine: False
-  annotate: False
-  analysis: False
+  detect: False
+  ensemble: False
+  classify: False
+  interpret: False
 
 # variant callers
 callers:

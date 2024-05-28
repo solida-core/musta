@@ -136,7 +136,7 @@ if config.get("run").get("all"):
             ),
 
 
-if config.get("run").get("call") and config.get("callers").get("mutect"):
+if config.get("run").get("detect") and config.get("callers").get("mutect"):
     rule call_mutect:
         input:
             expand(
@@ -147,7 +147,7 @@ if config.get("run").get("call") and config.get("callers").get("mutect"):
                 sample=list(samples_master.keys()),
             ),
 
-if config.get("run").get("call") and config.get("callers").get("lofreq"):
+if config.get("run").get("detect") and config.get("callers").get("lofreq"):
     rule call_lofreq:
         input:
             expand(
@@ -166,7 +166,7 @@ if config.get("run").get("call") and config.get("callers").get("lofreq"):
             ),
 
 
-if config.get("run").get("call") and config.get("callers").get("muse"):
+if config.get("run").get("detect") and config.get("callers").get("muse"):
     rule call_muse:
         input:
             expand(
@@ -178,7 +178,7 @@ if config.get("run").get("call") and config.get("callers").get("muse"):
             ),
 
 
-if config.get("run").get("call") and config.get("callers").get("strelka"):
+if config.get("run").get("detect") and config.get("callers").get("strelka"):
     rule call_strelka:
         input:
             expand(
@@ -196,7 +196,7 @@ if config.get("run").get("call") and config.get("callers").get("strelka"):
                 sample=list(samples_master.keys()),
             ),
 
-if config.get("run").get("call") and config.get("callers").get("vardict"):
+if config.get("run").get("detect") and config.get("callers").get("vardict"):
     rule call_vardict:
         input:
             expand(
@@ -207,7 +207,7 @@ if config.get("run").get("call") and config.get("callers").get("vardict"):
                 sample=list(samples_master.keys()),
             ),
 
-if config.get("run").get("call") and config.get("callers").get("varscan"):
+if config.get("run").get("detect") and config.get("callers").get("varscan"):
     rule call_varscan:
         input:
             expand(
@@ -225,7 +225,7 @@ if config.get("run").get("call") and config.get("callers").get("varscan"):
                 sample=list(samples_master.keys()),
             ),
 
-if config.get("run").get("combine"):
+if config.get("run").get("ensemble"):
     rule combine_somaticseq:
         input:
             expand(
@@ -243,7 +243,7 @@ if config.get("run").get("combine"):
                 sample=list(samples_master.keys()),
             ),
 
-if config.get("run").get("annotate") and config.get("annotators").get("vep"):
+if config.get("run").get("classify") and config.get("annotators").get("vep"):
     rule run_vep:
         input:
             expand(
@@ -268,7 +268,7 @@ if config.get("run").get("annotate") and config.get("annotators").get("vep"):
                 sample=list(samples_master.keys()),
             ),
 
-if config.get("run").get("annotate") and config.get("annotators").get("funcotator"):
+if config.get("run").get("classify") and config.get("annotators").get("funcotator"):
     rule run_funcotator:
         input:
             expand(
@@ -293,26 +293,30 @@ if config.get("run").get("annotate") and config.get("annotators").get("funcotato
                 sample=list(samples_master.keys()),
                 ),
 
-if config.get("run").get("analysis"):
+if config.get("run").get("interpret"):
 
     rule analysis:
         input:
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
+                "interpretation/base/plots/summary.png",
+            ),
+
+            resolve_single_filepath(
+                config.get("paths").get("results_dir"),
                 "interpretation/signatures/plots/cosmic_signatures.png",
             ),
+
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
                 "interpretation/driver/plots/oncodrive.png",
             ),
-            resolve_single_filepath(
-                config.get("paths").get("results_dir"),
-                "interpretation/base/plots/top10_VAF.png",
-            ),
+
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
                 "interpretation/pathways/plots/oncogenic_pathways.png",
             ),
+
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
                 "interpretation/heterogeneity/tables/successful.tsv",
