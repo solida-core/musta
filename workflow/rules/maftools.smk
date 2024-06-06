@@ -1,11 +1,11 @@
-rule maftools_base:
+rule maftools_visualization:
     input:
         mafs=get_maf_file_input(),
     output:
         summary=report(
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "interpretation/base/plots/summary.png",
+                "interpretation/results/variant_visualization/plots/summary.png",
         ),
         caption=resolve_single_filepath(
         config.get("paths").get("workdir"), "workflow/report/summary.rst"
@@ -15,7 +15,7 @@ rule maftools_base:
         oncoplot=report(
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "interpretation/base/plots/large_oncoplot.png",
+                "interpretation/results/variant_visualization/plots/large_oncoplot.png",
         ),
         caption=resolve_single_filepath(
         config.get("paths").get("workdir"), "workflow/report/oncoplot.rst"
@@ -25,7 +25,7 @@ rule maftools_base:
         tgca=report(
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "interpretation/base/plots/TGCA_compare.png",
+                "interpretation/results/variant_visualization/plots/TGCA_compare.png",
         ),
         caption=resolve_single_filepath(
         config.get("paths").get("workdir"), "workflow/report/tgca.rst"
@@ -36,7 +36,11 @@ rule maftools_base:
     params:
         project_id=config.get("params").get("maftools").get("project_name"),
         all_variants=config.get("variants").get("all"),
-        outdir=lambda w, output: os.path.split(os.path.split(output[0])[0])[0],
+        # outdir=lambda w, output: os.path.split(os.path.split(output[0])[0])[0],
+        outdir=resolve_single_filepath(
+            config.get("paths").get("results_dir"),
+            "interpretation/results/variant_visualization",
+        ),
     conda:
         resolve_single_filepath(
             config.get("paths").get("workdir"), "workflow/envs/maftools.yaml"
@@ -44,12 +48,12 @@ rule maftools_base:
     log:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
-            "interpretation/base.log",
+            "interpretation/variant_visualization.log",
         ),
     benchmark:
         resolve_results_filepath(
             config.get("paths").get("bench_dir"),
-            "interpretation/base.txt",
+            "interpretation/variant_visualization.txt",
         ),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
@@ -68,7 +72,7 @@ rule maftools_signatures:
         signatures=report(
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "interpretation/signatures/plots/cosmic_signatures.png",
+                "interpretation/results/mutational_signature_analysis/plots/cosmic_signatures.png",
         ),
         caption=resolve_single_filepath(
         config.get("paths").get("workdir"), "workflow/report/signatures.rst"
@@ -78,7 +82,11 @@ rule maftools_signatures:
     params:
         project_id=config.get("params").get("maftools").get("project_name"),
         all_variants=config.get("variants").get("all"),
-        outdir=lambda w, output: os.path.split(os.path.split(output[0])[0])[0],
+        # outdir=lambda w, output: os.path.split(os.path.split(output[0])[0])[0],
+        outdir=resolve_single_filepath(
+            config.get("paths").get("results_dir"),
+            "interpretation/results/mutational_signature_analysis",
+        ),
     conda:
         resolve_single_filepath(
             config.get("paths").get("workdir"), "workflow/envs/maftools.yaml"
@@ -86,12 +94,12 @@ rule maftools_signatures:
     log:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
-            "interpretation/signatures.log",
+            "interpretation/mutational_signature_analysis.log",
         ),
     benchmark:
         resolve_results_filepath(
             config.get("paths").get("bench_dir"),
-            "interpretation/signatures.txt",
+            "interpretation/mutational_signature_analysis.txt",
         ),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
@@ -110,7 +118,7 @@ rule maftools_driver:
         interactions=report(
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "interpretation/driver/plots/oncodrive.png",
+                "interpretation/results/driver_gene_identification/plots/oncodrive.png",
         ),
         caption=resolve_single_filepath(
         config.get("paths").get("workdir"), "workflow/report/oncodrive.rst"
@@ -119,7 +127,11 @@ rule maftools_driver:
         ),
     params:
         all_variants=config.get("variants").get("all"),
-        outdir=lambda w, output: os.path.split(os.path.split(output[0])[0])[0],
+        # outdir=lambda w, output: os.path.split(os.path.split(output[0])[0])[0],
+        outdir=resolve_single_filepath(
+            config.get("paths").get("results_dir"),
+            "interpretation/results/driver_gene_identification",
+        ),
     conda:
         resolve_single_filepath(
             config.get("paths").get("workdir"), "workflow/envs/maftools.yaml"
@@ -127,12 +139,12 @@ rule maftools_driver:
     log:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
-            "interpretation/gene_drivers.log",
+            "interpretation/driver_gene_identification.log",
         ),
     benchmark:
         resolve_results_filepath(
             config.get("paths").get("bench_dir"),
-            "interpretation/gene_drivers.txt",
+            "interpretation/driver_gene_identification.txt",
         ),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
@@ -150,11 +162,15 @@ rule maftools_pathways:
     output:
         resolve_single_filepath(
             config.get("paths").get("results_dir"),
-            "interpretation/pathways/plots/oncogenic_pathways.png",
+            "interpretation/results/pathway_analysis/plots/oncogenic_pathways.png",
         ),
     params:
         all_variants=config.get("variants").get("all"),
-        outdir=lambda w, output: os.path.split(os.path.split(output[0])[0])[0],
+        # outdir=lambda w, output: os.path.split(os.path.split(output[0])[0])[0],
+        outdir=resolve_single_filepath(
+            config.get("paths").get("results_dir"),
+            "interpretation/results/pathway_analysis",
+        ),
     conda:
         resolve_single_filepath(
             config.get("paths").get("workdir"), "workflow/envs/maftools.yaml"
@@ -162,12 +178,12 @@ rule maftools_pathways:
     log:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
-            "interpretation/pathways.log",
+            "interpretation/pathway_analysis.log",
         ),
     benchmark:
         resolve_results_filepath(
             config.get("paths").get("bench_dir"),
-            "interpretation/pathways.txt",
+            "interpretation/pathway_analysis.txt",
         ),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:
@@ -185,11 +201,15 @@ rule maftools_heterogeneity:
     output:
         resolve_single_filepath(
             config.get("paths").get("results_dir"),
-            "interpretation/heterogeneity/tables/successful.tsv",
+            "interpretation/results/tumor_heterogeneity/tables/successful.tsv",
         ),
     params:
         all_variants=config.get("variants").get("all"),
-        outdir=lambda w, output: os.path.split(os.path.split(output[0])[0])[0],
+        # outdir=lambda w, output: os.path.split(os.path.split(output[0])[0])[0],
+        outdir=resolve_single_filepath(
+            config.get("paths").get("results_dir"),
+            "interpretation/results/tumor_heterogeneity",
+        ),
     conda:
         resolve_single_filepath(
             config.get("paths").get("workdir"), "workflow/envs/maftools.yaml"
@@ -197,12 +217,12 @@ rule maftools_heterogeneity:
     log:
         resolve_results_filepath(
             config.get("paths").get("log_dir"),
-            "interpretation/heterogeneity.log",
+            "interpretation/tumor_heterogeneity.log",
         ),
     benchmark:
         resolve_results_filepath(
             config.get("paths").get("bench_dir"),
-            "interpretation/heterogeneity.txt",
+            "interpretation/tumor_heterogeneity.txt",
         ),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     resources:

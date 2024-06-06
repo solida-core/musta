@@ -114,23 +114,27 @@ if config.get("run").get("all"):
             ),
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "interpretation/signatures/plots/cosmic_signatures.png",
+                "interpretation/results/variant_visualization/plots/summary.png",
             ),
+
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "interpretation/driver/plots/somatic_interactions.png",
+                "interpretation/results/mutational_signature_analysis/plots/cosmic_signatures.png",
             ),
-            # resolve_single_filepath(
-            #     config.get("paths").get("results_dir"),
-            #     "interpretation/base/plots/top10_VAF.png",
-            # ),
+
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "interpretation/pathways/plots/oncogenic_pathways.png",
+                "interpretation/results/driver_gene_identification/plots/oncodrive.png",
             ),
+
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "interpretation/heterogeneity/tables/successful.tsv",
+                "interpretation/results/pathway_analysis/plots/oncogenic_pathways.png",
+            ),
+
+            resolve_single_filepath(
+                config.get("paths").get("results_dir"),
+                "interpretation/results/tumor_heterogeneity/tables/successful.tsv",
             ),
 
 
@@ -297,25 +301,25 @@ if config.get("run").get("interpret"):
         input:
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "interpretation/base/plots/summary.png",
+                "interpretation/results/variant_visualization/plots/summary.png",
             ),
 
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "interpretation/signatures/plots/cosmic_signatures.png",
+                "interpretation/results/mutational_signature_analysis/plots/cosmic_signatures.png",
             ),
 
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "interpretation/driver/plots/oncodrive.png",
+                "interpretation/results/driver_gene_identification/plots/oncodrive.png",
             ),
 
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "interpretation/pathways/plots/oncogenic_pathways.png",
+                "interpretation/results/pathway_analysis/plots/oncogenic_pathways.png",
             ),
 
             resolve_single_filepath(
                 config.get("paths").get("results_dir"),
-                "interpretation/heterogeneity/tables/successful.tsv",
+                "interpretation/results/tumor_heterogeneity/tables/successful.tsv",
             ),
