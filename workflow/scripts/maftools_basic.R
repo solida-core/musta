@@ -8,7 +8,6 @@ library('stringr')
 
 sessionInfo()
 ## input
-message("### Variant Visualization ###")
 input_maf <- snakemake@input[["mafs"]]
 message("Input files:", input_maf)
 project_id <- snakemake@params[["project_id"]]
