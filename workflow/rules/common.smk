@@ -223,7 +223,6 @@ def get_maf_file_input():
 def get_maf_list(wildcards):
     with open(config["samples"], "r") as file:
         samples_master = yaml.load(file, Loader=yaml.FullLoader)
-        print(ddddsamples_master)
     return (p[1].get("maf")[0] for p in samples_master.items() if "maf" in p[1])
 
 
