@@ -94,7 +94,8 @@ write.table(as.data.frame(sample_summary, row.names = F),
 #Shows gene summary.
 message("Write Gene Summary tables")
 gene_summary <- getGeneSummary(my_maf)
-print("Gene Summary: ", gene_summary)
+print("Gene Summary: ")
+gene_summary
 write.table(as.data.frame(gene_summary, row.names = F),
             file = file.path(output_path, "tables", "gene_summary.tsv"),
             sep = "\t", row.names = F, col.names = T)
