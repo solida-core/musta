@@ -78,7 +78,8 @@ dir.create(file.path(output_path, "plots"), showWarnings = F)
 ## summaty tables
 message("Write summary table")
 my_summary <- my_maf@summary[-c(2), c(1, 2)]
-message("Summary: ", my_summary)
+print("Summary: ")
+my_summary
 write.table(as.data.frame(my_summary, row.names = F),
             file = file.path(output_path, "tables", "overview.tsv"),
             sep = "\t", row.names = F, col.names = T)
@@ -86,7 +87,8 @@ write.table(as.data.frame(my_summary, row.names = F),
 #Shows sample summary.
 message("Write Samples Summary table")
 sample_summary <- getSampleSummary(my_maf)
-print(paste("Sample Summary: ", sample_summary))
+print("Sample Summary: ")
+sample_summary
 write.table(as.data.frame(sample_summary, row.names = F),
             file = file.path(output_path, "tables", "sample_summary.tsv"),
             sep = "\t", row.names = F, col.names = T)
@@ -107,7 +109,8 @@ count_of_mutations <- mutCountMatrix(
     countOnly = NULL,
     removeNonMutated = TRUE
 )
-print("Number of muations per gene per sample: ", count_of_mutations)
+print("Number of mutations per gene per sample: ")
+count_of_mutations
 write.table(as.data.frame(count_of_mutations, row.names = F),
             file = file.path(output_path, "tables", "mutations_count_matrix.tsv"),
             sep = "\t", row.names = F, col.names = T)
@@ -173,7 +176,7 @@ names(vc_cols) <- c(
     'Splice_Site',
     'In_Frame_Del'
 )
-message("Oncopot generation (top 10 mutated genes")
+message("Oncopot generation (top 10 mutated genes)")
 png(filename = file.path(output_path, "plots", "oncoplot.png"),
     width = 500,
     height = 250,
@@ -198,7 +201,7 @@ oncoplot(maf = my_maf, colors = vc_cols, top = 10, altered = T,
          showTumorSampleBarcodes = T, barcode_mar = 15)
 dev.off()
 
-message("Oncopot generation (top 50 mutated genes")
+message("Oncopot generation (top 50 mutated genes)")
 png(filename = file.path(output_path, "plots", "large_oncoplot.png"),
     width = 500,
     height = 250,
@@ -329,7 +332,7 @@ write.table(my_maf.mutload$pairwise_t_test,
             sep = "\t", row.names = F, col.names = T)
 
 
-messeage("Plots vaf distribution of genes as a boxplot")
+message("Plots vaf distribution of genes as a boxplot")
 tryCatch({
     png(filename = file.path(output_path, "plots", "top10_VAF.png"),
         width = 500,
