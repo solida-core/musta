@@ -1,4 +1,4 @@
-rule maftools_visualization:
+rule maftools_base:
     input:
         mafs=get_maf_file_input(),
     output:
