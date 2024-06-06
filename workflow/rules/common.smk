@@ -208,7 +208,7 @@ def get_annotation_input(wildcards):
 
 
 def get_maf_file_input():
-    if config.get("run").get("interpretation"):
+    if config.get("run").get("interpret"):
         return lambda wildcards: get_maf_list(wildcards)
     else:
         return expand(
