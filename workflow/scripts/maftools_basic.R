@@ -78,7 +78,7 @@ dir.create(file.path(output_path, "plots"), showWarnings = F)
 ## summaty tables
 message("Write summary table")
 my_summary <- my_maf@summary[-c(2), c(1, 2)]
-print("Summary: ", my_summary)
+message("Summary: ", my_summary)
 write.table(as.data.frame(my_summary, row.names = F),
             file = file.path(output_path, "tables", "overview.tsv"),
             sep = "\t", row.names = F, col.names = T)
@@ -86,7 +86,7 @@ write.table(as.data.frame(my_summary, row.names = F),
 #Shows sample summary.
 message("Write Samples Summary table")
 sample_summary <- getSampleSummary(my_maf)
-print("Sample Summary: ", sample_summary)
+print(paste("Sample Summary: ", sample_summary))
 write.table(as.data.frame(sample_summary, row.names = F),
             file = file.path(output_path, "tables", "sample_summary.tsv"),
             sep = "\t", row.names = F, col.names = T)
