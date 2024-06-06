@@ -156,10 +156,11 @@ tryCatch({
         my_maf.sig <- extractSignatures(mat = my_maf.tnm, n = signature_to_extract)
     }, error = function(err) {
         my_maf.sig <- extractSignatures(mat = my_maf.tnm, n = signature_to_extract, pConstant = 0.1)
-    }
+    })
 
     signatures_matrix <- as.data.frame(my_maf.sig$signatures)
     signatures_matrix <- cbind(rownames(signatures_matrix), signatures_matrix)
+
     names(signatures_matrix)[names(signatures_matrix) == "rownames(signatures_matrix)"] <- "trinucleotide"
     write.table(signatures_matrix, file = file.path(output_path, "tables", "signatures_matrix.tsv"), sep = "\t", row.names = F, col.names = T)
 
