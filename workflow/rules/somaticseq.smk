@@ -15,11 +15,11 @@ rule somaticseq:
     output:
         snvs=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "detection/somaticseq/{sample}/musta.sSNV.vcf",
+            "detection/somaticseq/{sample}/Consensus.sSNV.vcf",
         ),
         indels=resolve_results_filepath(
             config.get("paths").get("results_dir"),
-            "detection/somaticseq/{sample}/musta.sINDEL.vcf",
+            "detection/somaticseq/{sample}/Consensus.sINDEL.vcf",
         ),
     params:
         outdir=resolve_results_filepath(
