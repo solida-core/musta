@@ -115,13 +115,15 @@ tryCatch({
 
 message("Estimate number of signatures")
 tryCatch({
-    my_maf.sign <- estimateSignatures(mat = my_maf.tnm, nTry = 6)
+    nsign <- estimateSignatures(mat = my_maf.tnm, nTry = 6)
 }, error = function(err) {
-    my_maf.sign <- estimateSignatures(mat = my_maf.tnm, nTry = 6, pConstant = 0.1)
+    nsign <- estimateSignatures(mat = my_maf.tnm, nTry = 6, pConstant = 0.1)
     # print("Error while extracting Signatures")
     # print(err)
 })
-
+message("Number of Signatures:")
+nsign
+my_maf.sign <- nsign
 message("Draw an elbow plot of cophenetic correlation metric.")
 tryCatch({
     png(filename = file.path(output_path, "plots", "plotCophenetic.png"), width = 500, height = 250, units = 'mm', res = 400)
