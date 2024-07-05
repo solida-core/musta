@@ -61,7 +61,7 @@ def expand_filepath(filepath):
     return filepath
 
 
-def conservative_cpu_count(reserve_cores=1, max_cores=5):
+def conservative_cpu_count(reserve_cores=1, max_cores=99):
     cores = max_cores if cpu_count() > max_cores else cpu_count()
     return max(cores - reserve_cores, 1)
 
