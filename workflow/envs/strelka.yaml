@@ -1,4 +1,5 @@
 channels:
+  - conda-forge
   - bioconda
 dependencies:
-  - strelka==2.9.10
+  - strelka=2.9.10=h9ee0642_1
