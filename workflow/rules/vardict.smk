@@ -29,17 +29,31 @@ rule vardict:
             "detection/vardict/{sample}.vardict.txt",
         ),
     shell:
-        "vardict "
-        "-G {params.genome} "
-        "-f 0.01 -N {params.tumor_name} "
-        "-b '{input.tumoral} | {input.normal}' "
-        "-c 1 -S 2 -E 3 "
-        "{input.intervals} "
-        "| testsomatic.R | var2vcf_paired.pl "
-        "-N '{params.tumor_name}|{params.normal_name}' "
-        "-f 0.01 > {params.out} ; "
-        "bgzip -c {params.out} > {output} "
+        r"""
+        set -euo pipefail
 
+        # Locate VarDict auxiliary scripts
+        VARDICT_DIR="$(dirname "$(readlink -f "$(command -v vardict)")")"
+
+        test -f "$VARDICT_DIR/testsomatic.R"
+        test -f "$VARDICT_DIR/var2vcf_paired.pl"
+
+        # Somatic variant calling (tumor-normal)
+        vardict \
+            -G {params.genome:q} \
+            -f 0.01 \
+            -N {params.tumor_name:q} \
+            -b "{input.tumoral}|{input.normal}" \
+            -c 1 -S 2 -E 3 \
+            {input.intervals:q} \
+        | Rscript "$VARDICT_DIR/testsomatic.R" \
+        | perl "$VARDICT_DIR/var2vcf_paired.pl" \
+            -N "{params.tumor_name}|{params.normal_name}" \
+            -f 0.01 \
+        > {params.out:q}
+
+        bgzip -c {params.out:q} > {output:q}
+        """
 
 rule vardict_hold_on:
     input:
