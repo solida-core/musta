@@ -1,4 +1,4 @@
 channels:
   - bioconda
 dependencies:
-  - somaticseq=3.9.1
+  - somaticseq=3.8.0
