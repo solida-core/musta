@@ -1,4 +1,5 @@
 channels:
   - bioconda
+  - conda-forge
 dependencies:
-  - somaticseq=3.8.0
+  - somaticseq=3.11.1
