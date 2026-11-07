@@ -28,7 +28,7 @@ rule somaticseq:
         ),
         genome=config.get("resources").get("reference"),
         dbsnp=config.get("resources").get("dbsnp"),
-        mutect_flag=lambda wildcards, input: generate_flag("mutect-vcf", input.mutect),
+        mutect_flag=lambda wildcards, input: generate_flag("mutect2-vcf", input.mutect),
         vardict_flag=lambda wildcards, input: generate_flag('vardict-vcf', input.vardict),
         muse_flag=lambda wildcards, input: generate_flag('muse-vcf', input.muse),
         varscan_snvs_flag=lambda wildcards, input: generate_flag('varscan-snv', input.varscan_snvs),
@@ -45,12 +45,12 @@ rule somaticseq:
     benchmark:
         resolve_results_filepath(
             config.get("paths").get("bench_dir"),
-            "detection/somatiqseq/{sample}.somaticseq.txt",
+            "detection/somaticseq/{sample}.somaticseq.txt",
         ),
     conda:
         resolve_single_filepath(
             config.get("paths").get("workdir"), "workflow/envs/somaticseq.yaml"
-        )
+        ),
     threads: conservative_cpu_count(reserve_cores=2, max_cores=99)
     shell:
         "somaticseq_parallel.py "
@@ -59,6 +59,7 @@ rule somaticseq:
         #"-dbsnp {params.dbsnp} "
         # "-cosmic "
         "--inclusion-region {input.intervals} "
+        " --threads {threads} "
         "paired "
         "--tumor-bam-file {input.tumoral} "
         "--normal-bam-file {input.normal} "

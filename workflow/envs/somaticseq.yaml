@@ -1,5 +1,9 @@
 channels:
-  - bioconda
   - conda-forge
+  - bioconda
 dependencies:
-  - somaticseq=3.11.1
+  - python=3.11
+  - pip
+  - bedtools
+  - pip:
+      - somaticseq==3.11.1
