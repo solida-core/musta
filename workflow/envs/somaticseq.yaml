@@ -5,5 +5,6 @@ dependencies:
   - python=3.11
   - pip
   - bedtools
+  - py-xgboost=2.1.4
   - pip:
       - somaticseq==3.11.1
