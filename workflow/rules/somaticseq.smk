@@ -130,5 +130,9 @@ rule somaticseq_tbi:
         ),
     threads: conservative_cpu_count(reserve_cores=2,max_cores=99),
     shell:
-        "tabix -p vcf {input.snvs} ; "
-        "tabix -p vcf {input.indels}  "
+        r"""
+           set -euo pipefail
+
+           tabix -f -p vcf {input.snvs:q}
+           tabix -f -p vcf {input.indels:q}
+        """
