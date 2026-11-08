@@ -98,13 +98,13 @@ if config.get("run").get("all"):
                 ),
                 sample=list(samples_master.keys()),
             ),
-            expand(
-                resolve_results_filepath(
-                    config.get("paths").get("results_dir"),
-                    "detection/results/{sample}.musta.indels.vcf.gz.tbi",
-                ),
-                sample=list(samples_master.keys()),
-            ),
+            # expand(
+            #     resolve_results_filepath(
+            #         config.get("paths").get("results_dir"),
+            #         "detection/results/{sample}.musta.indels.vcf.gz.tbi",
+            #     ),
+            #     sample=list(samples_master.keys()),
+            # ),
             expand(
                 resolve_results_filepath(
                     config.get("paths").get("results_dir"),

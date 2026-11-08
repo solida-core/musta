@@ -134,5 +134,4 @@ rule somaticseq_tbi:
            set -euo pipefail
 
            tabix -f -p vcf {input.snvs:q}
-           tabix -f -p vcf {input.indels:q}
         """
