@@ -120,10 +120,10 @@ rule somaticseq_tbi:
             config.get("paths").get("results_dir"),
             "detection/results/{sample}.musta.snvs.vcf.gz.tbi",
         ),
-        indels = resolve_results_filepath(
-            config.get("paths").get("results_dir"),
-            "detection/results/{sample}.musta.indels.vcf.gz.tbi",
-        ),
+        # indels = resolve_results_filepath(
+        #     config.get("paths").get("results_dir"),
+        #     "detection/results/{sample}.musta.indels.vcf.gz.tbi",
+        # ),
     conda:
         resolve_single_filepath(
             config.get("paths").get("workdir"),"workflow/envs/tabix.yaml"
