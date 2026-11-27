@@ -73,7 +73,6 @@ rule somaticseq:
         "{params.varscan_snvs_flag} "
         "{params.varscan_indels_flag} "
 
-
 rule somaticseq_out:
     input:
         snvs=rules.somaticseq.output.snvs,
@@ -87,11 +86,29 @@ rule somaticseq_out:
             config.get("paths").get("results_dir"),
             "detection/somaticseq/{sample}/{sample}.somaticseq.indels.vcf.gz",
         ),
-    conda: resolve_single_filepath(config.get("paths").get("workdir"), "workflow/envs/tabix.yaml"),
-    threads: conservative_cpu_count(reserve_cores=2,max_cores=99),
+    conda:
+        resolve_single_filepath(
+            config.get("paths").get("workdir"),
+            "workflow/envs/tabix.yaml"
+        ),
+    threads: conservative_cpu_count(reserve_cores=2,max_cores=8),
     shell:
-        "bgzip -c {input.snvs} > {output.snvs} ; "
-        "bgzip -c {input.indels} > {output.indels} "
+        r"""
+        set -euo pipefail
+
+        bcftools sort \
+            --threads {threads} \
+            -Oz \
+            -o {output.snvs:q} \
+            {input.snvs:q}
+
+        bcftools sort \
+            --threads {threads} \
+            -Oz \
+            -o {output.indels:q} \
+            {input.indels:q}
+        """
+
 
 rule somaticseq_hold_on:
     input:
